@@ -1,0 +1,72 @@
+﻿@model IEnumerable<PrivacyConsentDB.AccessPaths>
+
+@{
+    ViewBag.Title = "페이지 관리";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>페이지 관리</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table table-hover table-striped"  id="APTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.path)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.createdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.creator)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.modifieddate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.modifier)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.path)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.createdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.creator)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.modifieddate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.modifier)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#APTable').DataTable();
+    })
+</script>

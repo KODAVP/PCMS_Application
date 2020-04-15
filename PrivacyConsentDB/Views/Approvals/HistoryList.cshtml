@@ -1,0 +1,67 @@
+﻿@using PrivacyConsentDB.Commons
+@model IEnumerable<PrivacyConsentDB.Models.Approval>
+
+<table id="tblapprovalrequests" class="table table-bordered table-striped paginated">
+<tr>
+    <th>@Html.DisplayNameFor(model => model.privacy.OWNER)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.IND_FULL_NAME)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.EMAIL)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.IND_SP)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.WKP_NAME)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.WKP_TEL)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENTVERSION)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENTDATE)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENT_USE)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENT_TRUST)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENT_ABROAD)</th>
+    <th>@Html.DisplayNameFor(model => model.privacy.CONSENT_SIGN)</th>
+    <th>@Html.DisplayNameFor(model => model.status)</th>
+    <th>@Html.DisplayNameFor(model => model.createdate) (KST)</th>
+    <th>@Html.DisplayNameFor(model => model.modifier)</th>
+    <th>@Html.DisplayNameFor(model => model.modifieddate) (KST)</th>
+    <th></th>
+</tr>
+
+@foreach (var item in Model)
+{
+    var approvalstatus = item == null ? "승인" : EnumHelper<Status.ApprovalStatus>.GetDisplayValue(item.status);
+    var dtcreate = TimeZoneInfo.ConvertTime(item.createdate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+    var dtmodify = TimeZoneInfo.ConvertTime(item.modifieddate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+
+    <tr>
+        <td>@Html.DisplayFor(modelItem => item.privacy.OWNER)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.IND_FULL_NAME)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.EMAIL)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.IND_SP)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.WKP_NAME)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.WKP_TEL)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENTVERSION)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENTDATE)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENT_USE)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENT_TRUST)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENT_ABROAD)</td>
+        <td>@Html.DisplayFor(modelItem => item.privacy.CONSENT_SIGN)</td>
+        <td>@Html.DisplayFor(modelItem => approvalstatus)</td>
+        <td>@Html.DisplayFor(modelItem => dtcreate)</td>
+        <td>@Html.DisplayFor(modelItem => item.modifier)</td>
+        <td>@Html.DisplayFor(modelItem => dtmodify)</td>
+        <td>
+            @Html.ActionLink("상세보기", "Details", "Privacy", new { id = item.privacyId }, new { @class = "" })
+            @if (item.status == PrivacyConsentDB.Commons.Status.ApprovalStatus.Rejected)
+            {
+                if (MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) || MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN))
+                {
+                    @Html.ActionLink("승인", "Approve", new { id = item.privacyId }, new { @class = "btn btn-sm btn-info" })
+                }
+                else
+                {
+                    @Html.ActionLink("재상신", "EditWithReApprove", "Privacy", new { id = item.privacyId }, new { @class = "btn btn-sm btn-info" })
+                }
+
+            }
+        </td>
+
+    </tr>
+}
+
+</table>

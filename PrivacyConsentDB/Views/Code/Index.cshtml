@@ -1,0 +1,234 @@
+﻿
+@model PrivacyConsentDB.Dto.CodeDto
+<style>
+    .hiderow { display:none;}
+    .showrow {display:table-row !important;}
+</style>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>코드매칭 현황</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @using (Html.BeginForm())
+                {
+                    <div class="form-horizontal">                        
+                        <div class="form-group">
+                            <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">고객명</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-8">
+                                @Html.EditorFor(model => model.searchname, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">Onekey</label>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-8">
+                                @Html.EditorFor(model => model.onekey, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                        </div>                  
+                        <div class="form-group">
+                            @*To display Dropdownlist - Prakash*@
+                            <div class="col-md-6 text-left">
+                                @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-5">
+                                    @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+                                <a href="javascript:searching()" class="btn btn-sm btn-primary">검색</a>
+                                <a href="javascript:init()" class="btn btn-sm btn-default">초기화</a>
+                                <a href="javascript:xlsDownload()" class="btn btn-sm btn-success">엑셀 다운로드</a>
+                            </div>
+                        </div> 
+                    </div>
+
+                    @Html.Hidden("startIndex", Model.startIndex)
+                    @Html.Hidden("pageSize", Model.pageSize)
+                    @Html.Hidden("totalCount", Model.totalCount)
+                }
+
+                <div class="clearfix"></div>
+                <br />
+                <table id="tblPGroup" class="table table-striped table-bordered paginated" data-toggle="table" data-detail-view="true" data-detail-formatter="detailFormatter">
+                    <colgroup>
+                        <col style="width:20px" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>OneKey</th>
+                            <th>성명</th>
+                            <th>Matching Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{int i = 0;}
+                        @foreach (var item in Model.list)
+                        {
+                            string iid = "detail" + i;
+                            string ibtn = "button" + i;
+                            <tr>
+                                <td id=@ibtn>
+                                    <a href="javascript:openDetail(@i);">
+                                        <i class="fa fa-plus"></i>
+                                    </a>                                    
+                                </td>
+                                <td>
+                                    @item.OneKey
+                                </td>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Count
+                                </td>
+                            </tr>
+                            <tr class="hiderow">
+                                <td id=@iid colspan="4">
+                                    <div>
+                                        <strong class="bold">매칭결과</strong>
+                                        <br>
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nucleus</th>
+                                                    <th>고객명</th>
+                                                    <th>이메일</th>
+                                                    <th>진료과</th>
+                                                    <th>근무처(병원명)</th>
+                                                    <th>근무지연락처</th>
+                                                    <th>동의서버전</th>
+                                                    <th>동의일자</th>
+                                                    <th>수집/이용 동의</th>
+                                                    <th>위탁 동의</th>
+                                                    <th>국외이전 동의</th>
+                                                    <th>서명</th>
+                                                    <th>수신거부</th>
+                                                    <th>action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var p in item.Privacies)
+                                                {
+                                                    var dtConsent = p.CONSENTDATE.ToShortDateString();
+                                                <tr >
+                                                    <td>@Html.DisplayFor(modelItem => p.NucleusKey)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.IND_FULL_NAME)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.EMAIL)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.IND_SP)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.WKP_NAME)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.WKP_TEL)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.CONSENTVERSION)</td>
+                                                    <td>@dtConsent</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.CONSENT_USE)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.CONSENT_TRUST)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.CONSENT_ABROAD)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.CONSENT_SIGN)</td>
+                                                    <td>@Html.DisplayFor(modelItem => p.Unsubscribe)</td>
+                                                    <td>@Html.ActionLink("상세", "Details","Privacy", new { id = p.ID },null)</td>
+                                                </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function init() {
+        $("#searchname").val("");
+        $("#onekey").val("");
+    }
+    function searching() {
+        $("form").attr("action", "/Code/Index");
+        $("form").submit();
+    }
+    function xlsDownload() {
+        $("form").attr("action", "/Code/XlsDownload");
+        $("form").submit();
+    }
+    var $table = $("#tblPGroup");
+    function openDetail(idx) {
+        $("#button" + idx).html('<a href="javascript:closeDetail(' + idx + ');"><i class="fa fa-minus"></i></a>');
+        $("#button" + idx).parents("tr").next().addClass("showrow");
+    }
+    function closeDetail(idx) {
+        $("#button" + idx).parents("tr").next().removeClass("showrow");
+        $("#button" + idx).html('<a href="javascript:openDetail(' + idx + ');"><i class="fa fa-plus"></i></a>');
+    }
+    function pageTable() {
+        var $table = $('table.paginated');
+
+        var curIndex = Number($("#startIndex").val());
+        var numPerPage = Number($("#pageSize").val());
+        var numRows = Number($("#totalCount").val());
+        var maxPages = 10;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var pagecount = maxPages > numPages ? numPages : maxPages;
+
+        var info = (curIndex + 1) * 1 + '/' + numPages + '( ' + numRows + ')';
+        $(".pager").remove();
+        var $pager = $('<div class="pager"><div class="total">' + info + '</div></div>');
+
+        var startIndex = Math.floor(curIndex / maxPages) * maxPages;
+        var endIndex = startIndex + maxPages > numPages ? numPages : startIndex + maxPages;
+
+        // prev
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("|<<").bind('click', function (e) {
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(0);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("<<").bind('click', function (e) {
+                var nextIndex = startIndex - maxPages > 0 ? startIndex - maxPages : 0;
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        for (var page = startIndex; page < endIndex ; page++) {
+            $('<span id="pg' + page + '" class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                var currentPage = event.data['newPage'];
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(currentPage);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        // next
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>").bind('click', function (e) {
+                var nextIndex = Math.floor((curIndex + maxPages) / maxPages) * maxPages;
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>|").bind('click', function (e) {
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(numPages - 1);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        $pager.insertAfter($table).find('#pg' + curIndex).addClass('active');
+    }
+    $(document).ready(function () {
+        pageTable();
+    });
+</script>

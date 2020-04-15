@@ -1,0 +1,51 @@
+﻿@using PrivacyConsentDB.Commons
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>인터페이스 재전송 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @using (Html.BeginForm("ReSend", "System", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10 input-group-sm text-right">
+                                <input type="submit" class="btn btn-sm btn-info" value="저장" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="channel">재전송 대상 인터페이스</label>
+                            <div class="col-md-10 input-group-sm">
+                                <select id="channel" name="channel" class="form-control">
+                                    <option value="@Status.SendChannel.PFORCERX">PFORCERX</option>
+                                    <option value="@Status.SendChannel.N360">N360</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2" for="nkeys">NucleusKey 목록</label>
+                            <div class="col-md-10 input-group-sm">
+                                <textarea id="nkeys" name="nkeys" rows="5" class="form-control" style="height:100px;"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('input[type=submit]').click(function (e) {
+        if ($(this).hasClass('form-submitted')) {
+            e.preventDefault();
+            return;
+        }
+        $(this).addClass('form-submitted');
+    });
+</script>

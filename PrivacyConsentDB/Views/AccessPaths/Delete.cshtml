@@ -1,0 +1,73 @@
+﻿@model PrivacyConsentDB.AccessPaths
+
+@{
+    ViewBag.Title = "페이지 관리";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>페이지 관리</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>AccessPaths</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.path)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.path)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modifieddate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modifieddate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modifier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modifier)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

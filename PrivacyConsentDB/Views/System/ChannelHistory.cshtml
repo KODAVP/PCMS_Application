@@ -1,0 +1,234 @@
+﻿@model PrivacyConsentDB.Models.PageDto
+@{ 
+    Html.EnableClientValidation(false);
+    var CHANNEL_LIST = new List<SelectListItem>
+        {
+            new SelectListItem { Text ="MMS", Value = "MMS"},
+            new SelectListItem { Text ="ODSM", Value = "ODSM"},
+            new SelectListItem { Text ="PforceRX", Value = "PforceRX"}
+        };
+    var STATUS_LIST = new List<SelectListItem>
+        {
+            new SelectListItem { Text ="Started", Value = "0"},
+            new SelectListItem { Text ="Completed", Value = "1"},
+            new SelectListItem { Text ="Error", Value = "2"},
+            new SelectListItem { Text ="", Value = "3"},
+            new SelectListItem { Text ="XFER", Value = "4"}
+        };
+    var BOUND_LIST = new List<SelectListItem>
+        {
+            new SelectListItem { Text ="Inbound", Value = "0"},
+            new SelectListItem { Text ="Outbound", Value = "1"}
+    };
+}
+
+
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>인터페이스 로그 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.Hidden("startIndex", Model.startIndex)
+                    @Html.Hidden("pageSize", Model.pageSize)
+                    <input type="hidden" id="totalCount" name="totalCount" value="@Model.totalCount" />
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">인터페이스</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    @Html.DropDownListFor(model => model.channels, new SelectList(CHANNEL_LIST, "VALUE", "TEXT", Model.channels), "", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">방향</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    @Html.DropDownListFor(model => model.bound, new SelectList(BOUND_LIST, "VALUE", "TEXT", Model.bound), "", new { @class = "form-control" })
+                                </div>
+                            </div>
+
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">상태</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    @Html.DropDownListFor(model => model.status, new SelectList(STATUS_LIST, "VALUE", "TEXT", Model.status), "", new { @class = "form-control" })
+
+                                </div>
+                            </div>
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">수행일</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <div class="input-group input-daterange">
+                                        @Html.EditorFor(model => model.executedt, new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group-xs">
+                                <div class="col-lg-12 text-right">
+                                    <a href="javascript:searching()" class="btn btn-xs btn-primary">검색</a>
+                                    <a href="javascript:init()" class="btn btn-xs btn-default">초기화</a>
+                                    <a href="javascript:xlsDownload()" class="btn btn-xs btn-success">엑셀 다운로드</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <hr />
+                <table class="table  table-bordered table-striped paginated">
+                    <colgroup>
+                        <col style="width:150px;">
+                        <col style="width:100px;">
+                        <col style="width:100px;">
+                        <col style="width:100px;">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>
+                                수행일시 (KST)
+                            </th>
+                            <th>
+                                인터페이스명
+                            </th>
+                            <th>
+                                방향
+                            </th>
+                            <th>
+                                상태
+                            </th>
+                            <th>
+                                메세지
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.list)
+                        {
+                            var stat = @"";
+                            if (item.status == PrivacyConsentDB.Commons.BatchStatus.Begin)
+                            {
+                                stat = @"Started";
+                            }
+                            else if (item.status == PrivacyConsentDB.Commons.BatchStatus.Completed)
+                            {
+                                stat = @"Completed";
+                            }
+                            else if (item.status == PrivacyConsentDB.Commons.BatchStatus.Error)
+                            {
+                                stat = @"Error";
+                            }
+                            var dtcreate = TimeZoneInfo.ConvertTime(item.createdate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+                            <tr>
+                                <td>
+                                    @dtcreate
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.name)
+                                </td>
+                                <td>
+                                    @(item.bound == 0 ? @"Inbound" : @"Outbound")
+                                </td>
+                                <td>
+                                    @stat
+                                </td>
+                                <td style="word-break: break-all;">
+                                    @Html.DisplayFor(modelItem => item.message)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function init() {
+        $("form")[0].reset();
+    }
+    function searching() {
+        $("form").attr("action", "/System/ChannelHistory");
+        $("form").submit();
+    }
+    function xlsDownload() {
+        $("form").attr("action", "/System/XlsDownload");    
+        $("form").submit();
+    }
+
+    $(document).ready(function () {
+        pageTable();
+
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        });
+    });
+    function pageTable() {
+        var $table = $('table.paginated');
+
+        var curIndex = Number($("#startIndex").val());
+        var numPerPage = Number($("#pageSize").val());
+        var numRows = Number($("#totalCount").val());
+        var maxPages = 10;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var pagecount = maxPages > numPages ? numPages : maxPages;
+
+        var info = (curIndex + 1) * 1 + '/' + numPages + '( ' + numRows + ')';
+        $(".pager").remove();
+        var $pager = $('<div class="pager"><div class="total">' + info + '</div></div>');
+
+        var startIndex = Math.floor(curIndex / maxPages) * maxPages;
+        var endIndex = startIndex + maxPages > numPages ? numPages : startIndex + maxPages;
+
+        // prev
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("|<<").bind('click', function (e) {
+                $("form").attr("action", "/System/ChannelHistory");
+                $("#startIndex").val(0);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("<<").bind('click', function (e) {
+                var nextIndex = startIndex - maxPages > 0 ? startIndex - maxPages : 0;
+                $("form").attr("action", "/System/ChannelHistory");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        for (var page = startIndex; page < endIndex ; page++) {
+            $('<span id="pg' + page + '" class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                var currentPage = event.data['newPage'];
+                $("form").attr("action", "/System/ChannelHistory");
+                $("#startIndex").val(currentPage);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        // next
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>").bind('click', function (e) {
+                var nextIndex = Math.floor((curIndex + maxPages) / maxPages) * maxPages;
+                $("form").attr("action", "/System/ChannelHistory");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>|").bind('click', function (e) {
+                $("form").attr("action", "/System/ChannelHistory");
+                $("#startIndex").val(numPages - 1);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        $pager.insertAfter($table).find('#pg' + curIndex).addClass('active');
+    }
+</script>

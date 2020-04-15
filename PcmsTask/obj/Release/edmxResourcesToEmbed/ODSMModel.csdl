@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ODSMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="ODSMEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="VW_CONSENT" EntityType="ODSMModel.VW_CONSENT" />
+    <EntitySet Name="VW_CONSENT_ALIGNMENT" EntityType="ODSMModel.VW_CONSENT_ALIGNMENT" />
+  </EntityContainer>
+  <EntityType Name="VW_CONSENT">
+    <Key>
+      <PropertyRef Name="PCMS_ID" />
+      <PropertyRef Name="NUC_ID" />
+      <PropertyRef Name="ODSK_MODIFY_DATE" />
+    </Key>
+    <Property Name="PCMS_ID" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="NUC_ID" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="ONEKEY" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+    <Property Name="ODSK_MODIFY_DATE" Type="DateTime" Nullable="false" Precision="3" />
+  </EntityType>
+  <EntityType Name="VW_CONSENT_ALIGNMENT">
+    <Key>
+      <PropertyRef Name="D_NUC_ID" />
+      <PropertyRef Name="D_ONEKEY_ID" />
+      <PropertyRef Name="D_NAME" />
+    </Key>
+    <Property Name="D_NUC_ID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="D_ONEKEY_ID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="H_NAME" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="H_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="H_POSTCODE" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="H_REGION" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="H_CITY" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="H_ADDR" Type="String" MaxLength="371" FixedLength="false" Unicode="true" />
+    <Property Name="D_SPEC" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="D_NAME" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="D_EMAIL" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="D_MOBILE_PHONE" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+  </EntityType>
+</Schema>

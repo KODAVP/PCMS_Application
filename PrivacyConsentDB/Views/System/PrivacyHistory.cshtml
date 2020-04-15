@@ -1,0 +1,52 @@
+﻿
+<h2>Privacy Change History</h2>
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Channel Collection History <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <table id="tblapprovalhistory" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>수집대상</th>
+                            <th>수집일자</th>
+                            <th>상태</th>
+                            <th>수입건수</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>MMC</td>
+                            <td>2016-05-01 14:22:11</td>
+                            <td>정상</td>
+                            <td>112건</td>
+                        </tr>
+                        <tr>
+                            <td>MyPfizer</td>
+                            <td>2016-05-01 14:22:11</td>
+                            <td>정상</td>
+                            <td>112건</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function remove() {
+        bootbox.confirm("Are you sure?", function (result) {
+        });
+    }
+    $('#tblapprovalhistory').DataTable({
+        searching: true
+        , select: false
+        , paging: true
+        , pageLength: 50
+    });
+</script>

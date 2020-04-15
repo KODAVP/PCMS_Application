@@ -1,0 +1,33 @@
+-- Stage ---
+
+ALTER TABLE dbo.Channels ADD backuppath VARCHAR(300) NULL;
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('PforceRX', 0 , 3 ,3 , 1 , '', '' ,'' ,'\\SDCUNS600VFS02\kr_pcms\stage\pforcerx\import' , 0, 0, '' ,'\\SDCUNS600VFS02\kr_pcms\backup\stage\pforcerx\import' , SYSDATETIME());
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('PforceRX', 1 , 3 ,5 , 1 , '', '' ,'' ,'\\SDCUNS600VFS02\kr_pcms\stage\pforcerx\export' , 0, 0, '' ,'\\SDCUNS600VFS02\kr_pcms\backup\stage\pforcerx\export' , SYSDATETIME());
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('MMS', 0 , 0 ,2 , 1 , 'bluehorse.pfizer.co.kr', 'account' ,'password' ,'RemotePath' , 0, 0, '\\SDCUNS600VFS02\kr_pcms\stage\mms\import' ,'\\SDCUNS600VFS02\kr_pcms\backup\stage\mms\import' , SYSDATETIME());
+
+UPDATE Channels SET type= 2, athour = 6 , path = '\\SDCUNS600VFS02\kr_pcms\stage\n360\export' , backuppath = '\\SDCUNS600VFS02\kr_pcms\backup\stage\n360\export'  WHERE name = 'N360' and bound = 1;
+
+UPDATE Channels SET type= 4, athour = 4 , name = 'ODSM' , path='' , exportpath='' , backuppath=''  WHERE name = 'N360' and bound = 0;
+
+-- Production ---
+
+ALTER TABLE dbo.Channels ADD backuppath VARCHAR(300) NULL;
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('PforceRX', 0 , 3 ,3 , 1 , '', '' ,'' ,'\\SDCUNS600VFS02\kr_pcms\production\pforcerx\import' , 0, 0, '' ,'\\SDCUNS600VFS02\kr_pcms\backup\production\pforcerx\import' , SYSDATETIME());
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('PforceRX', 1 , 3 ,5 , 1 , '', '' ,'' ,'\\SDCUNS600VFS02\kr_pcms\production\pforcerx\export' , 0, 0, '' ,'\\SDCUNS600VFS02\kr_pcms\backup\production\pforcerx\export' , SYSDATETIME());
+
+INSERT INTO dbo.Channels (name, bound, type,athour, usage , host, account, pwd , path, action , Instantrun, exportpath, backuppath , modifieddate) 
+VALUES ('MMS', 0 , 0 ,2 , 1 , 'bluehorse.pfizer.co.kr', 'account' ,'password' ,'RemotePath' , 0, 0, '\\SDCUNS600VFS02\kr_pcms\production\mms\import' ,'\\SDCUNS600VFS02\kr_pcms\backup\production\mms\import' , SYSDATETIME());
+
+UPDATE Channels SET athour = 6 , path = '\\SDCUNS600VFS02\kr_pcms\production\n360\export' , backuppath = '\\SDCUNS600VFS02\kr_pcms\backup\production\n360\export'  WHERE name = 'N360' and bound = 1;
+
+UPDATE Channels SET athour = 4 , name = 'ODSM' , path='' , exportpath='' , backuppath=''  WHERE name = 'N360' and bound = 0;

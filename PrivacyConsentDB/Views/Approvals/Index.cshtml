@@ -1,0 +1,58 @@
+﻿@model PrivacyConsentDB.Dto.ApprovalIndexDto
+
+@{
+    ViewBag.Title = "승인목록";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>승인요청 확인</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @Html.Partial("Search", Model.Search)
+
+                <div class="clearfix"></div>
+                <br />
+                @Html.Partial("List", Model.Approvals)
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dlg_decide" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">승인/반려</h4>
+            </div>
+            <div class="modal-body" style="height:80px;">
+                <input type="hidden" id="pid" name="pid" />
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="ap_msg">사유</label>
+                    <div class="col-md-10 input-group-sm">
+                        <textarea id="ap_msg" name="ap_msg" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">                
+                <a href="javascript:fn_approved();" class="btn btn-sm btn-primary">승인</a>
+                <a href="javascript:fn_rejected();" class="btn btn-sm btn-warning">반려</a>
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    $(document).ready(function () {
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        });
+        
+    });
+</script>

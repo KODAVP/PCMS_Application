@@ -1,0 +1,59 @@
+﻿@model PrivacyConsentDB.AccessRoles
+
+@{
+    ViewBag.Title = "권한 관리";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>권한 관리</h2>
+
+<div>
+    <h4>AccessRoles</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.createdate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.createdate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.creator)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.creator)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modifieddate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modifieddate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.modifier)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.modifier)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

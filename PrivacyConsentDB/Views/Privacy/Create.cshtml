@@ -1,0 +1,722 @@
+﻿
+@using PrivacyConsentDB.Commons;     @*Added by Praveena to hide '/Privacy/Index' based on role type access -APC29967836i*@
+@model PrivacyConsentDB.Models.Privacy
+@{
+    ViewBag.Title = "개인정보활용동의 등록";
+    Html.EnableClientValidation(false);
+    var CHANNEL_LIST = new List<SelectListItem>
+        {
+            new SelectListItem { Text ="OneApp", Value = "OneApp" ,Selected=true},         //added the OneApp as part of APC29344010i-Nagaraju-03/Sep/2018
+            new SelectListItem { Text ="서면동의서", Value = "서면동의서"},
+            new SelectListItem { Text ="MMS", Value = "MMS"},
+            new SelectListItem { Text ="GRV", Value = "GRV"},
+            new SelectListItem { Text ="PforceRX", Value = "PforceRX"},
+            new SelectListItem { Text ="MyPfizer", Value = "MyPfizer"},
+            new SelectListItem { Text ="신약관(유한수집)", Value = "신약관(유한수집)"}
+        };
+
+    //var VERSION_LIST = new SelectList( Commented by Nagaraju as part of APC29241336i:14/Aug/2018
+    //    new List<SelectListItem>
+    //    {
+    //                new SelectListItem { Text ="PCF-170327", Value = "PCF-170327"},
+    //                new SelectListItem { Text ="PCF-170717-T1", Value = "PCF-170717-T1"},
+    //                new SelectListItem { Text ="PCF-170717-T2", Value = "PCF-170717-T2"},
+    //                new SelectListItem { Text ="PCF-170717-T3", Value = "PCF-170717-T3"},
+    //                new SelectListItem { Text ="PCF-180309-T3", Value = "PCF-180309-T3"}
+
+    //    }, "Value", "Text");
+
+    var VERSION_LIST = new SelectList(
+       new List<SelectListItem>
+        {
+                    new SelectListItem { Text ="PCF-190527-T1", Value = "PCF-190527-T1"},
+                    new SelectListItem { Text ="PCF-190527-T1-1", Value = "PCF-190527-T1-1"},
+                    new SelectListItem { Text ="PCF-190527-T2", Value = "PCF-190527-T2"},
+                    new SelectListItem { Text ="PCF-190527-T3 (제일)", Value = "PCF-190527-T3 (제일)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (유한)", Value = "PCF-190527-T3 (유한)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (녹십자)", Value = "PCF-190527-T3 (녹십자)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (종근당)", Value = "PCF-190527-T3 (종근당)"}, 
+                    new SelectListItem { Text ="PCF-190527-T3 (BMS)", Value = "PCF-190527-T3 (BMS)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (한국백신)", Value = "PCF-190527-T3 (한국백신)"}
+
+       }, "Value", "Text");
+
+    var IND_SP_LIST = new SelectList(
+new List<SelectListItem>
+{
+            new SelectListItem { Text ="가정의학과", Value = "가정의학과"},
+            new SelectListItem { Text ="감염내과", Value = "감염내과"},
+            new SelectListItem { Text ="건강관리과", Value = "건강관리과"},
+            new SelectListItem { Text ="검사의학과", Value = "검사의학과"},
+            new SelectListItem { Text ="결핵과", Value = "결핵과"},
+            new SelectListItem { Text ="기타", Value = "기타"},
+            new SelectListItem { Text ="내과", Value = "내과"},
+            new SelectListItem { Text ="내분비내과", Value = "내분비내과"},
+            new SelectListItem { Text ="내분비외과", Value = "내분비외과"},
+            new SelectListItem { Text ="노년내과", Value = "노년내과"},
+            new SelectListItem { Text ="레지던트", Value = "레지던트"},
+            new SelectListItem { Text ="류마티스내과", Value = "류마티스내과"},
+            new SelectListItem { Text ="마취과", Value = "마취과"},
+            new SelectListItem { Text ="마취통증의학과", Value = "마취통증의학과"},
+            new SelectListItem { Text ="면역학", Value = "면역학"},
+            new SelectListItem { Text ="방사선과", Value = "방사선과"},
+            new SelectListItem { Text ="방사선종양학과", Value = "방사선종양학과"},
+            new SelectListItem { Text ="병리과", Value = "병리과"},
+            new SelectListItem { Text ="보건소", Value = "보건소"},
+            new SelectListItem { Text ="부인종양과", Value = "부인종양과"},
+            new SelectListItem { Text ="비뇨기과", Value = "비뇨기과"},
+            new SelectListItem { Text ="비뇨종양과", Value = "비뇨종양과"},
+            new SelectListItem { Text ="산부인과", Value = "산부인과"},
+            new SelectListItem { Text ="산업의학과", Value = "산업의학과"},
+            new SelectListItem { Text ="성형외과", Value = "성형외과"},
+            new SelectListItem { Text ="소아감염내과", Value = "소아감염내과"},
+            new SelectListItem { Text ="소아과", Value = "소아과"},
+            new SelectListItem { Text ="소아내분비", Value = "소아내분비"},
+            new SelectListItem { Text ="소아소화기", Value = "소아소화기"},
+            new SelectListItem { Text ="소아신경", Value = "소아신경"},
+            new SelectListItem { Text ="소아심장", Value = "소아심장"},
+            new SelectListItem { Text ="소아알레르기", Value = "소아알레르기"},
+            new SelectListItem { Text ="소아외과", Value = "소아외과"},
+            new SelectListItem { Text ="소아정신과", Value = "소아정신과"},
+            new SelectListItem { Text ="소아정형외과", Value = "소아정형외과"},
+            new SelectListItem { Text ="소아청소년과", Value = "소아청소년과"},
+            new SelectListItem { Text ="소아치과", Value = "소아치과"},
+            new SelectListItem { Text ="소아혈액종양클리닉", Value = "소아혈액종양클리닉"},
+            new SelectListItem { Text ="소아호흡기", Value = "소아호흡기"},
+            new SelectListItem { Text ="소화기내과", Value = "소화기내과"},
+            new SelectListItem { Text ="순환기내과", Value = "순환기내과"},
+            new SelectListItem { Text ="신경과", Value = "신경과"},
+            new SelectListItem { Text ="신경내과", Value = "신경내과"},
+            new SelectListItem { Text ="신경방사선과", Value = "신경방사선과"},
+            new SelectListItem { Text ="신경외과", Value = "신경외과"},
+            new SelectListItem { Text ="신경정신과", Value = "신경정신과"},
+            new SelectListItem { Text ="신장내과", Value = "신장내과"},
+            new SelectListItem { Text ="심장내과", Value = "심장내과"},
+            new SelectListItem { Text ="안과", Value = "안과"},
+            new SelectListItem { Text ="알레르기내과", Value = "알레르기내과"},
+            new SelectListItem { Text ="암센타", Value = "암센타"},
+            new SelectListItem { Text ="약사", Value = "약사"},
+            new SelectListItem { Text ="약제과", Value = "약제과"},
+            new SelectListItem { Text ="영상의학과", Value = "영상의학과"},
+            new SelectListItem { Text ="예방의학과", Value = "예방의학과"},
+            new SelectListItem { Text ="완화의료과", Value = "완화의료과"},
+            new SelectListItem { Text ="유전학", Value = "유전학"},
+            new SelectListItem { Text ="응급의학과", Value = "응급의학과"},
+            new SelectListItem { Text ="의공학과", Value = "의공학과"},
+            new SelectListItem { Text ="이비인후과", Value = "이비인후과"},
+            new SelectListItem { Text ="이식외과", Value = "이식외과"},
+            new SelectListItem { Text ="인턴", Value = "인턴"},
+            new SelectListItem { Text ="일반외과", Value = "일반외과"},
+            new SelectListItem { Text ="일반의", Value = "일반의"},
+            new SelectListItem { Text ="임상병리과", Value = "임상병리과"},
+            new SelectListItem { Text ="재활의학과", Value = "재활의학과"},
+            new SelectListItem { Text ="정신과", Value = "정신과"},
+            new SelectListItem { Text ="정형외과", Value = "정형외과"},
+            new SelectListItem { Text ="종양내과", Value = "종양내과"},
+            new SelectListItem { Text ="진단검사과", Value = "진단검사과"},
+            new SelectListItem { Text ="진단방사선과", Value = "진단방사선과"},
+            new SelectListItem { Text ="진단병리과", Value = "진단병리과"},
+            new SelectListItem { Text ="척추외과", Value = "척추외과"},
+            new SelectListItem { Text ="통증의학과", Value = "통증의학과"},
+            new SelectListItem { Text ="피부과", Value = "피부과"},
+            new SelectListItem { Text ="피부비뇨기과", Value = "피부비뇨기과"},
+            new SelectListItem { Text ="한방과", Value = "한방과"},
+            new SelectListItem { Text ="해부병리과", Value = "해부병리과"},
+            new SelectListItem { Text ="핵의학과", Value = "핵의학과"},
+            new SelectListItem { Text ="혈관외과", Value = "혈관외과"},
+            new SelectListItem { Text ="혈액종양내과", Value = "혈액종양내과"},
+            new SelectListItem { Text ="호흡기내과", Value = "호흡기내과"},
+            new SelectListItem { Text ="흉부외과", Value = "흉부외과"}
+}, "Value", "Text");
+
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>개인정보활용동의 등록 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10 input-group-sm">
+                        
+                        @using (@Html.BeginForm("Create", "Privacy", FormMethod.Post))
+                        {
+                            <div class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required" for="IND_FULL_NAME">고객명</label>
+                                    <div class="col-md-10 input-group-sm ">
+                                        @Html.EditorFor(model => model.IND_FULL_NAME, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.IND_FULL_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownList("ddlCompanies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required" for="WKP_NAME">근무처(병원명)</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.WKP_NAME, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.WKP_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="IND_SP">진료과</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownListFor(model => model.IND_SP, IND_SP_LIST, "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="FULL_ADDR">주소</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.FULL_ADDR, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        <input type="hidden" id="PROVINCE" name="PROVINCE" value="" />
+                                        <input type="hidden" id="CITY" name="CITY" value="" />
+                                        <input type="hidden" id="DONG" name="DONG" value="" />
+                                        <input type="hidden" id="STREET" name="STREET" value="" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="ZIP">우편번호</label>
+                                    <div class="col-md-6 ">
+                                        <div class="input-group input-group-sm">
+                                            @Html.EditorFor(model => model.ZIP, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            <a href="javascript:btnAddr();" class="input-group-addon btn btn-sm btn-default">주소/우편번호</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required" for="MOBILE">핸드폰</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.MOBILE, new { htmlAttributes = new { @class = "form-control", @required = "required", @data_regex = "/^\\d{2,3}-\\d{3,4}-\\d{4}$/" } })
+                                        @Html.ValidationMessageFor(model => model.MOBILE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required" for="EMAIL">이메일</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control", @required = "required", @data_regex = "/^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$/" } })
+                                        @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="TITLE">직위</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.TITLE, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TITLE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="WKP_TEL">근무처연락처</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.WKP_TEL, new { htmlAttributes = new { @class = "form-control", @data_regex = "/^\\d{2,3}-\\d{3,4}-\\d{4}$/" } })
+                                        @Html.ValidationMessageFor(model => model.WKP_TEL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">수신거부여부</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="Unsubscribe" name="Unsubscribe" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.Unsubscribe, new { @for = "Unsubscribe" })</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="CONSENT_SOURCE">동의서채널</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownListFor(model => model.CONSENT_SOURCE, CHANNEL_LIST,"", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-2" for="CONSENT_VERSION">동의서(버전)</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownListFor(model => model.CONSENTVERSION , VERSION_LIST, "", new { @class = "form-control" })                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required" for="CONSENT_DATE">동의일자</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <input class="form-control" type="date" id="CONSENT_DATE" name="CONSENT_DATE" required />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2 lbl-required">동의여부</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="CONSENT_USE_YN" name="CONSENT_USE_YN" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT_USE, new { @for = "CONSENT_USE_YN" })</span>
+                                        </label>
+
+                                        @*CONSENT_MARKETING_AGREEMENT Added by Nagaraju as part of APC30683265i*@
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="CONSENT_MARKETING_AGREEMENT" name="CONSENT_MARKETING_AGREEMENT" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT_MARKETING_AGREEMENT, new { @for = "CONSENT_MARKETING_AGREEMENT" })</span>
+                                        </label>
+
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="CONSENT_TRUST_YN" name="CONSENT_TRUST_YN" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT_TRUST, new { @for = "CONSENT_TRUST_YN" })</span>
+                                        </label>
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="CONSENT_ABROAD_YN" name="CONSENT_ABROAD_YN" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT_ABROAD, new { @for = "CONSENT_ABROAD_YN" })</span>
+                                        </label>
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            <input class="form-control check-box" id="CONSENT_SIGN_YN" name="CONSENT_SIGN_YN" type="checkbox" value="true">
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT_SIGN, new { @for = "CONSENT_SIGN_YN" })</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">화이자링크</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <div style="margin-top: 8px;"><a href="javascript:fn_link_open();" id="plink_a">열기</a></div>
+                                    </div>
+                                </div>
+                                <div class="form-group div-link">
+                                    <label class="control-label col-md-2">연락방법</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <div class="radio" style="display: inline-block; float: left;">
+                                            <label class="radio-custom" data-initialize="radio"><input class="sr-only" type="radio" name="LINK_PHONE" value="tel" />근무처연락처</label>
+                                        </div>
+                                        <div class="radio" style="display: inline-block; float: left;">
+                                            <label class="radio-custom" data-initialize="radio"><input class="sr-only" type="radio" name="LINK_PHONE" value="mobile" />핸드폰</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group div-link">
+                                    <label class="control-label col-md-2">연락가능일정</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <input type="hidden" id="LINK_RESERVATION" name="LINK_RESERVATION" value="" />
+                                        <table class="table table-bordered table-schedule">
+                                            <tr>
+                                                <th></th>
+                                                <th>월</th>
+                                                <th>화</th>
+                                                <th>수</th>
+                                                <th>목</th>
+                                                <th>금</th>
+                                            </tr>
+                                            <tr>
+                                                <td>10:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m10" name="schedule" value="m10" /><label for="m10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t10" name="schedule" value="t10" /><label for="t10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w10" name="schedule" value="w10" /><label for="w10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h10" name="schedule" value="h10" /><label for="h10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f10" name="schedule" value="f10" /><label for="f10">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>11:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m11" name="schedule" value="m11" /><label for="m11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t11" name="schedule" value="t11" /><label for="t11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w11" name="schedule" value="w11" /><label for="w11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h11" name="schedule" value="h11" /><label for="h11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f11" name="schedule" value="f11" /><label for="f11">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>12:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m12" name="schedule" value="m12" /><label for="m12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t12" name="schedule" value="t12" /><label for="t12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w12" name="schedule" value="w12" /><label for="w12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h12" name="schedule" value="h12" /><label for="h12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f12" name="schedule" value="f12" /><label for="f12">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>13:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m13" name="schedule" value="m13" /><label for="m13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t13" name="schedule" value="t13" /><label for="t13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w13" name="schedule" value="w13" /><label for="w13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h13" name="schedule" value="h13" /><label for="h13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f13" name="schedule" value="f13" /><label for="f13">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m14" name="schedule" value="m14" /><label for="m14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t14" name="schedule" value="t14" /><label for="t14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w14" name="schedule" value="w14" /><label for="w14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h14" name="schedule" value="h14" /><label for="h14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f14" name="schedule" value="f14" /><label for="f14">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>15:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m15" name="schedule" value="m15" /><label for="m15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t15" name="schedule" value="t15" /><label for="t15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w15" name="schedule" value="w15" /><label for="w15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h15" name="schedule" value="h15" /><label for="h15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f15" name="schedule" value="f15" /><label for="f15">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>16:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m16" name="schedule" value="m16" /><label for="m16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t16" name="schedule" value="t16" /><label for="t16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w16" name="schedule" value="w16" /><label for="w16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h16" name="schedule" value="h16" /><label for="h16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f16" name="schedule" value="f16" /><label for="f16">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>17:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m17" name="schedule" value="m17" /><label for="m17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t17" name="schedule" value="t17" /><label for="t17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w17" name="schedule" value="w17" /><label for="w17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h17" name="schedule" value="h17" /><label for="h17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f17" name="schedule" value="f17" /><label for="f17">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>18:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m18" name="schedule" value="m18" /><label for="m18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t18" name="schedule" value="t18" /><label for="t18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w18" name="schedule" value="w18" /><label for="w18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h18" name="schedule" value="h18" /><label for="h18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f18" name="schedule" value="f18" /><label for="f18">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>19:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m19" name="schedule" value="m19" /><label for="m19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t19" name="schedule" value="t19" /><label for="t19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w19" name="schedule" value="w19" /><label for="w19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h19" name="schedule" value="h19" /><label for="h19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f19" name="schedule" value="f19" /><label for="f19">&nbsp;</label></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+                                        <input type="submit" value="저장및 승인요청" class="btn btn-sm btn-primary" />
+                                      @*Added by Praveena to hide '/Privacy/Index' based on role type access -APC29967836i*@
+                                    @if (MyRoleManager.canAccessPage("/Privacy/Index"))
+                                    {
+                                        <a href="/Privacy/Index" name="" class="btn btn-sm btn-default">취소</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="/Dashboard/Dashboard" name="" class="btn btn-sm btn-default">취소</a>
+                                    }
+                                    @*Added by Praveena to hide '/Privacy/Index' based on role type access -APC29967836i*@
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            }
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dlg_address" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">주소및 우편번호 검색</h4>
+            </div>
+            <div class="modal-body">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="#oldaddr" aria-controls="oldaddr" role="tab" data-toggle="tab">지번 검색</a></li>
+                    <li role="presentation" class="active"><a href="#newaddr" aria-controls="newaddr" role="tab" data-toggle="tab">도로명 검색</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="oldaddr">
+                        <div class="form-horizontal" style="padding:1em;">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_search">지역명</label>
+                                <div class="col-md-5 input-group-sm"><input type="text" id="oldaddr_search" name="oldaddr_search" class="form-control"/></div>
+                                <a href="javascript:fn_oldaddr_search();" class="btn btn-sm btn-info">검색</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_search">지역 선택</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="oldaddr_select" name="oldaddr_select" class="form-control" onchange=""></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 input-group-sm">
+                                    검색 후 지역을 선택해주세요.
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_zip">우편번호</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_zip" name="oldaddr_zip"  class="form-control" readonly /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a1">주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_a1" name="oldaddr_a1" class="form-control" readonly /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a2">상세 주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_a2" name="oldaddr_a2" class="form-control" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="newaddr">
+                        <div class="form-horizontal" style="padding:1em;">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_city">시/도</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="newaddr_city" name="newaddr_city" class="form-control" onChange="fn_load_newaddr_gu()"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_gu">시/군/구</label>
+                                <div class="col-md-8 input-group-sm">
+                                    <select id="newaddr_gu" name="newaddr_gu" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_city">지역명</label>
+                                <div class="col-md-5 input-group-sm">
+                                    <input type="text" id="newaddr_search" name="newaddr_search" class="form-control" />
+                                </div>
+                                <div class="col-md-5 input-group-sm">
+                                    <a href="javascript:fn_newaddr_search();" class="btn btn-sm btn-info">검색</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_select">주소/우편번호 선택</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="newaddr_select" name="newaddr_select" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 input-group-sm">
+                                    검색 후 지역을 선택해주세요.
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_zip">우편번호</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <input type="text" id="newaddr_zip" name="oldaddr_zip" class="form-control" readonly />
+                                    <input type="hidden" id="newaddr_c" name="newaddr_c" />
+                                    <input type="hidden" id="newaddr_g" name="newaddr_g" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a1">주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="newaddr_a1" name="oldaddr_a1" class="form-control" readonly /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a2">상세 주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="newaddr_a2" name="oldaddr_a2" class="form-control" /></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+            
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:fnAddrIn();" class="btn btn-sm btn-primary">저장</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    function fnAddrIn() {        
+        // 올드 입력
+        if ($("div.tab-content div.active").attr("id") == 'oldaddr') {
+            if ($("#oldaddr_a2").val().trim().length < 1) return;
+            $("#ZIP").val($("#oldaddr_zip").val());
+            $("#FULL_ADDR").val($("#oldaddr_a1").val() + " " + $("#oldaddr_a2").val());
+            $("#PROVINCE").val();
+            $("#CITY").val();
+            $("#DONG").val($("#oldaddr_a1").val());
+            $("#STREET").val($("#oldaddr_a2").val());
+            $("#dlg_address").modal('hide');
+        } else if ($("div.tab-content div.active").attr("id") == 'newaddr') {
+            if ($("#newaddr_a2").val().trim().length < 1) return;
+            $("#ZIP").val($("#newaddr_zip").val());
+            $("#FULL_ADDR").val($("#newaddr_a1").val() + " " + $("#newaddr_a2").val());
+            $("#PROVINCE").val();
+            $("#CITY").val($("#newaddr_c").val());
+            $("#DONG").val($("#newaddr_a1").val());
+            $("#STREET").val($("#newaddr_a2").val());
+            $("#dlg_address").modal('hide');
+        }        
+    }
+    function fn_oldaddr_search() {
+        var w = $("#oldaddr_search").val();
+        if (w.trim().length < 1) return;
+        $("#oldaddr_select").html('');
+        $.get('https://bluehorse.pfizer.co.kr/mmszipcode?SEARCH=' + encodeURIComponent($("#oldaddr_search").val()), function (data) {
+            if(data.code =='100') {
+                var arrzip = data.zipdata;                
+                $("#oldaddr_select").unbind('change');
+                for(var i = 0 ; i < arrzip.length ; i++) {
+                    var option = $('<option value="' + arrzip[i].address1 + '">[' + arrzip[i].zipcode + '] ' + arrzip[i].address1 + ' ' + arrzip[i].address2 + '</option>');
+                    option.data('addr',arrzip[i]);
+                    $("#oldaddr_select").append(option);
+                }
+                $("#oldaddr_select").on('change', function () {
+                    var sltobj = $("#oldaddr_select option:selected").data('addr');
+                    $("#oldaddr_zip").val(sltobj.zipcode);
+                    $("#oldaddr_a1").val(sltobj.address1 + " " + sltobj.address2);
+                    $("#oldaddr_a2").focus();
+                });
+            } else if(data.code =='101') {
+                alert('검색결과가 없습니다.');
+            }
+        });
+    }
+    function btnAddr() {
+        $.get('https://bluehorse.pfizer.co.kr/rna/getsido', function (data) {
+            if (data.Code == '100') {
+                var arr = data.arSido;
+                $("#newaddr_city").html();
+                for (var i = 0 ; i < arr.length ; i++) {
+                    $("#newaddr_city").append("<option value='" + arr[i] + "'>" + arr[i] + "</option>");
+                }
+            }
+            $("#dlg_address").modal('show');
+            fn_load_newaddr_gu();
+        });
+        
+    }
+    function fn_load_newaddr_gu() {
+        if ($("#newaddr_city option:selected").val().trim().length < 1) return;
+        $.get('https://bluehorse.pfizer.co.kr/rna/getsigungu?sido=' + encodeURIComponent($("#newaddr_city option:selected").val()), function (data) {
+            if (data.Code == '100') {
+                var arr = data.arSigungu;
+                $("#newaddr_gu").html('');
+                for (var i = 0 ; i < arr.length ; i++) {
+                    $("#newaddr_gu").append("<option value='" + arr[i] + "'>" + arr[i] + "</option>");
+                }
+            }
+        });
+    }
+    function fn_newaddr_search() {
+        if ($("#newaddr_city option:selected").val().trim().length < 1) return;
+        if ($("#newaddr_gu option:selected").val().trim().length < 1) return;
+        if ($("#newaddr_search").val().trim().length < 1) return;
+
+        $.get('https://bluehorse.pfizer.co.kr/rna/getrna?sido=' + encodeURIComponent($("#newaddr_city option:selected").val())
+            + '&sigungu=' + encodeURIComponent($("#newaddr_gu option:selected").val()) + '&address=' + encodeURIComponent($("#newaddr_search").val())
+            , function (data) {
+                if (data.Code == '100') {
+                    var arr = data.arRna;
+                    $("#newaddr_select").html('');
+                    for (var i = 0 ; i < arr.length ; i++) {
+                        var option = $('<option value="' + arr[i].Address1 + '">[' + arr[i].Zipcode + '] ' + arr[i].Address1 + '</option>');
+                        option.data('addr', arr[i]);
+                        $("#newaddr_select").append(option);
+                    }
+                    $("#newaddr_select").on('change', function () {
+                        var sltobj = $("#newaddr_select option:selected").data('addr');
+                        $("#newaddr_zip").val(sltobj.Zipcode);
+                        $("#newaddr_a1").val(sltobj.Address1);                        
+                        $("#newaddr_c").val($("#newaddr_city option:selected").val());
+                        $("#newaddr_g").val($("#newaddr_gu option:selected").val());
+                        $("#newaddr_a2").focus();
+                    });
+                }
+            }
+        );
+    }
+    function fnCheckAll() {
+        $("input[type='text']").each(function () {
+            var binvalid = false;
+            if ($(this).is("[required]")) {
+                if ($(this).val().trim().length < 1) {
+                    binvalid = true;
+                }
+            }
+            if ($(this).is("[data-regex]")) {
+                if ($(this).val().trim().length > 0) {
+                    var rg = $(this).data('regex').replace(/\//gi, '');;
+                    var patt = new RegExp(rg);
+                    if (!patt.test($(this).val())) {
+                        binvalid = true;
+                    }
+                }
+            }
+            if (binvalid) {
+                $(this).data('invalid', binvalid);
+                $(this).addClass('invalid');
+            } else {
+                $(this).data('invalid', binvalid);
+                $(this).removeClass('invalid');
+            }
+        });
+    }
+    function fn_link_open() {
+        $(".div-link").toggle();
+        if ($(".div-link").is(":hidden")) {
+            $("#plink_a").html("열기");
+        } else {
+            $("#plink_a").html("닫기");
+        }
+    }
+    $(document).ready(function () {
+        $("#CONSENT_DATE").datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        $("input[type='text']").on("blur", function () {
+            var binvalid = false;
+            if ($(this).is("[required]")) {
+                if ($(this).val().trim().length < 1) {
+                    binvalid = true;
+                }
+            }
+            if ($(this).is("[data-regex]")) {
+                if ($(this).val().trim().length > 0) {
+                    var rg = $(this).data('regex').replace(/\//gi, '');;
+                    var patt = new RegExp(rg);
+                    if (!patt.test($(this).val())) {
+                        binvalid = true;
+                    }
+                }
+            }
+            if (binvalid) {
+                $(this).data('invalid', binvalid);
+                $(this).addClass('invalid');
+            } else {
+                $(this).data('invalid', binvalid);
+                $(this).removeClass('invalid');
+            }
+        });
+
+        $("#frmCreate").submit(function (event) {
+            fnCheckAll();
+            if ($(".invalid").length < 1) {
+                return;
+            }
+            event.preventDefault();
+        });
+
+        $("input[name='schedule']").on("change", function () {
+            var a = $("input[name='schedule']:checked").map(function (_, el) {
+                return $(el).val();
+            }).get();
+            $("#LINK_RESERVATION").val(a.join(','));
+            console.log($("#LINK_RESERVATION").val());
+        });
+    });
+</script>

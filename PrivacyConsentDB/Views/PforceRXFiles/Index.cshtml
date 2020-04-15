@@ -1,0 +1,72 @@
+﻿@model IEnumerable<PrivacyConsentDB.Models.PforceRXFile>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>처리대기 목록 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.collection.name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.IND_ID)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONSENT_EMAIL)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONSENT_MOBILE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONSENT_STATUS)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONSENT_DATE)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CONSENT_SOURCE)
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.collection.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IND_ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONSENT_EMAIL)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONSENT_MOBILE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONSENT_STATUS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONSENT_DATE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CONSENT_SOURCE)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

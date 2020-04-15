@@ -1,0 +1,4 @@
+lcd \\SDCUNS600VFS02\kr_pcms\stage\n360\export
+cd /home/okc_pfizer_kr/ClientToIMS/PCMS
+mput *.txt 
+quit

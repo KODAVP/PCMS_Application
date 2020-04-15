@@ -1,0 +1,81 @@
+﻿@using PrivacyConsentDB.Commons
+@model IEnumerable<PrivacyConsentDB.Models.Privacy>
+<style>
+#privacytable td{word-break:break-all;}
+</style>
+<table id="privacytable" class="table table-striped table-bordered paginated">
+	<colgroup>
+		<col style="width:40px" />
+		<col style="width:60px" />
+		<col style="width:80px" />
+		<col style="width:180px"/>
+		<col style="width:70px" />
+		<col style="width:90px" />
+	</colgroup>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.PCMSID)</th>
+            <th>@Html.DisplayNameFor(model => model.NucleusKey)</th>
+            <th>@Html.DisplayNameFor(model => model.OneKey)</th>
+            <th>@Html.DisplayNameFor(model => model.OWNER)</th>
+            <th>@Html.DisplayNameFor(model => model.IND_FULL_NAME)</th>
+            <th>@Html.DisplayNameFor(model => model.EMAIL)</th>
+            <th>@Html.DisplayNameFor(model => model.IND_SP)</th>
+            <th>@Html.DisplayNameFor(model => model.WKP_NAME)</th>
+            <th>@Html.DisplayNameFor(model => model.WKP_TEL)</th>
+            <th>@Html.DisplayNameFor(model => model.CONSENTVERSION)</th>            
+            <th>@Html.DisplayNameFor(model => model.CONSENTDATE)</th>
+            <th>@Html.DisplayNameFor(model => model.CONSENT_USE)</th>
+            <th>@Html.DisplayNameFor(model => model.CONSENT_MARKETING_AGREEMENT)</th>  @*CONSENT_MARKETING_AGREEMENT Added by Nagaraju as part of APC30683265i*@
+            <th>@Html.DisplayNameFor(model => model.CONSENT_TRUST)</th>
+            <th>@Html.DisplayNameFor(model => model.CONSENT_ABROAD)</th>
+            <th>@Html.DisplayNameFor(model => model.CONSENT_SIGN)</th>
+            <th>@Html.DisplayNameFor(model => model.Unsubscribe)</th>
+@if (!MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) && !MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN))
+{
+            <th>@Html.DisplayNameFor(model => model.approval.status)</th>
+            <th>@Html.DisplayNameFor(model => model.approval.message)</th>
+}
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var approvalstatus = item.approval == null ? "승인" : EnumHelper<Status.ApprovalStatus>.GetDisplayValue(item.approval.status);
+            var Unsubscribe = item.Unsubscribe == true ? "거부" : "허용";
+            
+            <tr>
+                <td><a href="/Privacy/Details/@item.ID "> @Html.DisplayFor(modelItem => item.PCMSID)</a></td>
+                <td>@Html.DisplayFor(modelItem => item.NucleusKey)</td>
+                <td>@Html.DisplayFor(modelItem => item.OneKey)</td>
+                <td>@Html.DisplayFor(modelItem => item.OWNER)</td>
+                <td>@Html.DisplayFor(modelItem => item.IND_FULL_NAME)</td>
+                <td>@Html.DisplayFor(modelItem => item.EMAIL)</td>
+                <td>@Html.DisplayFor(modelItem => item.IND_SP)</td>
+                <td>@Html.DisplayFor(modelItem => item.WKP_NAME)</td>
+                <td>@Html.DisplayFor(modelItem => item.WKP_TEL)</td>
+                <th>@Html.DisplayFor(modelItem => item.CONSENTVERSION)</th>
+                <td>@Html.DisplayFor(modelItem => item.CONSENTDATE)</td>
+                <td>@Html.DisplayFor(modelItem => item.CONSENT_USE)</td>
+                <td>@Html.DisplayFor(modelItem => item.CONSENT_MARKETING_AGREEMENT)</td> @*CONSENT_MARKETING_AGREEMENT Added by Nagaraju as part of APC30683265i*@
+                <td>@Html.DisplayFor(modelItem => item.CONSENT_TRUST)</td>
+                <td>@Html.DisplayFor(modelItem => item.CONSENT_ABROAD)</td>
+                <td>@Html.DisplayFor(modelItem => item.CONSENT_SIGN)</td>
+                <td>@Html.DisplayFor(modelItem => Unsubscribe)</td>
+@if (!MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) && !MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN))
+{
+                <td>@Html.DisplayFor(modelItem => approvalstatus)</td>
+                <td>@Html.DisplayFor(modelItem => item.approval.message)</td>
+}
+                <td>
+                    @Html.ActionLink("상세", "Details", new { id = item.ID })
+                    @if (item.approval != null && item.approval.status == Status.ApprovalStatus.Request)
+                    {
+                        @Html.ActionLink("수정", "Edit", new { id = item.ID })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

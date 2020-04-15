@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ASP.NET 응용 프로그램을 구성하는 방법에 대한 자세한 내용은 다음을 참조하십시오.
+  http://go.microsoft.com/fwlink/?LinkId=301880
+  -->
+<configuration>
+  <configSections>
+    <!-- For more information on Entity Framework configuration, visit http://go.microsoft.com/fwlink/?LinkID=237468 -->
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+  </configSections>
+  
+  <connectionStrings>    
+    <add name="Local" connectionString="Data Source=(localdb)\MSSQLLocalDB;Integrated Security=true;AttachDbFilename=|DataDirectory|\PCMS.mdf;Integrated Security=True;MultipleActiveResultSets=True;" providerName="System.Data.SqlClient" />
+    <add name="DEV-APAC" connectionString="Data Source=ASPSDCW197\DEV2;Initial Catalog=PCMS_D;Integrated Security=False;User Id=PCMS_D_Owner;Password=Smpc@66554;MultipleActiveResultSets=True" providerName="System.Data.SqlClient" />
+    <add name="STAGE-APAC" connectionString="Data Source=ASPSDCW197\TEST2;Initial Catalog=PCMS_S;Integrated Security=False;User Id=PCMS_S_Owner;Password=Afd43@asrd;MultipleActiveResultSets=True" providerName="System.Data.SqlClient" />
+    <add name="PROD-APAC" connectionString="Data Source=aspsdcw198.apac.pfizer.com,2023;Initial Catalog=PCMS_P;Integrated Security=False;User Id=PCMS_P_Owner;Password=Gft@qw32qa;MultipleActiveResultSets=True" providerName="System.Data.SqlClient"   />
+    <add name="PUBLISH" connectionString="Data Source=ASPSDCW197\DEV2;Initial Catalog=PCMS_D;Integrated Security=False;User Id=PCMS_D_Owner;Password=Smpc@66554;MultipleActiveResultSets=True" providerName="System.Data.SqlClient" />
+    <add name="ADConnectionString" connectionString="LDAP://apac.pfizer.com" />
+  </connectionStrings>
+  
+  <appSettings>
+    <add key="webpages:Version" value="3.0.0.0" />
+    <add key="webpages:Enabled" value="false" />
+    <add key="ClientValidationEnabled" value="true" />
+    <add key="UnobtrusiveJavaScriptEnabled" value="true" />
+
+    <add key="SMTPAccount" value="PCMSKorea@pfizer.com" />
+    <add key="ImpersonateUser" value="Choiy28" />
+    <add key="ImpersonatePassword" value="Pfizer123" />
+    <add key="ADGroupName" value="" />
+    <add key="IsRoledUser" value="false" />
+  </appSettings>
+  <!--
+    web.config 변경 내용에 대한 설명은  http://go.microsoft.com/fwlink/?LinkId=235367을 참고하십시오.
+
+    다음 특성은 <httpRuntime> 태그에 설정할 수 있습니다.
+      <system.Web>
+        <httpRuntime targetFramework="4.6.1" />
+      </system.Web>
+  -->
+  <system.web>
+
+    <customErrors mode="Off" />
+
+    <authentication mode="Forms">
+      <forms name=".ADAuthCookie" loginUrl="~/User/Signin" slidingExpiration="true" protection="All" />
+    </authentication>
+
+    <!--
+    <authentication mode="Windows"/>
+  -->
+    <membership defaultProvider="ADMembershipProvider">
+      <providers>
+        <clear />
+        <add name="ADMembershipProvider" type="System.Web.Security.ActiveDirectoryMembershipProvider" connectionStringName="ADConnectionString" attributeMapUsername="sAMAccountName" />
+      </providers>
+    </membership>
+    <authorization>
+      <deny users="?" />
+      <allow users="*" />
+    </authorization>
+    
+    <identity impersonate="true" />
+    <roleManager enabled="true" cacheRolesInCookie="true" />
+    
+    <compilation debug="true" targetFramework="4.0.0" />
+    <httpRuntime targetFramework="4.5.2" />
+    <httpModules>
+      <add name="ApplicationInsightsWebTracking" type="Microsoft.ApplicationInsights.Web.ApplicationInsightsHttpModule, Microsoft.AI.Web" />
+    </httpModules>
+  </system.web>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Helpers" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.WebPages" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-3.0.0.0" newVersion="3.0.0.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Web.Mvc" publicKeyToken="31bf3856ad364e35" />
+        <bindingRedirect oldVersion="1.0.0.0-5.2.3.0" newVersion="5.2.3.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Common.Logging.Core" publicKeyToken="af08829b84f0328e" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.3.1.0" newVersion="3.3.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Common.Logging" publicKeyToken="af08829b84f0328e" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-3.3.1.0" newVersion="3.3.1.0" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="Microsoft.AI.Agent.Intercept" publicKeyToken="31bf3856ad364e35" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-2.0.1.0" newVersion="2.0.1.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+  <system.codedom>
+    <compilers>
+      <compiler language="c#;cs;csharp" extension=".cs" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.CSharpCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:6 /nowarn:1659;1699;1701" />
+      <compiler language="vb;vbs;visualbasic;vbscript" extension=".vb" type="Microsoft.CodeDom.Providers.DotNetCompilerPlatform.VBCodeProvider, Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" warningLevel="4" compilerOptions="/langversion:14 /nowarn:41008 /define:_MYTYPE=\&quot;Web\&quot; /optionInfer+" />
+    </compilers>
+  </system.codedom>
+  <system.webServer>
+    <validation validateIntegratedModeConfiguration="false" />
+    
+  </system.webServer>
+  <entityFramework>
+    <defaultConnectionFactory type="System.Data.Entity.Infrastructure.LocalDbConnectionFactory, EntityFramework">
+      <parameters>
+        <parameter value="v11.0" />
+      </parameters>
+    </defaultConnectionFactory>
+    <providers>
+      <provider invariantName="System.Data.SqlClient" type="System.Data.Entity.SqlServer.SqlProviderServices, EntityFramework.SqlServer" />
+    </providers>
+  </entityFramework>
+<!--
+  <log4net>
+    <appender name="LogToFile" type="log4net.Appender.FileAppender">
+      <param name="File" value="/App_Data/Log/AllLog.log" />
+      <param name="AppendToFile" value="true" />
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="ConversionPattern" value="%date [%thread] %-5level %logger - %message%newline" />
+      </layout>
+    </appender>
+    <appender name="DayRollingLogToFile" type="log4net.Appender.RollingFileAppender">
+      <File value="/App_Data/Log/LogDaily" />
+      <appendToFile value="true" />
+      <rollingStyle value="date" />
+      <staticLogFileName value="false" />
+      <datePattern value="&quot;.&quot;yyyyMMdd&quot;.log&quot;" />
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%date [%thread] %-5level %logger - %message%newline" />
+      </layout>
+    </appender>
+    <appender name="LogToConsole" type="log4net.Appender.ConsoleAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="ConversionPattern" value="%date [%thread] %-5level %logger - %message%newline" />
+      </layout>
+    </appender>
+    <appender name="TraceAppender" type="log4net.Appender.OutputDebugStringAppender">
+      <layout type="log4net.Layout.PatternLayout">
+        <param name="ConversionPattern" value="%date [%thread] %-5level %logger - %message%newline" />
+      </layout>
+    </appender>
+    <root>
+      <level value="ALL" />
+      <appender-ref ref="LogToFile" />
+      <appender-ref ref="LogToConsole" />
+      <appender-ref ref="TraceAppender" />
+      <appender-ref ref="DayRollingLogToFile" />
+    </root>
+  </log4net>
+-->
+</configuration>

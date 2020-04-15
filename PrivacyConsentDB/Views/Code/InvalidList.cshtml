@@ -1,0 +1,309 @@
+﻿@using PrivacyConsentDB.Commons
+@model PrivacyConsentDB.Dto.InvalidDto
+<style>
+    .hiderow { display:none;}
+    .showrow {display:table-row !important;}
+</style>
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>PforceRx 인터페이스 제외 이력</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @using (Html.BeginForm())
+                {
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <div class="input-group-xs">
+
+
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4" for="name">고객명</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <input class="form-control text-box single-line" id="name" name="name" type="text" value="" />
+                                </div>
+
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4" for="depart">진료과</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <select class="form-control" id="depart" name="depart">
+                                        <option value=""></option>
+                                        <option value="가정의학과">가정의학과</option>
+                                        <option value="감염내과">감염내과</option>
+                                        <option value="건강관리과">건강관리과</option>
+                                        <option value="검사의학과">검사의학과</option>
+                                        <option value="결핵과">결핵과</option>
+                                        <option value="기타">기타</option>
+                                        <option value="내과">내과</option>
+                                        <option value="내분비내과">내분비내과</option>
+                                        <option value="내분비외과">내분비외과</option>
+                                        <option value="노년내과">노년내과</option>
+                                        <option value="레지던트">레지던트</option>
+                                        <option value="류마티스내과">류마티스내과</option>
+                                        <option value="마취과">마취과</option>
+                                        <option value="마취통증의학과">마취통증의학과</option>
+                                        <option value="면역학">면역학</option>
+                                        <option value="방사선과">방사선과</option>
+                                        <option value="방사선종양학과">방사선종양학과</option>
+                                        <option value="병리과">병리과</option>
+                                        <option value="보건소">보건소</option>
+                                        <option value="부인종양과">부인종양과</option>
+                                        <option value="비뇨기과">비뇨기과</option>
+                                        <option value="비뇨종양과">비뇨종양과</option>
+                                        <option value="산부인과">산부인과</option>
+                                        <option value="산업의학과">산업의학과</option>
+                                        <option value="성형외과">성형외과</option>
+                                        <option value="소아감염내과">소아감염내과</option>
+                                        <option value="소아과">소아과</option>
+                                        <option value="소아내분비">소아내분비</option>
+                                        <option value="소아소화기">소아소화기</option>
+                                        <option value="소아신경">소아신경</option>
+                                        <option value="소아심장">소아심장</option>
+                                        <option value="소아알레르기">소아알레르기</option>
+                                        <option value="소아외과">소아외과</option>
+                                        <option value="소아정신과">소아정신과</option>
+                                        <option value="소아정형외과">소아정형외과</option>
+                                        <option value="소아청소년과">소아청소년과</option>
+                                        <option value="소아치과">소아치과</option>
+                                        <option value="소아혈액종양클리닉">소아혈액종양클리닉</option>
+                                        <option value="소아호흡기">소아호흡기</option>
+                                        <option value="소화기내과">소화기내과</option>
+                                        <option value="순환기내과">순환기내과</option>
+                                        <option value="신경과">신경과</option>
+                                        <option value="신경내과">신경내과</option>
+                                        <option value="신경방사선과">신경방사선과</option>
+                                        <option value="신경외과">신경외과</option>
+                                        <option value="신경정신과">신경정신과</option>
+                                        <option value="신장내과">신장내과</option>
+                                        <option value="심장내과">심장내과</option>
+                                        <option value="안과">안과</option>
+                                        <option value="알레르기내과">알레르기내과</option>
+                                        <option value="암센타">암센타</option>
+                                        <option value="약사">약사</option>
+                                        <option value="약제과">약제과</option>
+                                        <option value="영상의학과">영상의학과</option>
+                                        <option value="예방의학과">예방의학과</option>
+                                        <option value="완화의료과">완화의료과</option>
+                                        <option value="유전학">유전학</option>
+                                        <option value="응급의학과">응급의학과</option>
+                                        <option value="의공학과">의공학과</option>
+                                        <option value="이비인후과">이비인후과</option>
+                                        <option value="이식외과">이식외과</option>
+                                        <option value="인턴">인턴</option>
+                                        <option value="일반외과">일반외과</option>
+                                        <option value="일반의">일반의</option>
+                                        <option value="임상병리과">임상병리과</option>
+                                        <option value="재활의학과">재활의학과</option>
+                                        <option value="정신과">정신과</option>
+                                        <option value="정형외과">정형외과</option>
+                                        <option value="종양내과">종양내과</option>
+                                        <option value="진단검사과">진단검사과</option>
+                                        <option value="진단방사선과">진단방사선과</option>
+                                        <option value="진단병리과">진단병리과</option>
+                                        <option value="척추외과">척추외과</option>
+                                        <option value="통증의학과">통증의학과</option>
+                                        <option value="피부과">피부과</option>
+                                        <option value="피부비뇨기과">피부비뇨기과</option>
+                                        <option value="한방과">한방과</option>
+                                        <option value="해부병리과">해부병리과</option>
+                                        <option value="핵의학과">핵의학과</option>
+                                        <option value="혈관외과">혈관외과</option>
+                                        <option value="혈액종양내과">혈액종양내과</option>
+                                        <option value="호흡기내과">호흡기내과</option>
+                                        <option value="흉부외과">흉부외과</option>
+                                    </select>
+                                </div>
+
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4" for="wkpname">근무처</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <input class="form-control text-box single-line" id="wkpname" name="wkpname" type="text" value="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">PCMS Code</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <input class="form-control text-box single-line" id="name" name="name" type="text" value="" />
+                                </div>
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">Nucleus</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <input class="form-control text-box single-line" id="name" name="name" type="text" value="" />
+                                </div>
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">One Key</label>
+                                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                                    <input class="form-control text-box single-line" id="name" name="name" type="text" value="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group-xs">
+                                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">비활성화</label>
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-8">
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        <input class="form-control check-box" data-val="true" data-val-required="subscribe 필드가 필요합니다." id="subscribe" name="subscribe" type="checkbox" value="true" /><input name="subscribe" type="hidden" value="false" /><span class="checkbox-label">전체</span>
+                                    </label>
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        <input class="form-control check-box" data-val="true" data-val-required="Unsubscribe 필드가 필요합니다." id="Unsubscribe" name="Unsubscribe" type="checkbox" value="true" /><input name="Unsubscribe" type="hidden" value="false" /><span class="checkbox-label">활성화</span>
+                                    </label>
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        <input class="form-control check-box" data-val="true" data-val-required="Unsubscribe 필드가 필요합니다." id="Unsubscribe" name="Unsubscribe" type="checkbox" value="true" /><input name="Unsubscribe" type="hidden" value="false" /><span class="checkbox-label">비활성화</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-left">
+
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 text-right">
+                                <a href="javascript:searching()" class="btn btn-sm btn-primary">검색</a>
+                                <a href="javascript:init()" class="btn btn-sm btn-default">초기화</a>
+                                <a href="javascript:xlsDownload()" class="btn btn-sm btn-success">엑셀 다운로드</a>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    @Html.Hidden("startIndex", Model.startIndex)
+                    @Html.Hidden("pageSize", Model.pageSize)
+                    @Html.Hidden("totalCount", Model.totalCount)
+                }
+
+                <div class="clearfix"></div>
+                <br />
+                <table id="tblPGroup" class="table table-striped table-bordered paginated" data-toggle="table" data-detail-view="true" data-detail-formatter="detailFormatter">
+                    <colgroup>
+                        <col style="width:20px" />
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>고유ID</th>
+                            <th>Nucleus</th>
+                            <th>OneKey</th>
+                            <th>실패 채널</th>
+                            <th>고객명</th>                            
+                            <th>진료과</th>
+                            <th>근무처(병원명)</th>
+                            <th>이메일</th>
+                            <th>핸드폰</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.list)
+                        {
+                            var Unsubscribe = item.Unsubscribe == true ? "거부" : "허용";
+                            var failchannel = item.SENDCHANEL.HasFlag(Status.SendChannel.PFORCERX_INVALID) ? "PforceRx" : "";
+                            failchannel = item.SENDCHANEL.HasFlag(Status.SendChannel.PFORCERX_ONEKEY_DUP) ? "PforceRx (원키중복)" : failchannel;
+                            <tr>
+                                <td><a href="/Privacy/Edit/@item.ID "> @Html.DisplayFor(modelItem => item.PCMSID)</a></td>
+                                <td>@Html.DisplayFor(modelItem => item.NucleusKey)</td>
+                                <td>@Html.DisplayFor(modelItem => item.OneKey)</td>
+                                <td>@failchannel</td>
+                                <td>@Html.DisplayFor(modelItem => item.IND_FULL_NAME)</td>                                
+                                <td>@Html.DisplayFor(modelItem => item.IND_SP)</td>
+                                <td>@Html.DisplayFor(modelItem => item.WKP_NAME)</td>
+                                <td>@Html.DisplayFor(modelItem => item.EMAIL)</td>
+                                <td>@Html.DisplayFor(modelItem => item.MOBILE)</td>
+                                <td><a href="/Privacy/Edit/@item.ID ">수정</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    function searching() {
+        $("form").attr("action", "/Code/Index");
+        $("form").submit();
+    }
+    function xlsDownload() {
+        $("form").attr("action", "/Code/XlsDownload");
+        $("form").submit();
+    }
+    var $table = $("#tblPGroup");
+    function openDetail(idx) {
+        $("#button" + idx).html('<a href="javascript:closeDetail(' + idx + ');"><i class="fa fa-minus"></i></a>');
+        $("#button" + idx).parents("tr").next().addClass("showrow");
+    }
+    function closeDetail(idx) {
+        $("#button" + idx).parents("tr").next().removeClass("showrow");
+        $("#button" + idx).html('<a href="javascript:openDetail(' + idx + ');"><i class="fa fa-plus"></i></a>');
+    }
+    function pageTable() {
+        var $table = $('table.paginated');
+
+        var curIndex = Number($("#startIndex").val());
+        var numPerPage = Number($("#pageSize").val());
+        var numRows = Number($("#totalCount").val());
+        var maxPages = 10;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var pagecount = maxPages > numPages ? numPages : maxPages;
+
+        var info = (curIndex + 1) * 1 + '/' + numPages + '( ' + numRows + ')';
+        $(".pager").remove();
+        var $pager = $('<div class="pager"><div class="total">' + info + '</div></div>');
+
+        var startIndex = Math.floor(curIndex / maxPages) * maxPages;
+        var endIndex = startIndex + maxPages > numPages ? numPages : startIndex + maxPages;
+
+        // prev
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("|<<").bind('click', function (e) {
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(0);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("<<").bind('click', function (e) {
+                var nextIndex = startIndex - maxPages > 0 ? startIndex - maxPages : 0;
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        for (var page = startIndex; page < endIndex ; page++) {
+            $('<span id="pg' + page + '" class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                var currentPage = event.data['newPage'];
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(currentPage);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        // next
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>").bind('click', function (e) {
+                var nextIndex = Math.floor((curIndex + maxPages) / maxPages) * maxPages;
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>|").bind('click', function (e) {
+                $("form").attr("action", "/Code/Index");
+                $("#startIndex").val(numPages - 1);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        $pager.insertAfter($table).find('#pg' + curIndex).addClass('active');
+    }
+    $(document).ready(function () {
+        pageTable();
+    });
+</script>

@@ -1,0 +1,89 @@
+﻿@model IEnumerable<PrivacyConsentDB.Models.Channel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>인터페이스 설정 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.bound)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.athour)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Instantrun)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.usage)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.modifieddate)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        var dtmodi = item.modifieddate.ToLocalTime().ToString();
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.bound)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.athour)
+                            </td>
+                            <th>
+                                @Html.DisplayFor(modelItem => item.Instantrun)
+                            </th>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.usage)
+                            </td>
+                            <td>
+                                @dtmodi
+                            </td>
+                            <td>
+                                @if (item.action == PrivacyConsentDB.Commons.ActionStatus.Running)
+                                {
+                                    @Html.ActionLink("실행중 새로고침", "Index", null, new { @class = "btn btn-default btn-sm" })
+                                }
+                                else if (item.Instantrun)
+                                {
+                                    @Html.ActionLink("실행 취소", "Run", new { id = item.ID }, new { @class = "btn btn-warning btn-sm" })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("즉시실행", "Run", new { id = item.ID }, new { @class = "btn btn-success btn-sm" })
+                                }
+                                
+                                @Html.ActionLink("수정", "Edit", new { id = item.ID }, new { @class = "btn btn-info btn-sm" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

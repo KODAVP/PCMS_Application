@@ -1,0 +1,544 @@
+﻿
+@model PrivacyConsentDB.Dto.PrivacyIndexDto
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>개인정보활용동의 목록</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @Html.Partial("Search", Model.Search)
+                
+                <div class="clearfix"></div>
+                <br />
+                @Html.Partial("List", Model.Privacies)
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dlg_templateupload" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">엑셀 업로드</h4>
+            </div>
+            <div class="modal-body" style="height:160px;">
+                <div id="div_upload" class="form-group">
+                    <label class="control-label col-md-2" for="tfile">파일 선택</label>
+                    <div class="col-md-10 input-group-sm"><input type="file" id="tfile" name="tfile" class="form-control" /></div>
+                </div>
+                <div id="div_loading" class="form-group" style="display: none;text-align: center;">
+                    <img src="~/Content/loading.gif" />
+                </div>
+
+                <div class="form-group" style="margin-top:20px;">
+                    <div class="col-md-offset-2 col-md-10">
+                        <a href="/Privacy/TemplateDownload">등록을 위한 엑셀템플릿 다운로드</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:uploadfile();" id="btn_upload" class="btn btn-sm btn-primary">업로드</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="dlg_unsubscribe" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">수신 설정</h4>
+            </div>
+            <div class="modal-body">
+                <p class="message">수신 상태를 변경할 이메일을 입력하세요.&nbsp;<small>(다수의 이메일 입력시 줄바꿈해주세요.)</small></p>
+                <div class="form-group">
+                    <textarea id="txtcontacts" name="txtcontacts" class="form-control" rows="10" > </textarea>
+                </div>
+                <p class="message" style="margin-top:1em;">변경할 상태를 선택하세요.</p>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="statuscontacts" name="statuscontacts">
+                        <option value="Y" selected>수신 거부</option>
+                        <option value="N">수신 허용</option>
+                    </select>                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:fnChangeUnsubscribe();" class="btn btn-sm btn-primary">적용</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div id="dlg_ConsentOptout" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">동의 철회</h4>
+            </div>
+            <div class="modal-body">
+                <p class="message">철회할 개인정보활용동의서를 검색해주세요.&nbsp;<small>(이메일, 연락처, 성명, NucleusKey)</small></p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" id="searchkey" name="searchkey" class="form-control" />
+                        <a class="input-group-addon btn btn-sm" href="javascript:searchkey();">검색</a>
+                        
+                    </div>
+                </div>
+                <p id="searchmsg" class="text-info"></p>
+                <table id="tblsearch" class="table"></table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">닫기</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="dlg_Inactive" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">활성화 설정</h4>
+            </div>
+            <div class="modal-body">
+                <p class="message">비활성화 처리할 사용자를 검색해주세요.&nbsp;<small>(이메일, 연락처, 성명, NucleusKey)</small></p>
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" id="searchkey2" name="searchkey2" class="form-control" />
+                        <a class="input-group-addon btn btn-sm" href="javascript:searchkey2();">검색</a>
+
+                    </div>
+                </div>
+                <p id="searchmsg2" class="text-info"></p>
+                <table id="tblsearch2" class="table"></table>
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">닫기</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    function searchkey() {
+        $("#searchmsg").html("");
+        $("#tblsearch").html("");
+        var searchkey = $("#searchkey").val();
+        if (searchkey == null || searchkey.length < 1) return;
+        var d = { searchkey: searchkey };
+        $.ajax({
+            url: "/Privacy/SearchConsent",
+            type: "POST",
+            data: JSON.stringify(d),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        })
+        .done(function (data) {            
+            if (data.count > 10) {
+                $("#searchmsg").html("검색된 결과가 너무 많습니다.");
+                return;
+            }
+            var thtml = "";
+            for (var i = 0 ; i < data.lists.length ; i++) {
+                var r = data.lists[i];
+                thtml += "<tr>";
+                thtml += "<td>";
+                thtml += (r.NucluesKey == null ? "" : r.NucluesKey);
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.EMAIL;
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.MOBILE;
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.IND_FULL_NAME;
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += "<a href='javascript:optout("+ r.ID +");' class='btn btn-sm '>철회</a>";
+                thtml += "</td>";
+                thtml += "</tr>";
+            }
+
+            $("#tblsearch").html(thtml);
+        });
+    }
+    function searchkey2() {
+        $("#searchmsg2").html("");
+        $("#tblsearch2").html("");
+        var searchkey = $("#searchkey2").val();
+        if (searchkey == null || searchkey.length < 1) return;
+        var d = { searchkey: searchkey };
+        $.ajax({
+            url: "/Privacy/SearchConsent",
+            type: "POST",
+            data: JSON.stringify(d),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        })
+        .done(function (data) {
+            if (data.count > 10) {
+                $("#searchmsg2").html("검색된 결과가 너무 많습니다.");
+                return;
+            }
+            var thtml = "";
+            for (var i = 0 ; i < data.lists.length ; i++) {
+                var r = data.lists[i];
+                thtml += "<tr>";
+                thtml += "<td>";
+                thtml += (r.NucluesKey == null ? "" : r.NucluesKey);
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.EMAIL;
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.MOBILE;
+                thtml += "</td>";
+                thtml += "<td>";
+                thtml += r.IND_FULL_NAME;
+                thtml += "</td>";
+                thtml += "<td>";
+                if(r.status == 5)
+                    thtml += "<a href='javascript:setActive(" + r.ID + ",\"active\");' class='btn btn-xs '>활성화하기</a>";
+                else
+                    thtml += "<a href='javascript:setActive(" + r.ID + ",\"inactive\");' class='btn btn-xs '>비활성화하기</a>";
+                thtml += "</td>";
+                thtml += "</tr>";
+            }
+
+            $("#tblsearch2").html(thtml);
+        });
+    }
+    function setActive(nKey, status) {
+        var d = { id: nKey, status: status };
+        $.ajax({
+            url: "/Privacy/SetActive",
+            type: "POST",
+            data: JSON.stringify(d),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        })
+        .success(function (data) {
+            if (data.result) {
+                alert("처리가 완료되었습니다.");
+                searchkey2();
+            }
+        });
+    }
+    function optout(nkey) {
+        if (confirm("철회 시 복구할 수 없습니다. 동의서 철회를 진행하시겠습니까?")) {
+            var d = { id: nkey };
+            $.ajax({
+                url: "/Privacy/OptoutConsent",
+                type: "POST",
+                data: JSON.stringify(d),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+                })
+            .success(function (data) {
+                if (data.result) {
+                    alert("동의서가 철회되었습니다.");
+                    searchkey();
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({autoclose:true, language:"ko", format: "yyyy-mm-dd" });
+        });
+        $("#CONSENT_TOTAL").on("change", function () {
+            if ($("#CONSENT_TOTAL").is(":checked")) {
+                $("#CONSENT_USE").prop("checked", false);
+                $("#CONSENT_USE").parents("label").removeClass("checked");
+                $("#CONSENT_TRUST").prop("checked", false);
+                $("#CONSENT_TRUST").parents("label").removeClass("checked");
+                $("#CONSENT_ABROAD").prop("checked", false);
+                $("#CONSENT_ABROAD").parents("label").removeClass("checked");
+            }
+        });
+        $("#CONSENT_USE").on("change", function () {
+            if ($("#CONSENT_USE").is(":checked")) {
+                $("#CONSENT_TOTAL").prop("checked", false);
+                $("#CONSENT_TOTAL").parents("label").removeClass("checked");
+            }
+        });
+        $("#CONSENT_TRUST").on("change", function () {
+            if ($("#CONSENT_TRUST").is(":checked")) {
+                $("#CONSENT_TOTAL").prop("checked", false);
+                $("#CONSENT_TOTAL").parents("label").removeClass("checked");
+            }
+        });
+        $("#CONSENT_ABROAD").on("change", function () {
+            if ($("#CONSENT_ABROAD").is(":checked")) {
+                $("#CONSENT_TOTAL").prop("checked", false);
+                $("#CONSENT_TOTAL").parents("label").removeClass("checked");
+            }
+        });
+
+
+        pageTable();
+    });
+    
+    function pageTable() {
+        var $table = $('table.paginated');
+
+        var curIndex = Number($("#startIndex").val());
+        var numPerPage = Number($("#pageSize").val());
+        var numRows = Number($("#totalCount").val());
+        var maxPages = 10;
+        var numPages = Math.ceil(numRows / numPerPage);
+        var pagecount = maxPages > numPages ? numPages : maxPages;
+
+        var info = (curIndex + 1) * 1 + '/' + numPages + '( '+ numRows +')';
+        $(".pager").remove();
+        var $pager = $('<div class="pager"><div class="total">'+info+'</div></div>');
+
+        var startIndex = Math.floor(curIndex / maxPages) * maxPages;
+        var endIndex = startIndex + maxPages > numPages ? numPages : startIndex + maxPages;
+
+        // prev
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("|<<").bind('click', function (e) {                
+                $("form").attr("action", "/Privacy/Index");
+                $("#startIndex").val(0);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (startIndex > 0) {
+            $('<span id="pg-prev" class="page-number"></span>').text("<<").bind('click', function (e) {
+                var nextIndex = startIndex - maxPages > 0 ? startIndex - maxPages : 0;
+                $("form").attr("action", "/Privacy/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        
+        for (var page = startIndex; page < endIndex ; page++) {
+            $('<span id="pg'+page+'" class="page-number"></span>').text(page + 1).bind('click', {
+                newPage: page
+            }, function (event) {
+                var currentPage = event.data['newPage'];
+                $("form").attr("action", "/Privacy/Index");
+                $("#startIndex").val(currentPage);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        // next
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>").bind('click', function (e) {
+                var nextIndex = Math.floor((curIndex + maxPages) / maxPages) * maxPages;
+                $("form").attr("action", "/Privacy/Index");
+                $("#startIndex").val(nextIndex);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+        if (endIndex < numPages) {
+            $('<span id="pg-next" class="page-number"></span>').text(">>|").bind('click', function (e) {
+                $("form").attr("action", "/Privacy/Index");
+                $("#startIndex").val(numPages -1);
+                $("form").submit();
+            }).appendTo($pager).addClass('clickable');
+        }
+
+        $pager.insertAfter($table).find('#pg' + curIndex).addClass('active');
+    }
+    function openUpload() {
+        $("#dlg_templateupload").modal('show');
+    }
+    function uploadfile() {
+        var fileUpload = $("#tfile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $("#btn_upload").hide();
+        $("#div_upload").hide();
+        $("#div_loading").show();
+        $.ajax({
+            url: "/Privacy/TemplateUpload",
+            type: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+        })
+        .success(function (data) {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            if (data.result) {
+                location.reload();
+            } else if (data.result == false && data.msg != null) {
+                alert(data.msg);
+            } else {
+                alert("잠시 후 다시 시도해주세요.");
+            }
+        })
+        .done(function () {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            $("#dlg_templateupload").modal('hide');
+        });
+    }
+    function uploadforce() {
+        var fileUpload = $("#tfile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $("#btn_upload").hide();
+        $("#div_upload").hide();
+        $("#div_loading").show();
+        $.ajax({
+            url: "/Privacy/ForceUpload",
+            type: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+        })
+        .success(function (data) {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            if (data.result) {
+                location.reload();
+            } else {
+                alert("잠시 후 다시 시도해주세요.");
+            }
+        })
+        .done(function () {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            $("#dlg_templateupload").modal('hide');
+        });
+    }
+    function uploadmms() {
+        var fileUpload = $("#tfile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $("#btn_upload").hide();
+        $("#div_upload").hide();
+        $("#div_loading").show();
+        $.ajax({
+            url: "/Privacy/MMSUploadCSV",
+            type: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+        })
+        .success(function (data) {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            if (data.result) {
+                location.reload();
+            } else {
+                alert("잠시 후 다시 시도해주세요.");
+            }
+        })
+        .done(function () {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            $("#dlg_templateupload").modal('hide');
+        });
+    }
+    function UnMaskData() {
+        var fileUpload = $("#tfile").get(0);
+        var files = fileUpload.files;
+        var data = new FormData();
+        for (var i = 0; i < files.length; i++) {
+            data.append(files[i].name, files[i]);
+        }
+        $("#btn_upload").hide();
+        $("#div_upload").hide();
+        $("#div_loading").show();
+        $.ajax({
+            url: "/Privacy/UnMaskData",
+            type: "POST",
+            data: data,
+            contentType: false,
+            processData: false,
+        })
+        .success(function (data) {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            if (data.result) {
+                location.reload();
+            } else {
+                alert("잠시 후 다시 시도해주세요.");
+            }
+        })
+        .done(function () {
+            $("#btn_upload").show();
+            $("#div_upload").show();
+            $("#div_loading").hide();
+            $("#dlg_templateupload").modal('hide');
+        });
+    }
+    function openUnsubscribe() {
+        $("#dlg_unsubscribe").modal('show');
+    }
+    function fnChangeUnsubscribe() {
+        if ($("#txtcontacts").val().trim().length < 1) return;
+        var contacts = $.unique($("#txtcontacts").val().trim().replace(/\n\n/gi, '\n').split("\n"));
+        var stat = $("#statuscontacts option:selected").val();
+        var data = {
+            contacts: contacts ,
+            stat: stat
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Privacy/ChangeUnsubscribe",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            if (res.result) {
+                $("#dlg_unsubscribe").modal('hide');
+                location.reload();
+            }
+        });
+    }
+    function openConsentOptout() {
+        $("#searchkey").val("");
+        $("#searchmsg").html("");
+        $("#tblsearch").html("");
+        $("#dlg_ConsentOptout").modal('show');
+    }
+
+    function openInactive() {
+        $("#searchkey2").val("");
+        $("#searchmsg2").html("");
+        $("#tblsearch2").html("");
+        $("#dlg_Inactive").modal('show');
+    }
+    
+</script>

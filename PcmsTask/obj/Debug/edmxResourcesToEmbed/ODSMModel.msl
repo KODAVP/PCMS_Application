@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ODSMModelStoreContainer" CdmEntityContainer="ODSMEntities">
+    <EntitySetMapping Name="VW_CONSENT">
+      <EntityTypeMapping TypeName="ODSMModel.VW_CONSENT">
+        <MappingFragment StoreEntitySet="VW_CONSENT">
+          <ScalarProperty Name="ODSK_MODIFY_DATE" ColumnName="ODSK_MODIFY_DATE" />
+          <ScalarProperty Name="ONEKEY" ColumnName="ONEKEY" />
+          <ScalarProperty Name="NUC_ID" ColumnName="NUC_ID" />
+          <ScalarProperty Name="PCMS_ID" ColumnName="PCMS_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="VW_CONSENT_ALIGNMENT">
+      <EntityTypeMapping TypeName="ODSMModel.VW_CONSENT_ALIGNMENT">
+        <MappingFragment StoreEntitySet="VW_CONSENT_ALIGNMENT">
+          <ScalarProperty Name="D_MOBILE_PHONE" ColumnName="D_MOBILE_PHONE" />
+          <ScalarProperty Name="D_EMAIL" ColumnName="D_EMAIL" />
+          <ScalarProperty Name="D_NAME" ColumnName="D_NAME" />
+          <ScalarProperty Name="D_SPEC" ColumnName="D_SPEC" />
+          <ScalarProperty Name="H_ADDR" ColumnName="H_ADDR" />
+          <ScalarProperty Name="H_CITY" ColumnName="H_CITY" />
+          <ScalarProperty Name="H_REGION" ColumnName="H_REGION" />
+          <ScalarProperty Name="H_POSTCODE" ColumnName="H_POSTCODE" />
+          <ScalarProperty Name="H_PHONE" ColumnName="H_PHONE" />
+          <ScalarProperty Name="H_NAME" ColumnName="H_NAME" />
+          <ScalarProperty Name="D_ONEKEY_ID" ColumnName="D_ONEKEY_ID" />
+          <ScalarProperty Name="D_NUC_ID" ColumnName="D_NUC_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

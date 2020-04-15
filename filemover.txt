@@ -1,0 +1,19 @@
+SRVASP-PCMSMGT
+Pfe51627
+
+stage rfc: 1050883
+prod rfc: 1052535
+
+
+The conversion of a datetime2 data type to a datetime data type resulted in an out-of-range value.
+The statement has been terminated.
+
+
+
+그룹 : SG_KOR_PCMS_Writer
+계정 : SRVASP-PCMSMGT
+
+
+Signed on to secure-transfer.cegedim.com--> 
+lcd \\SDCUNS600VFS02\kr_pcms\channel\n360\importLocal directory now \\SDCUNS600VFS02\kr_pcms\channel\n360\import.--> cd /Home/OKC_PFIZER_KR/channel/n360/import--> mget *.txtDownload complete: PFIZER_NUC_PCMS_IND_20160816.txt1259 bytes received in 3.91 seconds at 322.32 bytes/sec--> quit
+

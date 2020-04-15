@@ -1,0 +1,4 @@
+lcd \\SDCUNS600VFS02\kr_pcms\channel\n360\export
+cd /Home/OKC_PFIZER_KR/channel/n360/export
+mput *.txt 
+quit

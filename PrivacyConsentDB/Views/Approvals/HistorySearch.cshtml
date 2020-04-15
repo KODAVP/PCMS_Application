@@ -1,0 +1,179 @@
+﻿@using PrivacyConsentDB.Commons;
+@model PrivacyConsentDB.Models.ApprovalSearch
+@{
+    var IND_SP_LIST = new SelectList(
+            new List<SelectListItem>
+            {
+            new SelectListItem { Text ="", Value = ""},
+            new SelectListItem { Text ="가정의학과", Value = "가정의학과"},
+            new SelectListItem { Text ="감염내과", Value = "감염내과"},
+            new SelectListItem { Text ="건강관리과", Value = "건강관리과"},
+            new SelectListItem { Text ="검사의학과", Value = "검사의학과"},
+            new SelectListItem { Text ="결핵과", Value = "결핵과"},
+            new SelectListItem { Text ="기타", Value = "기타"},
+            new SelectListItem { Text ="내과", Value = "내과"},
+            new SelectListItem { Text ="내분비내과", Value = "내분비내과"},
+            new SelectListItem { Text ="내분비외과", Value = "내분비외과"},
+            new SelectListItem { Text ="노년내과", Value = "노년내과"},
+            new SelectListItem { Text ="레지던트", Value = "레지던트"},
+            new SelectListItem { Text ="류마티스내과", Value = "류마티스내과"},
+            new SelectListItem { Text ="마취과", Value = "마취과"},
+            new SelectListItem { Text ="마취통증의학과", Value = "마취통증의학과"},
+            new SelectListItem { Text ="면역학", Value = "면역학"},
+            new SelectListItem { Text ="방사선과", Value = "방사선과"},
+            new SelectListItem { Text ="방사선종양학과", Value = "방사선종양학과"},
+            new SelectListItem { Text ="병리과", Value = "병리과"},
+            new SelectListItem { Text ="보건소", Value = "보건소"},
+            new SelectListItem { Text ="부인종양과", Value = "부인종양과"},
+            new SelectListItem { Text ="비뇨기과", Value = "비뇨기과"},
+            new SelectListItem { Text ="비뇨종양과", Value = "비뇨종양과"},
+            new SelectListItem { Text ="산부인과", Value = "산부인과"},
+            new SelectListItem { Text ="산업의학과", Value = "산업의학과"},
+            new SelectListItem { Text ="성형외과", Value = "성형외과"},
+            new SelectListItem { Text ="소아감염내과", Value = "소아감염내과"},
+            new SelectListItem { Text ="소아과", Value = "소아과"},
+            new SelectListItem { Text ="소아내분비", Value = "소아내분비"},
+            new SelectListItem { Text ="소아소화기", Value = "소아소화기"},
+            new SelectListItem { Text ="소아신경", Value = "소아신경"},
+            new SelectListItem { Text ="소아심장", Value = "소아심장"},
+            new SelectListItem { Text ="소아알레르기", Value = "소아알레르기"},
+            new SelectListItem { Text ="소아외과", Value = "소아외과"},
+            new SelectListItem { Text ="소아정신과", Value = "소아정신과"},
+            new SelectListItem { Text ="소아정형외과", Value = "소아정형외과"},
+            new SelectListItem { Text ="소아청소년과", Value = "소아청소년과"},
+            new SelectListItem { Text ="소아치과", Value = "소아치과"},
+            new SelectListItem { Text ="소아혈액종양클리닉", Value = "소아혈액종양클리닉"},
+            new SelectListItem { Text ="소아호흡기", Value = "소아호흡기"},
+            new SelectListItem { Text ="소화기내과", Value = "소화기내과"},
+            new SelectListItem { Text ="순환기내과", Value = "순환기내과"},
+            new SelectListItem { Text ="신경과", Value = "신경과"},
+            new SelectListItem { Text ="신경내과", Value = "신경내과"},
+            new SelectListItem { Text ="신경방사선과", Value = "신경방사선과"},
+            new SelectListItem { Text ="신경외과", Value = "신경외과"},
+            new SelectListItem { Text ="신경정신과", Value = "신경정신과"},
+            new SelectListItem { Text ="신장내과", Value = "신장내과"},
+            new SelectListItem { Text ="심장내과", Value = "심장내과"},
+            new SelectListItem { Text ="안과", Value = "안과"},
+            new SelectListItem { Text ="알레르기내과", Value = "알레르기내과"},
+            new SelectListItem { Text ="암센타", Value = "암센타"},
+            new SelectListItem { Text ="약사", Value = "약사"},
+            new SelectListItem { Text ="약제과", Value = "약제과"},
+            new SelectListItem { Text ="영상의학과", Value = "영상의학과"},
+            new SelectListItem { Text ="예방의학과", Value = "예방의학과"},
+            new SelectListItem { Text ="완화의료과", Value = "완화의료과"},
+            new SelectListItem { Text ="유전학", Value = "유전학"},
+            new SelectListItem { Text ="응급의학과", Value = "응급의학과"},
+            new SelectListItem { Text ="의공학과", Value = "의공학과"},
+            new SelectListItem { Text ="이비인후과", Value = "이비인후과"},
+            new SelectListItem { Text ="이식외과", Value = "이식외과"},
+            new SelectListItem { Text ="인턴", Value = "인턴"},
+            new SelectListItem { Text ="일반외과", Value = "일반외과"},
+            new SelectListItem { Text ="일반의", Value = "일반의"},
+            new SelectListItem { Text ="임상병리과", Value = "임상병리과"},
+            new SelectListItem { Text ="재활의학과", Value = "재활의학과"},
+            new SelectListItem { Text ="정신과", Value = "정신과"},
+            new SelectListItem { Text ="정형외과", Value = "정형외과"},
+            new SelectListItem { Text ="종양내과", Value = "종양내과"},
+            new SelectListItem { Text ="진단검사과", Value = "진단검사과"},
+            new SelectListItem { Text ="진단방사선과", Value = "진단방사선과"},
+            new SelectListItem { Text ="진단병리과", Value = "진단병리과"},
+            new SelectListItem { Text ="척추외과", Value = "척추외과"},
+            new SelectListItem { Text ="통증의학과", Value = "통증의학과"},
+            new SelectListItem { Text ="피부과", Value = "피부과"},
+            new SelectListItem { Text ="피부비뇨기과", Value = "피부비뇨기과"},
+            new SelectListItem { Text ="한방과", Value = "한방과"},
+            new SelectListItem { Text ="해부병리과", Value = "해부병리과"},
+            new SelectListItem { Text ="핵의학과", Value = "핵의학과"},
+            new SelectListItem { Text ="혈관외과", Value = "혈관외과"},
+            new SelectListItem { Text ="혈액종양내과", Value = "혈액종양내과"},
+            new SelectListItem { Text ="호흡기내과", Value = "호흡기내과"},
+            new SelectListItem { Text ="흉부외과", Value = "흉부외과"}
+            }, "Value", "Text");
+}
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="input-group-xs">
+                @Html.LabelFor(model => model.owner, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.owner, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 ">
+                    @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label class="control-label col-md-1 ">요청일자</label>
+                <div class="col-md-5">
+                    <div class="input-group input-daterange">
+                        <span class="input-group-addon">from</span>
+                        @Html.EditorFor(model => model.requestbegindt, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">to</span>
+                        @Html.EditorFor(model => model.requestenddt, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+            </div>
+            <div class="input-group-xs">
+                @Html.LabelFor(model => model.sp, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2">
+                    @Html.DropDownListFor(model => model.sp, IND_SP_LIST, new { @class = "form-control" })
+                </div>
+                @Html.LabelFor(model => model.hospital, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 ">
+                    @Html.EditorFor(model => model.hospital, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <label class="control-label col-md-1 ">승인일자</label>
+                <div class="col-md-5">
+                    <div class="input-group input-daterange">
+                        <span class="input-group-addon">from</span>
+                        @Html.EditorFor(model => model.approvalbegindt, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">to</span>
+                        @Html.EditorFor(model => model.approvalenddt, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                @*Display Dropdownlist - Prakash*@
+                @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2">
+                    @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="input-group-xs">
+                @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-5">
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.status, "total", Model.status.Equals("total") ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">전체</span>
+                    </label>
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.status, "approved", Model.status.Equals("approved") ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">승인</span>
+                    </label>
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.status, "rejected", Model.status.Equals("rejected") ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">반려</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="form-group">
+            <div class="col-md-12 text-right">
+                <input type="submit" class="btn btn-sm btn-primary" value="검색">
+                <a href="javascript:init()" class="btn btn-sm btn-default">초기화</a>
+                <a href="javascript:xlsDownload()" class="btn btn-sm btn-success">엑셀 다운로드</a>
+            </div>
+        </div>
+
+    </div>
+}
+<script>
+    function init() {
+        $("#owner").val("");
+        $("#name").val("");
+        $("#depart").val("");
+        $("#wkpname").val("");
+        $(".input-daterange input").val("");
+    }
+
+    function xlsDownload() {
+        $("form").attr("action", "/Approvals/XlsDownload");
+        $("form").submit();
+    }
+</script>

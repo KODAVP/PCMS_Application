@@ -1,0 +1,11 @@
+﻿@model PrivacyConsentDB.Models.Privacy
+@{
+    var path = Request.Url.Authority + "/Privacy/Details/" + Model.ID
+}
+<h1>PfizerLink 알림</h1>
+
+<ul>
+    <li>근무처(병원명) : @Model.WKP_NAME</li>
+    <li>고객명 : @Model.IND_FULL_NAME</li>
+    <li>정보 : @path</li>
+</ul>

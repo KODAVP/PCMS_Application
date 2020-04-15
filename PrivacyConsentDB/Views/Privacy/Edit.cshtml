@@ -1,0 +1,775 @@
+﻿@using PrivacyConsentDB.Commons
+@model PrivacyConsentDB.Models.Privacy
+
+@{
+    ViewBag.Title = "Edit";
+    bool bvalid = Model.SENDCHANEL.HasFlag(Status.SendChannel.PFORCERX_INVALID);
+    bool bdup = Model.SENDCHANEL.HasFlag(Status.SendChannel.PFORCERX_ONEKEY_DUP);
+    var CHANNEL_LIST = new List<SelectListItem>
+        {
+            new SelectListItem { Text ="OneApp", Value = "OneApp"},              //added the OneApp as part of APC29344010i-Nagaraju-03/Sep/2018
+            new SelectListItem { Text ="서면동의서", Value = "서면동의서"},
+            new SelectListItem { Text ="MMS", Value = "MMS"},
+            new SelectListItem { Text ="GRV", Value = "GRV"},
+            new SelectListItem { Text ="PforceRX", Value = "PforceRX"},
+            new SelectListItem { Text ="MyPfizer", Value = "MyPfizer"},
+            new SelectListItem { Text ="신약관(유한수집)", Value = "신약관(유한수집)"}
+        };
+
+    //var VERSION_LIST = new List<SelectListItem> Commented by Nagaraju as part of APC29241336i:14/Aug/2018
+    //    {
+    //                new SelectListItem { Text ="PCF-180309-T3", Value = "PCF-180309-T3"},
+    //                new SelectListItem { Text ="PCF-170717-T3", Value = "PCF-170717-T3"},
+    //                new SelectListItem { Text ="PCF-170717-T2", Value = "PCF-170717-T2"},
+    //                new SelectListItem { Text ="PCF-170717-T1", Value = "PCF-170717-T1"},
+    //                new SelectListItem { Text ="PCF-170327", Value = "PCF-170327"},
+    //                new SelectListItem { Text ="PCF-160706", Value = "PCF-160706"},
+    //                new SelectListItem { Text ="PCF-160430", Value = "PCF-160430"},
+    //                new SelectListItem { Text ="PCF-160205", Value = "PCF-160205"},
+    //                new SelectListItem { Text ="PCF-160205이전", Value = "PCF-160205이전"},
+    //                new SelectListItem { Text ="PCF1 1.5", Value = "PCF1 1.5"},
+    //                new SelectListItem { Text ="PCF1 1.4", Value = "PCF1 1.4"},
+    //                new SelectListItem { Text ="PCF1 1.4이전", Value = "PCF1 1.4이전"},
+    //                new SelectListItem { Text ="PCF-160437", Value = "PCF-160437"},
+    //                new SelectListItem { Text ="PCF-160436", Value = "PCF-160436"},
+    //                new SelectListItem { Text ="PCF-160435", Value = "PCF-160435"},
+    //                new SelectListItem { Text ="PCF-160434", Value = "PCF-160434"},
+    //                new SelectListItem { Text ="PCF-160433", Value = "PCF-160433"},
+    //                new SelectListItem { Text ="PCF-160432", Value = "PCF-160432"},
+    //                new SelectListItem { Text ="PCF-160431", Value = "PCF-160431"},
+    //                new SelectListItem { Text ="PCF5 1.5", Value = "PCF5 1.5"},
+    //                new SelectListItem { Text ="1.5", Value = "1.5"},
+    //                new SelectListItem { Text ="1.4", Value = "1.4"},
+
+    //    };
+
+    var VERSION_LIST = new List<SelectListItem>
+        {
+                    new SelectListItem { Text ="PCF-190527-T1", Value = "PCF-190527-T1"},
+                    new SelectListItem { Text ="PCF-190527-T1-1", Value = "PCF-190527-T1-1"},
+                    new SelectListItem { Text ="PCF-190527-T2", Value = "PCF-190527-T2"},
+                    new SelectListItem { Text ="PCF-190527-T3 (제일)", Value = "PCF-190527-T3 (제일)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (유한)", Value = "PCF-190527-T3 (유한)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (녹십자)", Value = "PCF-190527-T3 (녹십자)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (종근당)", Value = "PCF-190527-T3 (종근당)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (BMS)", Value = "PCF-190527-T3 (BMS)"},
+                    new SelectListItem { Text ="PCF-190527-T3 (한국백신)", Value = "PCF-190527-T3 (한국백신)"},
+                    new SelectListItem { Text ="PCF-181107-T1", Value = "PCF-181107-T1"},
+                    new SelectListItem { Text ="PCF-181107-T2", Value = "PCF-181107-T2"},
+                    new SelectListItem { Text ="PCF-181107-T3 (유한)", Value = "PCF-181107-T3 (유한)"},
+                    new SelectListItem { Text ="PCF-181107-T3 (제일)", Value = "PCF-181107-T3 (제일)"},
+                    new SelectListItem { Text ="PCF-180828-T3 (유한)", Value = "PCF-180828-T3 (유한)"},
+                    new SelectListItem { Text ="PCF-180719-T1", Value = "PCF-180719-T1"},
+                    new SelectListItem { Text ="PCF-180703-T2", Value = "PCF-180703-T2"},
+                    new SelectListItem { Text ="PCF-180703-T3", Value = "PCF-180703-T3"},
+                    new SelectListItem { Text ="PCF-180309-T3", Value = "PCF-180309-T3"},
+                    new SelectListItem { Text ="PCF-170717-T3", Value = "PCF-170717-T3"},
+                    new SelectListItem { Text ="PCF-170717-T2", Value = "PCF-170717-T2"},
+                    new SelectListItem { Text ="PCF-170717-T1", Value = "PCF-170717-T1"},
+                    new SelectListItem { Text ="PCF-170717", Value = "PCF-170717"},
+                    new SelectListItem { Text ="PCF-170327", Value = "PCF-170327"},
+                    new SelectListItem { Text ="PCF-160706", Value = "PCF-160706"},
+                    new SelectListItem { Text ="PCF-160430", Value = "PCF-160430"},
+                    new SelectListItem { Text ="PCF-160205", Value = "PCF-160205"},
+                    new SelectListItem { Text ="PCF-160205 이전", Value = "PCF-160205 이전"},
+                    new SelectListItem { Text ="PCF1 1.5", Value = "PCF1 1.5"},
+                    new SelectListItem { Text ="PCF1 1.4", Value = "PCF1 1.4"},
+                    new SelectListItem { Text ="PCF1 1.4 이전", Value = "PCF1 1.4 이전"},
+                    new SelectListItem { Text ="PCF-160437", Value = "PCF-160437"},
+                    new SelectListItem { Text ="PCF-160436", Value = "PCF-160436"},
+                    new SelectListItem { Text ="PCF-160435", Value = "PCF-160435"},
+                    new SelectListItem { Text ="PCF-160434", Value = "PCF-160434"},
+                    new SelectListItem { Text ="PCF-160433", Value = "PCF-160433"},
+                    new SelectListItem { Text ="PCF-160432", Value = "PCF-160432"},
+                    new SelectListItem { Text ="PCF-160431", Value = "PCF-160431"},
+                    new SelectListItem { Text ="PCF5 1.5", Value = "PCF5 1.5"},
+                    new SelectListItem { Text ="1.5", Value = "1.5"},
+                    new SelectListItem { Text ="1.4", Value = "1.4"},
+
+        };
+
+
+    var IND_SP_LIST = new SelectList(
+new List<SelectListItem>
+{
+            new SelectListItem { Text ="가정의학과", Value = "가정의학과"},
+            new SelectListItem { Text ="감염내과", Value = "감염내과"},
+            new SelectListItem { Text ="건강관리과", Value = "건강관리과"},
+            new SelectListItem { Text ="검사의학과", Value = "검사의학과"},
+            new SelectListItem { Text ="결핵과", Value = "결핵과"},
+            new SelectListItem { Text ="기타", Value = "기타"},
+            new SelectListItem { Text ="내과", Value = "내과"},
+            new SelectListItem { Text ="내분비내과", Value = "내분비내과"},
+            new SelectListItem { Text ="내분비외과", Value = "내분비외과"},
+            new SelectListItem { Text ="노년내과", Value = "노년내과"},
+            new SelectListItem { Text ="레지던트", Value = "레지던트"},
+            new SelectListItem { Text ="류마티스내과", Value = "류마티스내과"},
+            new SelectListItem { Text ="마취과", Value = "마취과"},
+            new SelectListItem { Text ="마취통증의학과", Value = "마취통증의학과"},
+            new SelectListItem { Text ="면역학", Value = "면역학"},
+            new SelectListItem { Text ="방사선과", Value = "방사선과"},
+            new SelectListItem { Text ="방사선종양학과", Value = "방사선종양학과"},
+            new SelectListItem { Text ="병리과", Value = "병리과"},
+            new SelectListItem { Text ="보건소", Value = "보건소"},
+            new SelectListItem { Text ="부인종양과", Value = "부인종양과"},
+            new SelectListItem { Text ="비뇨기과", Value = "비뇨기과"},
+            new SelectListItem { Text ="비뇨종양과", Value = "비뇨종양과"},
+            new SelectListItem { Text ="산부인과", Value = "산부인과"},
+            new SelectListItem { Text ="산업의학과", Value = "산업의학과"},
+            new SelectListItem { Text ="성형외과", Value = "성형외과"},
+            new SelectListItem { Text ="소아감염내과", Value = "소아감염내과"},
+            new SelectListItem { Text ="소아과", Value = "소아과"},
+            new SelectListItem { Text ="소아내분비", Value = "소아내분비"},
+            new SelectListItem { Text ="소아소화기", Value = "소아소화기"},
+            new SelectListItem { Text ="소아신경", Value = "소아신경"},
+            new SelectListItem { Text ="소아심장", Value = "소아심장"},
+            new SelectListItem { Text ="소아알레르기", Value = "소아알레르기"},
+            new SelectListItem { Text ="소아외과", Value = "소아외과"},
+            new SelectListItem { Text ="소아정신과", Value = "소아정신과"},
+            new SelectListItem { Text ="소아정형외과", Value = "소아정형외과"},
+            new SelectListItem { Text ="소아청소년과", Value = "소아청소년과"},
+            new SelectListItem { Text ="소아치과", Value = "소아치과"},
+            new SelectListItem { Text ="소아혈액종양클리닉", Value = "소아혈액종양클리닉"},
+            new SelectListItem { Text ="소아호흡기", Value = "소아호흡기"},
+            new SelectListItem { Text ="소화기내과", Value = "소화기내과"},
+            new SelectListItem { Text ="순환기내과", Value = "순환기내과"},
+            new SelectListItem { Text ="신경과", Value = "신경과"},
+            new SelectListItem { Text ="신경내과", Value = "신경내과"},
+            new SelectListItem { Text ="신경방사선과", Value = "신경방사선과"},
+            new SelectListItem { Text ="신경외과", Value = "신경외과"},
+            new SelectListItem { Text ="신경정신과", Value = "신경정신과"},
+            new SelectListItem { Text ="신장내과", Value = "신장내과"},
+            new SelectListItem { Text ="심장내과", Value = "심장내과"},
+            new SelectListItem { Text ="안과", Value = "안과"},
+            new SelectListItem { Text ="알레르기내과", Value = "알레르기내과"},
+            new SelectListItem { Text ="암센타", Value = "암센타"},
+            new SelectListItem { Text ="약사", Value = "약사"},
+            new SelectListItem { Text ="약제과", Value = "약제과"},
+            new SelectListItem { Text ="영상의학과", Value = "영상의학과"},
+            new SelectListItem { Text ="예방의학과", Value = "예방의학과"},
+            new SelectListItem { Text ="완화의료과", Value = "완화의료과"},
+            new SelectListItem { Text ="유전학", Value = "유전학"},
+            new SelectListItem { Text ="응급의학과", Value = "응급의학과"},
+            new SelectListItem { Text ="의공학과", Value = "의공학과"},
+            new SelectListItem { Text ="이비인후과", Value = "이비인후과"},
+            new SelectListItem { Text ="이식외과", Value = "이식외과"},
+            new SelectListItem { Text ="인턴", Value = "인턴"},
+            new SelectListItem { Text ="일반외과", Value = "일반외과"},
+            new SelectListItem { Text ="일반의", Value = "일반의"},
+            new SelectListItem { Text ="임상병리과", Value = "임상병리과"},
+            new SelectListItem { Text ="재활의학과", Value = "재활의학과"},
+            new SelectListItem { Text ="정신과", Value = "정신과"},
+            new SelectListItem { Text ="정형외과", Value = "정형외과"},
+            new SelectListItem { Text ="종양내과", Value = "종양내과"},
+            new SelectListItem { Text ="진단검사과", Value = "진단검사과"},
+            new SelectListItem { Text ="진단방사선과", Value = "진단방사선과"},
+            new SelectListItem { Text ="진단병리과", Value = "진단병리과"},
+            new SelectListItem { Text ="척추외과", Value = "척추외과"},
+            new SelectListItem { Text ="통증의학과", Value = "통증의학과"},
+            new SelectListItem { Text ="피부과", Value = "피부과"},
+            new SelectListItem { Text ="피부비뇨기과", Value = "피부비뇨기과"},
+            new SelectListItem { Text ="한방과", Value = "한방과"},
+            new SelectListItem { Text ="해부병리과", Value = "해부병리과"},
+            new SelectListItem { Text ="핵의학과", Value = "핵의학과"},
+            new SelectListItem { Text ="혈관외과", Value = "혈관외과"},
+            new SelectListItem { Text ="혈액종양내과", Value = "혈액종양내과"},
+            new SelectListItem { Text ="호흡기내과", Value = "호흡기내과"},
+            new SelectListItem { Text ="흉부외과", Value = "흉부외과"}
+}, "Value", "Text");
+
+}
+
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>개인정보 수정<small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="row">
+                    <div class="col-md-offset-1 col-md-10">
+                        @using (Html.BeginForm("Edit", "Privacy", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                @if (bvalid)
+                                {
+                                    <p class="validation-summary-valid bg-danger text-danger" style="padding:15px;">
+                                        <span>이메일 또는 핸드폰 번호가 올바르지 않습니다.</span>
+                                    </p>
+                                }
+                                @if (bdup)
+                                {
+                                    <p class="validation-summary-valid bg-warning text-warning" style="padding:15px;">
+                                        <span>원키중복으로 전송되지 않았습니다.</span>
+                                    </p>
+                                }
+                                <div class="form-group">
+                                    @Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                @Html.HiddenFor(model => model.ID)
+                                
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.PCMSID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.PCMSID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.PCMSID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.NucleusKey, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.NucleusKey, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.NucleusKey, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OneKey, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.OneKey, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.OneKey, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.IND_EXT_ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.IND_EXT_ID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.IND_EXT_ID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.OWNER, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.OWNER, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => model.OWNER, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.WKP_NAME, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.WKP_NAME, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.WKP_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.WKP_TEL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.WKP_TEL, new { htmlAttributes = new { @class = "form-control", @data_regex = "/^\\d{2,3}-\\d{3,4}-\\d{4}$/" } })
+                                        @Html.ValidationMessageFor(model => model.WKP_TEL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ZIP, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-6 ">
+                                        <div class="input-group input-group-sm">
+                                            @Html.EditorFor(model => model.ZIP, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            <a href="javascript:btnAddr();" class="input-group-addon btn btn-sm btn-default">주소/우편번호</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.FULL_ADDR, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.FULL_ADDR, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        <input type="hidden" id="PROVINCE" name="PROVINCE" value="" />
+                                        <input type="hidden" id="CITY" name="CITY" value="" />
+                                        <input type="hidden" id="DONG" name="DONG" value="" />
+                                        <input type="hidden" id="STREET" name="STREET" value="" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.IND_SP, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownListFor(model => model.IND_SP, IND_SP_LIST, "", new { @class = "form-control" })                                        
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.TITLE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.TITLE, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.TITLE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.IND_FULL_NAME, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.IND_FULL_NAME, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                        @Html.ValidationMessageFor(model => model.IND_FULL_NAME, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EMAIL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.EMAIL, new { htmlAttributes = new { @class = "form-control", @required = "required", @data_regex = "/^[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\\.]?[0-9a-zA-Z])*\\.[a-zA-Z]{2,3}$/" } })
+                                        @Html.ValidationMessageFor(model => model.EMAIL, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MOBILE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.EditorFor(model => model.MOBILE, new { htmlAttributes = new { @class = "form-control", @required = "required", @data_regex = "/^\\d{2,3}-\\d{3,4}-\\d{4}$/" } })
+                                        @Html.ValidationMessageFor(model => model.MOBILE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">수신거부여부</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.Unsubscribe)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.Unsubscribe)</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CONSENT.CONSENT_SOURCE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.DropDownListFor(model => model.CONSENT.CONSENT_SOURCE, new SelectList(CHANNEL_LIST, "VALUE", "TEXT", Model.CONSENT.CONSENT_SOURCE), "", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CONSENT.CONSENT_SOURCE, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CONSENT.CONSENT_DATE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.HiddenFor(model => model.CONSENT.ID)
+                                        @Html.EditorFor(model => model.CONSENT.CONSENT_DATE, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CONSENT.CONSENT_VERSION, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10 input-group-sm">                                        
+                                        @Html.DropDownListFor(model => model.CONSENT.CONSENT_VERSION, new SelectList(VERSION_LIST , "VALUE", "TEXT", Model.CONSENTVERSION), "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">동의여부</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.CONSENT.CONSENT_USE)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT.CONSENT_USE)</span>
+                                        </label>
+
+                                        @*CONSENT_MARKETING_AGREEMENT Added by Nagaraju as part of APC30683265i*@
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.CONSENT.CONSENT_MARKETING_AGREEMENT)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT.CONSENT_MARKETING_AGREEMENT)</span>
+                                        </label>
+
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.CONSENT.CONSENT_TRUST)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT.CONSENT_TRUST)</span>
+                                        </label>
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.CONSENT.CONSENT_ABROAD)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT.CONSENT_ABROAD)</span>
+                                        </label>
+                                        <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                            @Html.CheckBoxFor(model => model.CONSENT.CONSENT_SIGN)
+                                            <span class="checkbox-label">@Html.LabelFor(model => model.CONSENT.CONSENT_SIGN)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">화이자링크</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <div style="margin-top: 8px;"><a href="javascript:fn_link_open();" id="plink_a">열기</a></div>
+                                    </div>
+                                </div>
+                                <div class="form-group div-link">
+                                    <label class="control-label col-md-2">연락방법</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        <div class="radio" style="display: inline-block; float: left;">
+                                            <label class="radio-custom" data-initialize="radio">
+                                                @Html.RadioButtonFor(model => model.LINK_PHONE, "tel", new { @class = "sr-only" })근무처연락처
+                                            </label>
+                                        </div>
+                                        <div class="radio" style="display: inline-block; float: left;">
+                                            <label class="radio-custom" data-initialize="radio">
+                                                @Html.RadioButtonFor(model => model.LINK_PHONE, "mobile", new { @class = "sr-only" })핸드폰
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group div-link">
+                                    <label class="control-label col-md-2">연락가능일정</label>
+                                    <div class="col-md-10 input-group-sm">
+                                        @Html.HiddenFor(model => model.LINK_RESERVATION)
+                                        <table class="table table-bordered table-schedule">
+                                            <tr>
+                                                <th></th>
+                                                <th>월</th>
+                                                <th>화</th>
+                                                <th>수</th>
+                                                <th>목</th>
+                                                <th>금</th>
+                                            </tr>
+                                            <tr>
+                                                <td>10:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m10" name="schedule" value="m10" /><label for="m10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t10" name="schedule" value="t10" /><label for="t10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w10" name="schedule" value="w10" /><label for="w10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h10" name="schedule" value="h10" /><label for="h10">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f10" name="schedule" value="f10" /><label for="f10">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>11:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m11" name="schedule" value="m11" /><label for="m11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t11" name="schedule" value="t11" /><label for="t11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w11" name="schedule" value="w11" /><label for="w11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h11" name="schedule" value="h11" /><label for="h11">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f11" name="schedule" value="f11" /><label for="f11">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>12:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m12" name="schedule" value="m12" /><label for="m12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t12" name="schedule" value="t12" /><label for="t12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w12" name="schedule" value="w12" /><label for="w12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h12" name="schedule" value="h12" /><label for="h12">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f12" name="schedule" value="f12" /><label for="f12">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>13:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m13" name="schedule" value="m13" /><label for="m13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t13" name="schedule" value="t13" /><label for="t13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w13" name="schedule" value="w13" /><label for="w13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h13" name="schedule" value="h13" /><label for="h13">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f13" name="schedule" value="f13" /><label for="f13">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>14:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m14" name="schedule" value="m14" /><label for="m14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t14" name="schedule" value="t14" /><label for="t14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w14" name="schedule" value="w14" /><label for="w14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h14" name="schedule" value="h14" /><label for="h14">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f14" name="schedule" value="f14" /><label for="f14">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>15:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m15" name="schedule" value="m15" /><label for="m15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t15" name="schedule" value="t15" /><label for="t15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w15" name="schedule" value="w15" /><label for="w15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h15" name="schedule" value="h15" /><label for="h15">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f15" name="schedule" value="f15" /><label for="f15">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>16:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m16" name="schedule" value="m16" /><label for="m16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t16" name="schedule" value="t16" /><label for="t16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w16" name="schedule" value="w16" /><label for="w16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h16" name="schedule" value="h16" /><label for="h16">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f16" name="schedule" value="f16" /><label for="f16">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>17:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m17" name="schedule" value="m17" /><label for="m17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t17" name="schedule" value="t17" /><label for="t17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w17" name="schedule" value="w17" /><label for="w17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h17" name="schedule" value="h17" /><label for="h17">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f17" name="schedule" value="f17" /><label for="f17">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>18:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m18" name="schedule" value="m18" /><label for="m18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t18" name="schedule" value="t18" /><label for="t18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w18" name="schedule" value="w18" /><label for="w18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h18" name="schedule" value="h18" /><label for="h18">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f18" name="schedule" value="f18" /><label for="f18">&nbsp;</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>19:00</td>
+                                                <td class="timetd"><input type="checkbox" id="m19" name="schedule" value="m19" /><label for="m19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="t19" name="schedule" value="t19" /><label for="t19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="w19" name="schedule" value="w19" /><label for="w19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="h19" name="schedule" value="h19" /><label for="h19">&nbsp;</label></td>
+                                                <td class="timetd"><input type="checkbox" id="f19" name="schedule" value="f19" /><label for="f19">&nbsp;</label></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="form-group">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-right">
+                                        <input type="submit" value="저장" class="btn btn-sm btn-primary" />
+                                        @Html.ActionLink("취소", "Details", new { id = Model.ID }, new { @class = "btn btn-sm btn-default" })
+                                        <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-sm btn-default">목록</a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dlg_address" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">주소및 우편번호 검색</h4>
+            </div>
+            <div class="modal-body">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation"><a href="#oldaddr" aria-controls="oldaddr" role="tab" data-toggle="tab">지번 검색</a></li>
+                    <li role="presentation" class="active"><a href="#newaddr" aria-controls="newaddr" role="tab" data-toggle="tab">도로명 검색</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane" id="oldaddr">
+                        <div class="form-horizontal" style="padding:1em;">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_search">지역명</label>
+                                <div class="col-md-5 input-group-sm"><input type="text" id="oldaddr_search" name="oldaddr_search" class="form-control" /></div>
+                                <a href="javascript:fn_oldaddr_search();" class="btn btn-sm btn-info">검색</a>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_search">지역 선택</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="oldaddr_select" name="oldaddr_select" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 input-group-sm">
+                                    검색 후 지역을 선택해주세요.
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_zip">우편번호</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_zip" name="oldaddr_zip" class="form-control"  /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a1">주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_a1" name="oldaddr_a1" class="form-control"  /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a2">상세 주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="oldaddr_a2" name="oldaddr_a2" class="form-control" /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane active" id="newaddr">
+                        <div class="form-horizontal" style="padding:1em;">
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_city">시/도</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="newaddr_city" name="newaddr_city" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_gu">시/군/구</label>
+                                <div class="col-md-8 input-group-sm">
+                                    <select id="newaddr_gu" name="newaddr_gu" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_city">지역명</label>
+                                <div class="col-md-5 input-group-sm">
+                                    <input type="text" id="newaddr_search" name="newaddr_search" class="form-control" />
+                                </div>
+                                <div class="col-md-5 input-group-sm">
+                                    <a href="javascript:fn_newaddr_search();" class="btn btn-sm btn-info">검색</a>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="newaddr_select">주소/우편번호 선택</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <select id="newaddr_select" name="newaddr_select" class="form-control"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10 input-group-sm">
+                                    검색 후 지역을 선택해주세요.
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_zip">우편번호</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <input type="text" id="newaddr_zip" name="oldaddr_zip" class="form-control" readonly />
+                                    <input type="hidden" id="newaddr_c" name="newaddr_c" />
+                                    <input type="hidden" id="newaddr_g" name="newaddr_g" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a1">주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="newaddr_a1" name="oldaddr_a1" class="form-control" readonly /></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2" for="oldaddr_a2">상세 주소</label>
+                                <div class="col-md-10 input-group-sm"><input type="text" id="newaddr_a2" name="oldaddr_a2" class="form-control" /></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:fnAddrIn();" class="btn btn-sm btn-primary">저장</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    function fnAddrIn() {
+        // 올드 입력
+        if ($("div.tab-content div.active").attr("id") == 'oldaddr') {
+            if ($("#oldaddr_a2").val().trim().length < 1) return;
+            $("#ZIP").val($("#oldaddr_zip").val());
+            $("#FULL_ADDR").val($("#oldaddr_a1").val() + " " + $("#oldaddr_a2").val());
+            $("#PROVINCE").val();
+            $("#CITY").val();
+            $("#DONG").val($("#oldaddr_a1").val());
+            $("#STREET").val($("#oldaddr_a2").val());
+            $("#dlg_address").modal('hide');
+        } else if ($("div.tab-content div.active").attr("id") == 'newaddr') {
+            if ($("#newaddr_a2").val().trim().length < 1) return;
+            $("#ZIP").val($("#newaddr_zip").val());
+            $("#FULL_ADDR").val($("#newaddr_a1").val() + " " + $("#newaddr_a2").val());
+            $("#PROVINCE").val();
+            $("#CITY").val($("#newaddr_c").val());
+            $("#DONG").val($("#newaddr_a1").val());
+            $("#STREET").val($("#newaddr_a2").val());
+            $("#dlg_address").modal('hide');
+        }
+    }
+    function fn_oldaddr_search() {
+        var w = $("#oldaddr_search").val();
+        if (w.trim().length < 1) return;
+        $("#oldaddr_select").html('');
+        $.get('https://bluehorse.pfizer.co.kr/mmszipcode?SEARCH=' + encodeURIComponent($("#oldaddr_search").val()), function (data) {
+            if (data.code == '100') {
+                var arrzip = data.zipdata;
+                $("#oldaddr_select").unbind('change');
+                for (var i = 0 ; i < arrzip.length ; i++) {
+                    var option = $('<option value="' + arrzip[i].address1 + '">[' + arrzip[i].zipcode + '] ' + arrzip[i].address1 + ' ' + arrzip[i].address2 + '</option>');
+                    option.data('addr', arrzip[i]);
+                    $("#oldaddr_select").append(option);
+                }
+                $("#oldaddr_select").on('change', function () {
+                    var sltobj = $("#oldaddr_select option:selected").data('addr');
+                    $("#oldaddr_zip").val(sltobj.zipcode);
+                    $("#oldaddr_a1").val(sltobj.address1 + " " + sltobj.address2);
+                    $("#oldaddr_a2").focus();
+                });
+            } else if (data.code == '101') {
+                alert('검색결과가 없습니다.');
+            }
+            //{"code":"100","msg":"검색 성공","zipdata":[{"zipcode":"134-700","zipcode1":"134","zipcode2":"700","address1":"서울 강동구 성내1동 강동구청","address2":""},{"zipcode":"134-763","zipcode1":"134","zipcode2":"763","address1":"서울 강동구 성내1동 농협중앙회서울지역본부","address2":""},{"zipcode":"134-745","zipcode1":"134","zipcode2":"745","address1":"서울 강동구 성내1동 미주아파트","address2":"(1∼5동)"},{"zipcode":"134-758","zipcode1":"134","zipcode2":"758","address1":"서울 강동구 성내1동 삼성아파트","address2":""},{"zipcode":"134-711","zipcode1":"134","zipcode2":"711","address1":"서울 강동구 성내1동 서울강동경찰서","address2":""},{"zipcode":"134-883","zipcode1":"134","zipcode2":"883","address1":"서울 강동구 성내1동","address2":"108∼110"},{"zipcode":"134-883","zipcode1":"134","zipcode2":"883","address1":"서울 강동구 성내1동","address2":"111-(1∼8)"},{"zipcode":"134-883","zipcode1":"134","zipcode2":"883","address1":"서울 강동구 성내1동","address2":"111-(55)"},{"zipcode":"134-883","zipcode1":"134","zipcode2":"883","address1":"서울 강동구 성내1동","address2":"120-(30∼91)"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"271"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"291-(22∼23)"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"293-(10∼12)"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"293-(22)"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"294∼299"},{"zipcode":"134-851","zipcode1":"134","zipcode2":"851","address1":"서울 강동구 성내1동","address2":"300∼377"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"420-(11∼20)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"420-(28∼42)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"421"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"434-(3∼13)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"434-(24∼37)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"434-(40∼50)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"435-(1∼8)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"435-(26∼30)"},{"zipcode":"134-884","zipcode1":"134","zipcode2":"884","address1":"서울 강동구 성내1동","address2":"435-(36∼39)"},{"zipcode":"134-885","zipcode1":"134","zipcode2":"885","address1":"서울 강동구 성내1동","address2":"447"},{"zipcode":"134-885","zipcode1":"134","zipcode2":"885","address1":"서울 강동구 성내1동","address2":"448-(1∼8)"},{"zipcode":"134-885","zipcode1":"134","zipcode2":"885","address1":"서울 강동구 성내1동","address2":"448-(31)"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"450∼469"},{"zipcode":"134-850","zipcode1":"134","zipcode2":"850","address1":"서울 강동구 성내1동","address2":"518∼547"},{"zipcode":"134-851","zipcode1":"134","zipcode2":"851","address1":"서울 강동구 성내1동","address2":"548∼588"},{"zipcode":"134-886","zipcode1":"134","zipcode2":"886","address1":"서울 강동구 성내1동","address2":"589∼591"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"593"},{"zipcode":"134-883","zipcode1":"134","zipcode2":"883","address1":"서울 강동구 성내1동","address2":"595"},{"zipcode":"134-848","zipcode1":"134","zipcode2":"848","address1":"서울 강동구 성내1동","address2":"602"},{"zipcode":"134-031","zipcode1":"134","zipcode2":"031","address1":"서울 강동구 성내1동","address2":""},{"zipcode":"134-840","zipcode1":"134","zipcode2":"840","address1":"서울 강동구 성내2동","address2":"1∼100"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"101∼107"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"111-(9∼54)"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"112∼119"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"120-(1∼29)"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"121∼198"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"199-(1∼10)"},{"zipcode":"134-841","zipcode1":"134","zipcode2":"841","address1":"서울 강동구 성내2동","address2":"199-(26∼28)"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"200∼243"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"246∼270"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"272∼290"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"291-(1∼20)"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"292"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"293-(1∼9)"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"293-(23)"},{"zipcode":"134-888","zipcode1":"134","zipcode2":"888","address1":"서울 강동구 성내2동","address2":"383∼384"},{"zipcode":"134-888","zipcode1":"134","zipcode2":"888","address1":"서울 강동구 성내2동","address2":"407-(4∼24)"},{"zipcode":"134-888","zipcode1":"134","zipcode2":"888","address1":"서울 강동구 성내2동","address2":"407-(34∼43)"},{"zipcode":"134-849","zipcode1":"134","zipcode2":"849","address1":"서울 강동구 성내2동","address2":"500∼517"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"592"},{"zipcode":"134-842","zipcode1":"134","zipcode2":"842","address1":"서울 강동구 성내2동","address2":"598"},{"zipcode":"134-840","zipcode1":"134","zipcode2":"840","address1":"서울 강동구 성내2동","address2":"600"},{"zipcode":"134-840","zipcode1":"134","zipcode2":"840","address1":"서울 강동구 성내2동","address2":"604"},{"zipcode":"134-032","zipcode1":"134","zipcode2":"032","address1":"서울 강동구 성내2동","address2":""},{"zipcode":"134-843","zipcode1":"134","zipcode2":"843","address1":"서울 강동구 성내3동","address2":"199-(11∼25)"},{"zipcode":"134-843","zipcode1":"134","zipcode2":"843","address1":"서울 강동구 성내3동","address2":"244∼245"},{"zipcode":"134-843","zipcode1":"134","zipcode2":"843","address1":"서울 강동구 성내3동","address2":"378∼382"},{"zipcode":"134-843","zipcode1":"134","zipcode2":"843","address1":"서울 강동구 성내3동","address2":"385∼399"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"400∼406"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"407-(1∼3)"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"407-(25∼33)"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"407-(44∼45)"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"408∼416"},{"zipcode":"134-845","zipcode1":"134","zipcode2":"845","address1":"서울 강동구 성내3동","address2":"417∼419"},{"zipcode":"134-845","zipcode1":"134","zipcode2":"845","address1":"서울 강동구 성내3동","address2":"420-(1∼10)"},{"zipcode":"134-845","zipcode1":"134","zipcode2":"845","address1":"서울 강동구 성내3동","address2":"420-(21∼27)"},{"zipcode":"134-845","zipcode1":"134","zipcode2":"845","address1":"서울 강동구 성내3동","address2":"420-(43∼48)"},{"zipcode":"134-845","zipcode1":"134","zipcode2":"845","address1":"서울 강동구 성내3동","address2":"422∼425"},{"zipcode":"134-890","zipcode1":"134","zipcode2":"890","address1":"서울 강동구 성내3동","address2":"426∼433"},{"zipcode":"134-890","zipcode1":"134","zipcode2":"890","address1":"서울 강동구 성내3동","address2":"434-(1∼2)"},{"zipcode":"134-890","zipcode1":"134","zipcode2":"890","address1":"서울 강동구 성내3동","address2":"434-(14∼23)"},{"zipcode":"134-890","zipcode1":"134","zipcode2":"890","address1":"서울 강동구 성내3동","address2":"434-(38∼39)"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"435-(9∼25)"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"435-(31∼35)"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"435-(41∼42)"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"436∼445"},{"zipcode":"134-847","zipcode1":"134","zipcode2":"847","address1":"서울 강동구 성내3동","address2":"446"},{"zipcode":"134-847","zipcode1":"134","zipcode2":"847","address1":"서울 강동구 성내3동","address2":"448-(9∼30)"},{"zipcode":"134-847","zipcode1":"134","zipcode2":"847","address1":"서울 강동구 성내3동","address2":"449"},{"zipcode":"134-847","zipcode1":"134","zipcode2":"847","address1":"서울 강동구 성내3동","address2":"594"},{"zipcode":"134-844","zipcode1":"134","zipcode2":"844","address1":"서울 강동구 성내3동","address2":"596∼597"},{"zipcode":"134-843","zipcode1":"134","zipcode2":"843","address1":"서울 강동구 성내3동","address2":"599"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"601"},{"zipcode":"134-846","zipcode1":"134","zipcode2":"846","address1":"서울 강동구 성내3동","address2":"603"},{"zipcode":"134-033","zipcode1":"134","zipcode2":"033","address1":"서울 강동구 성내3동","address2":""},{"zipcode":"134-030","zipcode1":"134","zipcode2":"030","address1":"서울 강동구 성내동","address2":""},{"zipcode":"210-040","zipcode1":"210","zipcode2":"040","address1":"강원 강릉시 성내동 강릉우체국","address2":""},{"zipcode":"210-714","zipcode1":"210","zipcode2":"714","address1":"강원 강릉시 성내동 빈폴타워","address2":""},{"zipcode":"210-040","zipcode1":"210","zipcode2":"040","address1":"강원 강릉시 성내동","address2":""},{"zipcode":"245-941","zipcode1":"245","zipcode2":"941","address1":"강원 삼척시 성내동","address2":"1∼24"},{"zipcode":"245-942","zipcode1":"245","zipcode2":"942","address1":"강원 삼척시 성내동","address2":"25∼124"},{"zipcode":"245-050","zipcode1":"245","zipcode2":"050","address1":"강원 삼척시 성내동","address2":""},{"zipcode":"215-803","zipcode1":"215","zipcode2":"803","address1":"강원 양양군 양양읍 성내리","address2":""},{"zipcode":"664-912","zipcode1":"664","zipcode2":"912","address1":"경남 사천시 곤양면 성내리","address2":""},{"zipcode":"645-360","zipcode1":"645","zipcode2":"360","address1":"경남 창원시 진해구 성내동","address2":""},{"zipcode":"638-804","zipcode1":"638","zipcode2":"804","address1":"경남 고성군 고성읍 성내리","address2":""},{"zipcode":"666-941","zipcode1":"666","zipcode2":"941","address1":"경남 산청군 단성면 성내리","address2":""},{"zipcode":"635-862","zipcode1":"635","zipcode2":"862","address1":"경남 창녕군 영산면 성내리","address2":""},{"zipcode":"740-707","zipcode1":"740","zipcode2":"707","address1":"경북 김천시 성내동 김천교육지원청","address2":""},{"zipcode":"740-100","zipcode1":"740","zipcode2":"100","address1":"경북 김천시 성내동","address2":""},{"zipcode":"750-805","zipcode1":"750","zipcode2":"805","address1":"경북 영주시 풍기읍 성내1리","address2":""},{"zipcode":"750-803","zipcode1":"750","zipcode2":"803","address1":"경북 영주시 풍기읍 성내2리","address2":""},{"zipcode":"750-803","zipcode1":"750","zipcode2":"803","address1":"경북 영주시 풍기읍 성내3리","address2":""},{"zipcode":"750-805","zipcode1":"750","zipcode2":"805","address1":"경북 영주시 풍기읍 성내4리","address2":""},{"zipcode":"750-805","zipcode1":"750","zipcode2":"805","address1":"경북 영주시 풍기읍 성내리","address2":""},{"zipcode":"770-901","zipcode1":"770","zipcode2":"901","address1":"경북 영천시 성내동","address2":"1∼200"},{"zipcode":"770-902","zipcode1":"770","zipcode2":"902","address1":"경북 영천시 성내동","address2":"201∼300"},{"zipcode":"770-070","zipcode1":"770","zipcode2":"070","address1":"경북 영천시 성내동","address2":""},{"zipcode":"791-947","zipcode1":"791","zipcode2":"947","address1":"경북 포항시 북구 흥해읍 성내리","address2":""},{"zipcode":"766-815","zipcode1":"766","zipcode2":"815","address1":"경북 영덕군 영해면 성내1리","address2":""},{"zipcode":"766-814","zipcode1":"766","zipcode2":"814","address1":"경북 영덕군 영해면 성내2리","address2":""},{"zipcode":"766-814","zipcode1":"766","zipcode2":"814","address1":"경북 영덕군 영해면 성내3리","address2":""},{"zipcode":"766-814","zipcode1":"766","zipcode2":"814","address1":"경북 영덕군 영해면 성내4리","address2":""},{"zipcode":"766-815","zipcode1":"766","zipcode2":"815","address1":"경북 영덕군 영해면 성내5리","address2":""},{"zipcode":"766-815","zipcode1":"766","zipcode2":"815","address1":"경북 영덕군 영해면 성내리","address2":""},{"zipcode":"534-706","zipcode1":"534","zipcode2":"706","address1":"전남 무안군 무안읍 성내리 무안성내휴먼시아아파트","address2":"(101∼107동)"},{"zipcode":"534-802","zipcode1":"534","zipcode2":"802","address1":"전남 무안군 무안읍 성내리","address2":""},{"zipcode":"534-862","zipcode1":"534","zipcode2":"862","address1":"전남 무안군 운남면 성내리","address2":""},{"zipcode":"537-803","zipcode1":"537","zipcode2":"803","address1":"전남 완도군 완도읍 성내리","address2":""},{"zipcode":"539-803","zipcode1":"539","zipcode2":"803","address1":"전남 진도군 진도읍 성내리","address2":""},{"zipcode":"536-807","zipcode1":"536","zipcode2":"807","address1":"전남 해남군 해남읍 성내리","address2":""},{"zipcode":"585-881","zipcode1":"585","zipcode2":"881","address1":"전북 고창군 무장면 성내리","address2":""},{"zipcode":"585-811","zipcode1":"585","zipcode2":"811","address1":"전북 고창군 성내면 대흥리","address2":""},{"zipcode":"585-812","zipcode1":"585","zipcode2":"812","address1":"전북 고창군 성내면 덕산리","address2":""},{"zipcode":"585-811","zipcode1":"585","zipcode2":"811","address1":"전북 고창군 성내면 동산리","address2":""},{"zipcode":"585-812","zipcode1":"585","zipcode2":"812","address1":"전북 고창군 성내면 부덕리","address2":""},{"zipcode":"585-813","zipcode1":"585","zipcode2":"813","address1":"전북 고창군 성내면 산림리","address2":""},{"zipcode":"585-811","zipcode1":"585","zipcode2":"811","address1":"전북 고창군 성내면 신대리","address2":""},{"zipcode":"585-812","zipcode1":"585","zipcode2":"812","address1":"전북 고창군 성내면 신성리","address2":""},{"zipcode":"585-813","zipcode1":"585","zipcode2":"813","address1":"전북 고창군 성내면 양계리","address2":""},{"zipcode":"585-811","zipcode1":"585","zipcode2":"811","address1":"전북 고창군 성내면 옥제리","address2":""},{"zipcode":"585-813","zipcode1":"585","zipcode2":"813","address1":"전북 고창군 성내면 용교리","address2":""},{"zipcode":"585-811","zipcode1":"585","zipcode2":"811","address1":"전북 고창군 성내면 월산리","address2":""},{"zipcode":"585-813","zipcode1":"585","zipcode2":"813","address1":"전북 고창군 성내면 월성리","address2":""},{"zipcode":"585-812","zipcode1":"585","zipcode2":"812","address1":"전북 고창군 성내면 조동리","address2":""},{"zipcode":"585-810","zipcode1":"585","zipcode2":"810","address1":"전북 고창군 성내면","address2":""},{"zipcode":"336-822","zipcode1":"336","zipcode2":"822","address1":"충남 아산시 영인면 성내리","address2":""},{"zipcode":"325-883","zipcode1":"325","zipcode2":"883","address1":"충남 서천군 비인면 성내리","address2":""},{"zipcode":"390-821","zipcode1":"390","zipcode2":"821","address1":"충북 제천시 금성면 성내리","address2":""},{"zipcode":"390-852","zipcode1":"390","zipcode2":"852","address1":"충북 제천시 덕산면 성내리","address2":""},{"zipcode":"380-010","zipcode1":"380","zipcode2":"010","address1":"충북 충주시 성내동 충주우체국","address2":""},{"zipcode":"380-010","zipcode1":"380","zipcode2":"010","address1":"충북 충주시 성내동","address2":""}]}
+        });
+    }
+    function btnAddr() {
+        $.get('https://bluehorse.pfizer.co.kr/rna/getsido', function (data) {
+            if (data.Code == '100') {
+                var arr = data.arSido;
+                $("#newaddr_city").html();
+                $("#newaddr_city").unbind('change');
+                for (var i = 0 ; i < arr.length ; i++) {
+                    $("#newaddr_city").append("<option value='" + arr[i] + "'>" + arr[i] + "</option>");
+                }
+                $("#newaddr_city").on('change', function () {
+                    fn_load_newaddr_gu();
+                });
+            }
+            $("#dlg_address").modal('show');
+            fn_load_newaddr_gu();
+        });
+
+    }
+    function fn_load_newaddr_gu() {
+        if ($("#newaddr_city option:selected").val().trim().length < 1) return;
+        $.get('https://bluehorse.pfizer.co.kr/rna/getsigungu?sido=' + encodeURIComponent($("#newaddr_city option:selected").val()), function (data) {
+            if (data.Code == '100') {
+                var arr = data.arSigungu;
+                $("#newaddr_gu").html('');
+                for (var i = 0 ; i < arr.length ; i++) {
+                    $("#newaddr_gu").append("<option value='" + arr[i] + "'>" + arr[i] + "</option>");
+                }
+            }
+        });
+    }
+    function fn_newaddr_search() {
+        if ($("#newaddr_city option:selected").val().trim().length < 1) return;
+        if ($("#newaddr_gu option:selected").val().trim().length < 1) return;
+        if ($("#newaddr_search").val().trim().length < 1) return;
+
+        $.get('https://bluehorse.pfizer.co.kr/rna/getrna?sido=' + encodeURIComponent($("#newaddr_city option:selected").val())
+            + '&sigungu=' + encodeURIComponent($("#newaddr_gu option:selected").val()) + '&address=' + encodeURIComponent($("#newaddr_search").val())
+            , function (data) {
+                if (data.Code == '100') {
+                    var arr = data.arRna; // {"Zipcode":"134-822","Zipcode1":"134","Zipcode2":"822","Address1":"서울특별시 강동구 둔촌동 풍성로 231"}
+                    $("#newaddr_select").html('');
+                    $("#newaddr_select").unbind('change');
+                    for (var i = 0 ; i < arr.length ; i++) {
+                        var option = $('<option value="' + arr[i].Address1 + '">[' + arr[i].Zipcode + '] ' + arr[i].Address1 + '</option>');
+                        option.data('addr', arr[i]);
+                        $("#newaddr_select").append(option);
+                    }
+                    $("#newaddr_select").on('change', function () {
+                        var sltobj = $("#newaddr_select option:selected").data('addr');
+                        $("#newaddr_zip").val(sltobj.Zipcode);
+                        $("#newaddr_a1").val(sltobj.Address1);
+                        $("#newaddr_c").val($("#newaddr_city option:selected").val());
+                        $("#newaddr_g").val($("#newaddr_gu option:selected").val());
+                        $("#newaddr_a2").focus();
+                    });
+                }
+            }
+        );
+    }
+    $(document).ready(function () {
+        $("#CONSENT_CONSENT_DATE").datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+
+        $("input[name='schedule']").on("change", function () {
+            var a = $("input[name='schedule']:checked").map(function (_, el) {
+                return $(el).val();
+            }).get();
+            $("#LINK_RESERVATION").val(a.join(','));
+            console.log($("#LINK_RESERVATION").val());
+        });
+
+        var LINK_RESERVATION = $("#LINK_RESERVATION").val();
+        if (LINK_RESERVATION == null || LINK_RESERVATION.length < 1) return;
+        var arr = LINK_RESERVATION.split(",");
+        for (var i = 0 ; i < arr.length ; i++) {
+            $("#" + arr[i]).prop("checked", true);
+        }
+        fn_link_open();
+    });
+    function fn_link_open() {
+        $(".div-link").toggle();
+        if ($(".div-link").is(":hidden")) {
+            $("#plink_a").html("열기");
+        } else {
+            $("#plink_a").html("닫기");
+        }
+    }
+</script>

@@ -1,0 +1,54 @@
+﻿@model PrivacyConsentDB.Dto.ApprovalIndexDto
+
+@{
+    ViewBag.Title = "승인목록";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>승인/반려 이력 확인</h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                @Html.Partial("HistorySearch", Model.Search)
+
+                <div class="clearfix"></div>
+                <br />
+                @Html.Partial("HistoryList", Model.Approvals)
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        });
+        $('table.paginated').each(function () {
+            var currentPage = 0;
+            var numPerPage = 20;
+            var $table = $(this);
+            $table.bind('repaginate', function () {
+                if (numPerPage != 'all')
+                    $table.find('tbody tr').hide().slice(currentPage * numPerPage, (currentPage + 1) * numPerPage).show();
+            });
+            $table.trigger('repaginate');
+            var numRows = $table.find('tbody tr').length;
+            var numPages = Math.ceil(numRows / numPerPage);
+            var $pager = $('<div class="pager"></div>');
+            for (var page = 0; page < numPages; page++) {
+                $('<span class="page-number"></span>').text(page + 1).bind('click', {
+                    newPage: page
+                }, function (event) {
+                    currentPage = event.data['newPage'];
+                    $table.trigger('repaginate');
+                    $(this).addClass('active').siblings().removeClass('active');
+                }).appendTo($pager).addClass('clickable');
+            }
+            $pager.insertAfter($table).find('span.page-number:first').addClass('active');
+        });
+    });
+</script>

@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrivacyConsentDB", "PrivacyConsentDB\PrivacyConsentDB.csproj", "{FE9FF918-C9B9-43B4-A215-C16CAE037F07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PcmsTask", "PcmsTask\PcmsTask.csproj", "{1C626D1F-088B-45D1-9D23-C267C6CB8EFB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE9FF918-C9B9-43B4-A215-C16CAE037F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE9FF918-C9B9-43B4-A215-C16CAE037F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE9FF918-C9B9-43B4-A215-C16CAE037F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE9FF918-C9B9-43B4-A215-C16CAE037F07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C626D1F-088B-45D1-9D23-C267C6CB8EFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C626D1F-088B-45D1-9D23-C267C6CB8EFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C626D1F-088B-45D1-9D23-C267C6CB8EFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C626D1F-088B-45D1-9D23-C267C6CB8EFB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

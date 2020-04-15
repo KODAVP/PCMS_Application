@@ -1,0 +1,11 @@
+﻿@model PrivacyConsentDB.Models.Privacy
+@{
+    var path = Request.Url.Authority + "/Approvals/History/"
+}
+<h1>안녕하세요</h1>
+
+<ul>
+    <li>등록하신 @Model.IND_FULL_NAME 고객개인정보의 승인이 반려되었습니다.</li>
+    <li><a href="@path">PCMS에서 확인하기</a></li>
+</ul>
+* 시스템에서 자동발신된 메일로 회신이 불가합니다.

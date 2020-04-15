@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ODSMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--생성 중 오류 발생:
+경고 6002: 테이블/뷰 'ODSM.dbo.VW_CONSENT'에 기본 키가 정의되지 않았습니다. 키가 유추되었고 읽기 전용 테이블/뷰로 정의되었습니다.-->
+  <EntityType Name="VW_CONSENT">
+    <Key>
+      <PropertyRef Name="PCMS_ID" />
+      <PropertyRef Name="NUC_ID" />
+      <PropertyRef Name="ODSK_MODIFY_DATE" />
+    </Key>
+    <Property Name="PCMS_ID" Type="varchar" MaxLength="120" Nullable="false" />
+    <Property Name="NUC_ID" Type="varchar" MaxLength="120" Nullable="false" />
+    <Property Name="ONEKEY" Type="varchar" MaxLength="120" />
+    <Property Name="ODSK_MODIFY_DATE" Type="datetime" Nullable="false" />
+  </EntityType>
+  <!--생성 중 오류 발생:
+경고 6002: 테이블/뷰 'ODSM.dbo.VW_CONSENT_ALIGNMENT'에 기본 키가 정의되지 않았습니다. 키가 유추되었고 읽기 전용 테이블/뷰로 정의되었습니다.-->
+  <EntityType Name="VW_CONSENT_ALIGNMENT">
+    <Key>
+      <PropertyRef Name="D_NUC_ID" />
+      <PropertyRef Name="D_ONEKEY_ID" />
+      <PropertyRef Name="D_NAME" />
+    </Key>
+    <Property Name="D_NUC_ID" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="D_ONEKEY_ID" Type="nvarchar" MaxLength="30" Nullable="false" />
+    <Property Name="H_NAME" Type="nvarchar" MaxLength="256" />
+    <Property Name="H_PHONE" Type="nvarchar" MaxLength="50" />
+    <Property Name="H_POSTCODE" Type="nvarchar" MaxLength="10" />
+    <Property Name="H_REGION" Type="nvarchar" MaxLength="30" />
+    <Property Name="H_CITY" Type="nvarchar" MaxLength="30" />
+    <Property Name="H_ADDR" Type="nvarchar" MaxLength="371" />
+    <Property Name="D_SPEC" Type="nvarchar" MaxLength="256" />
+    <Property Name="D_NAME" Type="nvarchar" MaxLength="256" Nullable="false" />
+    <Property Name="D_EMAIL" Type="nvarchar" MaxLength="256" />
+    <Property Name="D_MOBILE_PHONE" Type="nvarchar" MaxLength="30" />
+  </EntityType>
+  <EntityContainer Name="ODSMModelStoreContainer">
+    <EntitySet Name="VW_CONSENT" EntityType="Self.VW_CONSENT" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VW_CONSENT].[PCMS_ID] AS [PCMS_ID], 
+    [VW_CONSENT].[NUC_ID] AS [NUC_ID], 
+    [VW_CONSENT].[ONEKEY] AS [ONEKEY], 
+    [VW_CONSENT].[ODSK_MODIFY_DATE] AS [ODSK_MODIFY_DATE]
+    FROM [dbo].[VW_CONSENT] AS [VW_CONSENT]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="VW_CONSENT_ALIGNMENT" EntityType="Self.VW_CONSENT_ALIGNMENT" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [VW_CONSENT_ALIGNMENT].[D_NUC_ID] AS [D_NUC_ID], 
+    [VW_CONSENT_ALIGNMENT].[D_ONEKEY_ID] AS [D_ONEKEY_ID], 
+    [VW_CONSENT_ALIGNMENT].[H_NAME] AS [H_NAME], 
+    [VW_CONSENT_ALIGNMENT].[H_PHONE] AS [H_PHONE], 
+    [VW_CONSENT_ALIGNMENT].[H_POSTCODE] AS [H_POSTCODE], 
+    [VW_CONSENT_ALIGNMENT].[H_REGION] AS [H_REGION], 
+    [VW_CONSENT_ALIGNMENT].[H_CITY] AS [H_CITY], 
+    [VW_CONSENT_ALIGNMENT].[H_ADDR] AS [H_ADDR], 
+    [VW_CONSENT_ALIGNMENT].[D_SPEC] AS [D_SPEC], 
+    [VW_CONSENT_ALIGNMENT].[D_NAME] AS [D_NAME], 
+    [VW_CONSENT_ALIGNMENT].[D_EMAIL] AS [D_EMAIL], 
+    [VW_CONSENT_ALIGNMENT].[D_MOBILE_PHONE] AS [D_MOBILE_PHONE]
+    FROM [dbo].[VW_CONSENT_ALIGNMENT] AS [VW_CONSENT_ALIGNMENT]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+</Schema>

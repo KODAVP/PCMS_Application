@@ -1,0 +1,38 @@
+﻿@using PrivacyConsentDB.Models
+@model LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<h2>&nbsp;</h2>
+<div class="row" style="margin-top:2em;">
+    <div class="col-lg-offset-4 col-lg-4 col-md-offset-4 col-md-4 col-sm-offset-4 col-sm-4">
+        @using (Html.BeginForm( "Signin", "User/Signin", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+                <hr />
+                <div class="form-group" style="margin-bottom:15px;">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "계정" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom:15px;">
+                    <div class="col-md-12">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" , @placeholder = "패스워드" })
+                        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-12">
+                        <input type="submit" value="Log in" class="btn btn-sm btn-primary" style="width:100%;" />
+                    </div>
+                </div>
+        }
+
+    </div>
+</div>
+

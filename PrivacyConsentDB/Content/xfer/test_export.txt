@@ -1,0 +1,4 @@
+lcd C:\Temp
+cd \home\okc_pfizer_kr\ClientToCegedim\channel\n360\import
+mput *.txt 
+quit

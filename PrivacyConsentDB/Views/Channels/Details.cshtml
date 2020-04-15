@@ -1,0 +1,101 @@
+﻿@model PrivacyConsentDB.Models.Channel
+
+@{
+    ViewBag.Title = "Details";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>동의서 관리 <small>동의서의 버전을 관리합니다..</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.name)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.name)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.type)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.type)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.athour)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.athour)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.usage)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.usage)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.modifieddate)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.modifieddate)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.host)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.host)
+                    </dd>
+
+                    <dt>
+                        @Html.DisplayNameFor(model => model.account)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.account)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.path)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.exportpath)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.exportpath)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.path)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.backuppath)
+                    </dt>
+
+                    <dd>
+                        @Html.DisplayFor(model => model.backuppath)
+                    </dd>
+                </dl>
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        @Html.ActionLink("수정", "Edit", new { id = Model.ID }, new { @class = "btn btn-sm btn-info" })
+                        @Html.ActionLink("취소", "Index" , null, new { @class = "btn btn-sm btn-default" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

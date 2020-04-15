@@ -1,0 +1,184 @@
+﻿@using PrivacyConsentDB.Commons;
+@model PrivacyConsentDB.Dto.DashboardDto
+<div style="margin-top:50px;"></div>
+    @if (!MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN) && !MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) && !MyRoleManager.hasRole(MyRoleManager.RoleType.MARKETING))
+    {
+        <div class="row top_tiles">
+            <div class="col-md-6">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                    <h3 style="margin-top:1em;">승인요청</h3>
+                    <div class="count">
+                        <a href="/Privacy/Index?ApprovalStatus=0">
+                            @string.Format("{0:#,#}", Model.approvalrequests)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-comments-o"></i></div>
+                    <h3 style="margin-top:1em;">반려</h3>
+                    <div class="count">
+                        <a href="/Privacy/Index?ApprovalStatus=1">
+                            @string.Format("{0:#,#}", Model.rejectedrequests)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-title">
+                        <h5>고객정보 반영 이력</h5>
+                        <div class="ibox-tools">
+                            <form style="display:inline" action="/Dashboard/Dashboard" method="get" name="frmSearch" id="frmSearch"><input type="text" name="pcmsid" value="@ViewBag.pcmsid" class="form-control" placeholder="PCMS CODE 검색.." style="display:inline;width:200px;" /></form>
+                            <a href="#" onclick="search()"><i class="fa fa-search"></i></a>
+                            <a href="#" onclick="excel()"><i class="fa fa-download"></i></a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <ul class="list-unstyled log-list" style="height:300px;">
+                            @foreach (var item in Model.logs)
+                            {
+                                var dtcreate = TimeZoneInfo.ConvertTime(item.createdate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+                                <li><span style="margin-right:1em;">@Html.DisplayFor(modelItem => dtcreate)</span> <b>@Html.DisplayFor(modelItem => item.creater)</b> 에서 <a href="/Privacy/Details/@item.privacy.ID">[@Html.DisplayFor(modelItem => item.privacy.PCMSID)]</a>를 수정하였습니다.</li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function search()
+            {
+                document.getElementById("frmSearch").action.value = "/Dashboard/Dashboard";
+                document.getElementById("frmSearch").submit();
+            }
+
+            function excel()
+            {
+                document.getElementById("frmSearch").action = "/Dashboard/XlsDownload";
+                document.getElementById("frmSearch").submit();
+            }
+        </script>
+    }
+    else
+    {
+        <div class="row top_tiles">
+            <div class="col-md-4">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-check-square-o"></i></div>
+                    <h3 style="margin-top:1em;">승인</h3>
+                    <div class="count">
+                        <a href="/Approvals/History?status=approved">
+                            @string.Format("{0:#,#}", Model.approvedrequests)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-square-o"></i></div>
+                    <h3 style="margin-top:1em;">반려</h3>
+                    <div class="count">
+                        <a href="/Approvals/History?status=rejected">
+                            @string.Format("{0:#,#}", Model.rejectedrequests)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-square-o"></i></div>
+                    <h3 style="margin-top:1em;">승인 요청</h3>
+                    <div class="count">
+                        <a href="/Approvals/Index">
+                            @string.Format("{0:#,#}", Model.approvalrequests)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-book"></i></div>
+                    <h3 style="margin-top:1em;">서면동의서</h3>
+                    <div class="count">
+                        <a href="#">
+                            @string.Format("{0:#,#}", Model.hardcount)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-envelope-o"></i></div>
+                    <h3 style="margin-top:1em;">MMS</h3>
+                    <div class="count">
+                        <a href="/Privacy/Index">
+                            @string.Format("{0:#,#}", Model.mmscount)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-life-saver"></i></div>
+                    <h3 style="margin-top:1em;">PforceRX</h3>
+                    <div class="count">
+                        <a href="/Privacy/Index">
+                            @string.Format("{0:#,#}", Model.pforcerxcount)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-magnet"></i></div>
+                    <h3 style="margin-top:1em;">GRV</h3>
+                    <div class="count">
+                        <a href="/Privacy/Index">
+                            @string.Format("{0:#,#}", Model.grvcount)
+                            <span style="font-size:16px;color:#555555;">건</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+<script>
+    var opts = {
+        title: '동의서 등록',
+        text: '새 동의서가 등록되었습니다.',
+        type: "info",
+        icon: "fa fa-bars",
+        addclass: "stack-modal",
+        hide: false,
+        history: {
+            history: false
+        },
+        addclass: "stack-modal",
+        stack: { "dir1": "down", "dir2": "right" }
+    };
+    $(document).ready(function () {
+        //new PNotify(opts);
+    });
+</script>

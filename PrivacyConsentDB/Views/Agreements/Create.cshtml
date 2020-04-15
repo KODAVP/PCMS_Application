@@ -1,0 +1,49 @@
+﻿@model PrivacyConsentDB.Models.Agreement
+
+@{
+    ViewBag.Title = "Create";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>동의서 관리 <small>동의서의 버전을 관리합니다..</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                @using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(model => model.contents)
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.title, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.title, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.title, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br/>
+                        <div id="summernote"></div>
+                        
+                        <div class="form-group">
+                            <div class="col-md-12 text-right">
+                                <input type="submit" value="저장" class="btn btn-primary btn-sm"  />
+                                <a href="/Privacy/Index" name="" class="btn btn-sm btn-default">취소</a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#summernote').summernote({ height: 400 });
+    $("form").submit(function (event) {
+        $("#contents").val($('#summernote').summernote('code'));
+        return;
+    });
+</script>

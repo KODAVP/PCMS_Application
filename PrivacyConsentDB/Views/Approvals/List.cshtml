@@ -1,0 +1,421 @@
+﻿@using PrivacyConsentDB.Commons
+@model IEnumerable<PrivacyConsentDB.Models.Approval>
+
+
+<table id="tblapprovalrequests" class="table table-bordered table-striped paginated">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.privacy.OWNER)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.privacy.IND_FULL_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.privacy.IND_SP)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.privacy.WKP_NAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.createdate) (KST)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.creater)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        var trid = "trid" + item.privacyId;
+        var ap1 = EnumHelper<Status.ApprovalStatus>.GetDisplayValue(item.status);
+        var dtcreate = TimeZoneInfo.ConvertTime(item.createdate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+        var dtmodify = TimeZoneInfo.ConvertTime(item.modifieddate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+        var invalidsource = !string.IsNullOrEmpty(item.privacy.CONSENT_CHANNEL);
+        var invalidemail = (CommonUtil.checkEmail(item.privacy.EMAIL) || CommonUtil.checkMobile(item.privacy.MOBILE));
+        <tr>            
+            <td>
+                @Html.DisplayFor(modelItem => item.privacy.OWNER)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.privacy.IND_FULL_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.privacy.IND_SP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.privacy.WKP_NAME)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => ap1)
+            </td>
+            <td>
+                @dtcreate
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.creater)
+            </td>
+            <td>
+                <a href="javascript:fn_detail_show('@trid');">상세보기</a>
+                <br />
+            </td>            
+        </tr>
+        <tr class="tr_details" id="@trid">
+            <td colspan="8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.PCMSID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.PCMSID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.OWNER, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.OWNER, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.WKP_NAME, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.WKP_NAME, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.WKP_TEL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.WKP_TEL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.ZIP, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.ZIP, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.FULL_ADDR, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.FULL_ADDR, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.IND_SP, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.IND_SP, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.IND_FULL_NAME, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.IND_FULL_NAME, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.EMAIL, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.EMAIL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.MOBILE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.MOBILE, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(model => item.privacy.CONSENTDATE, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.CONSENTDATE, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+
+                                @Html.LabelFor(model => item.privacy.CONSENTVERSION, htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.CONSENTVERSION, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">동의여부</label>
+                                <div class="col-md-4 input-group-sm">
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        @Html.EditorFor(model => item.privacy.CONSENT_USE, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        <span class="checkbox-label">수집/이용</span>
+                                    </label>
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        @Html.EditorFor(model => item.privacy.CONSENT_TRUST, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        <span class="checkbox-label">위탁</span>
+                                    </label>
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        @Html.EditorFor(model => item.privacy.CONSENT_ABROAD, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        <span class="checkbox-label">국외이전</span>
+                                    </label>
+                                    <label class="checkbox-custom checkbox-inline" data-initialize="checkbox">
+                                        @Html.EditorFor(model => item.privacy.CONSENT_SIGN, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                                        <span class="checkbox-label">서명</span>
+                                    </label>
+                                </div>
+                                <label class="control-label col-md-2">동의서채널</label>
+                                <div class="col-md-4 input-group-sm">
+                                    @Html.EditorFor(model => item.privacy.CONSENT_CHANNEL, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">연락방법</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <div class="radio" style="display: inline-block; float: left;">
+                                        <label class="radio-custom" data-initialize="radio">
+                                            @Html.RadioButtonFor(model => item.privacy.LINK_PHONE, "tel", new { @class = "sr-only", @disabled = "disabled" })근무처연락처
+                                        </label>
+                                    </div>
+                                    <div class="radio" style="display: inline-block; float: left;">
+                                        <label class="radio-custom" data-initialize="radio">
+                                            @Html.RadioButtonFor(model => item.privacy.LINK_PHONE, "mobile", new { @class = "sr-only", @disabled = "disabled" })핸드폰
+                                        </label>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">연락가능일정</label>
+                                <div class="col-md-10 input-group-sm">
+                                    @Html.HiddenFor(model => item.privacy.LINK_RESERVATION)
+                                    <table class="table table-bordered table-schedule">
+                                        <tr>
+                                            <th></th>
+                                            <th>월</th>
+                                            <th>화</th>
+                                            <th>수</th>
+                                            <th>목</th>
+                                            <th>금</th>
+                                        </tr>
+                                        <tr>
+                                            <td>10:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m10" name="schedule" value="m10" /><label for="m10">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t10" name="schedule" value="t10" /><label for="t10">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w10" name="schedule" value="w10" /><label for="w10">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h10" name="schedule" value="h10" /><label for="h10">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f10" name="schedule" value="f10" /><label for="f10">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>11:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m11" name="schedule" value="m11" /><label for="m11">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t11" name="schedule" value="t11" /><label for="t11">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w11" name="schedule" value="w11" /><label for="w11">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h11" name="schedule" value="h11" /><label for="h11">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f11" name="schedule" value="f11" /><label for="f11">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>12:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m12" name="schedule" value="m12" /><label for="m12">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t12" name="schedule" value="t12" /><label for="t12">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w12" name="schedule" value="w12" /><label for="w12">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h12" name="schedule" value="h12" /><label for="h12">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f12" name="schedule" value="f12" /><label for="f12">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>13:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m13" name="schedule" value="m13" /><label for="m13">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t13" name="schedule" value="t13" /><label for="t13">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w13" name="schedule" value="w13" /><label for="w13">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h13" name="schedule" value="h13" /><label for="h13">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f13" name="schedule" value="f13" /><label for="f13">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>14:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m14" name="schedule" value="m14" /><label for="m14">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t14" name="schedule" value="t14" /><label for="t14">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w14" name="schedule" value="w14" /><label for="w14">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h14" name="schedule" value="h14" /><label for="h14">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f14" name="schedule" value="f14" /><label for="f14">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>15:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m15" name="schedule" value="m15" /><label for="m15">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t15" name="schedule" value="t15" /><label for="t15">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w15" name="schedule" value="w15" /><label for="w15">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h15" name="schedule" value="h15" /><label for="h15">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f15" name="schedule" value="f15" /><label for="f15">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>16:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m16" name="schedule" value="m16" /><label for="m16">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t16" name="schedule" value="t16" /><label for="t16">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w16" name="schedule" value="w16" /><label for="w16">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h16" name="schedule" value="h16" /><label for="h16">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f16" name="schedule" value="f16" /><label for="f16">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>17:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m17" name="schedule" value="m17" /><label for="m17">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t17" name="schedule" value="t17" /><label for="t17">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w17" name="schedule" value="w17" /><label for="w17">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h17" name="schedule" value="h17" /><label for="h17">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f17" name="schedule" value="f17" /><label for="f17">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>18:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m18" name="schedule" value="m18" /><label for="m18">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t18" name="schedule" value="t18" /><label for="t18">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w18" name="schedule" value="w18" /><label for="w18">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h18" name="schedule" value="h18" /><label for="h18">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f18" name="schedule" value="f18" /><label for="f18">&nbsp;</label></td>
+                                        </tr>
+                                        <tr>
+                                            <td>19:00</td>
+                                            <td class="timetd"><input type="checkbox" id="m19" name="schedule" value="m19" /><label for="m19">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="t19" name="schedule" value="t19" /><label for="t19">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="w19" name="schedule" value="w19" /><label for="w19">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="h19" name="schedule" value="h19" /><label for="h19">&nbsp;</label></td>
+                                            <td class="timetd"><input type="checkbox" id="f19" name="schedule" value="f19" /><label for="f19">&nbsp;</label></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-md-2">동의내역</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>동의서</th>
+                                                <th>수집/이용동의</th>
+                                                <th>위탁동의</th>
+                                                <th>국외이전동의</th>
+                                                <th>서명</th>
+                                                <th>동의일자</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var sitem in item.privacy.Consents)
+                                            {
+                                                <tr>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_VERSION)</td>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_USE)</td>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_TRUST)</td>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_ABROAD)</td>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_SIGN)</td>
+                                                    <td>@Html.DisplayFor(modelItem => sitem.CONSENT_DATE)</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">승인/반려</label>
+                                <div class="col-md-10 input-group-sm">
+                                    <table class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>상태</th>
+                                                <th>사유</th>
+                                                <th>승인자</th>
+                                                <th>일시 (KST)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@Html.DisplayFor(model => ap1)</td>
+                                                <td>@Html.DisplayFor(model => item.message)</td>
+                                                <td>@Html.DisplayFor(model => item.modifier)</td>
+                                                <td>@Html.DisplayFor(model => dtmodify)</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 input-group-sm text-right">
+                                    <p class="text-danger">
+                                        @if (!invalidsource)
+                                        {
+                                            <span>일부 데이터가 적합하지 않습니다. 승인할 수 없습니다.[동의서채널]</span>
+                                        }
+                                        @if (!invalidemail)
+                                        {
+                                            <span>일부 데이터가 적합하지 않습니다. 승인할 수 없습니다.[이메일,핸드폰]</span>
+                                        }
+                                    </p >
+                                    @Html.ActionLink("수정", "Edit", "Privacy", new { id = item.privacyId }, new { @class = "btn btn-sm btn-info" })
+                                    <a href="javascript:fn_decide('@item.privacyId')" class="btn btn-sm btn-primary">승인/반려</a>
+                                    <a href="javascript:fn_detail_show('@trid')" class="btn btn-sm btn-default">닫기</a>
+                                </div>
+                            </div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    var currentid = "";
+    function fn_decide(id) {
+        $("#pid").val(id);
+        $("#dlg_decide").modal("show");
+    }
+    function fn_detail_show(id) {
+        currentid = "#" + id;
+        $(currentid).toggle();
+        $(" input[name='schedule']").attr("disabled", true);
+        if ($(currentid + " #item_privacy_LINK_RESERVATION") == null) {            
+            return;
+        }
+
+        var LINK_RESERVATION = $(currentid + " #item_privacy_LINK_RESERVATION").val();
+        if (LINK_RESERVATION == null || LINK_RESERVATION.length < 1) return;
+        var arr = LINK_RESERVATION.split(",");
+        for (var i = 0 ; i < arr.length ; i++) {
+            $(currentid + " #" + arr[i]).prop("checked", true);
+        }        
+    }
+    function fn_approved() {
+        var obj = {
+            id: $("#pid").val(),
+            action: 1,
+            message: $("#ap_msg").val()
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Approvals/DecideRequest",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            if (res.result) {
+                location.reload();
+            }
+            if (res.msg != null) {
+                $("#pid").val('');
+                $("#dlg_decide").modal("hide");
+                alert(res.msg);
+            }
+        });
+    }
+    function fn_rejected() {
+        var obj = {
+            id: $("#pid").val(),
+            action: 2,
+            message: $("#ap_msg").val()
+        }
+        $.ajax({
+            type: "POST",
+            url: "/Approvals/DecideRequest",
+            data: JSON.stringify(obj),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            if (res.result) {
+                location.reload();
+            }
+        });
+    }
+</script>

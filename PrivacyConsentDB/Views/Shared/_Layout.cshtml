@@ -1,0 +1,147 @@
+﻿@using PrivacyConsentDB.Commons;
+@{
+    var pageName = ViewContext.RouteData.Values["Action"].ToString();
+
+    //ViewContext.RouteData.Values["Controller"] + "/" + ViewContext.RouteData.Values["Action"];
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@pageName - Privacy Consent DB</title>
+
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.cerulean.min.css" rel="stylesheet" type="text/css" />
+
+    <link href="~/Content/fuelux/css/fuelux.min.css" rel="stylesheet">
+
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/summernote/summernote.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/pnotify/pnotify.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-datepicker/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
+    @if (ViewContext.RouteData.Values["Controller"].Equals("AccessPaths") || ViewContext.RouteData.Values["Controller"].Equals("AccessAuthorities"))
+    {
+        <link href="~/Content/datatables/datatables.min.css" rel="stylesheet" />
+    }
+
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/moment.min.js"></script>
+
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.0.min.js"></script>
+
+    <script src="~/Content/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/fuelux/js/fuelux.min.js"></script>
+
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Content/summernote/summernote.js"></script>
+    <script src="~/Content/pnotify/pnotify.custom.min.js"></script>
+    <script src="~/Content/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script src="~/Content/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/Content/bootstrap-datepicker/locales/bootstrap-datepicker.ko.min.js"></script>
+    @if (ViewContext.RouteData.Values["Controller"].Equals("AccessPaths") || ViewContext.RouteData.Values["Controller"].Equals("AccessAuthorities"))
+    {
+        <script src="~/Content/datatables/datatables.min.js"></script>
+    }
+
+
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body class="fuelux">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                @if (pageName != "Signin" && pageName != "NotUser")
+                {
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                }
+                <a href="/" class="navbar-brand" style="padding-top:4px;"><img src="/Content/logo.png" /></a>
+            </div>
+            @if (pageName != "Signin" && pageName != "NotUser")
+            {
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="privacy">개인정보활용동의<span class="caret"></span></a>
+                            <ul class="dropdown-menu" aria-labelledby="privacy">
+                                @if (MyRoleManager.canAccessPage("/Privacy/Index"))
+                                {
+                                    <li><a href="/Privacy/Index">개인정보활용동의 목록</a></li>
+                                }
+                                @if (MyRoleManager.canAccessPage("/Privacy/Create")){<li><a href="/Privacy/Create">개인정보활용동의 등록</a></li>}
+
+                                <li class="divider"></li>
+                                    @if (MyRoleManager.canAccessPage("/Approvals/Index")){<li><a href="/Approvals/Index">승인요청 확인</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/Approvals/History")){<li><a href="/Approvals/History">승인/반려 이력 확인</a></li>}
+                                <li class="divider"></li>
+                                @if (MyRoleManager.canAccessPage("/Code/Index")){<li><a href="/Code/Index">코드매칭 현황</a></li>}
+
+                            </ul>
+                        </li>
+                        @if (MyRoleManager.canAccessPage("/Reports/Index"))
+                        {
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="system">리포트<span class="caret"></span></a>
+                            <ul class="dropdown-menu" aria-labelledby="system">
+                                @if (MyRoleManager.canAccessPage("/Reports/Index")){<li><a href="/Reports/Index">사용자 리포트</a></li>}
+                                @if (MyRoleManager.canAccessPage("/Reports/AdminReport")){<li><a href="/Reports/AdminReport">관리자 리포트</a></li>}
+                            </ul>
+                        </li>
+                        }
+                        @if (MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) || MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN))
+                        {
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="system">시스템<span class="caret"></span></a>
+                                <ul class="dropdown-menu" aria-labelledby="system">
+                                    @if (MyRoleManager.canAccessPage("/AccessRoles/Index")){<li><a href="/AccessRoles/Index">권한 관리</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/AccessPaths/Index")){<li><a href="/AccessPaths/Index">페이지 관리</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/AccessAuthorities/Index")){<li><a href="/AccessAuthorities/Index">권한별 페이지 접근 가능여부 관리</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/System/Role")){<li><a href="/System/Role">사용자별 권한 관리</a></li>}
+                                    <li class="divider"></li>
+                                    @if (MyRoleManager.canAccessPage("/Settings/Index")){<li><a href="/Settings/Index">시스템 설정</a></li>}
+                                    <li class="divider"></li>
+                                    @if (MyRoleManager.canAccessPage("/Channels/Index")){<li><a href="/Channels/Index">인터페이스 설정</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/System/ChannelHistory")){<li><a href="/System/ChannelHistory">인터페이스 로그</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/System/ReSend")){<li><a href="/System/ReSend">인터페이스 재전송</a></li>}
+                                    @if (MyRoleManager.canAccessPage("/Code/InvalidList")){<li><a href="/Code/InvalidList">PforceRx 인터페이스 제외 이력</a></li>}
+                                    <li class="divider"></li>
+                                    @if (MyRoleManager.canAccessPage("/PrivacyLogs/Index")){<li><a href="/PrivacyLogs/Index">고객정보 변경이력</a></li>}
+                                </ul>
+                            </li>
+                        }
+                      </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="profile">
+                                <span class="glyphicon glyphicon-user"></span> @MyRoleManager.getRoleName()
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="profile">
+                                <li class="divider"></li>
+                                <li><a href="/User/SignOut">로그아웃</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Privacy Consent Management System</p>
+        </footer>
+    </div>
+
+</body>
+</html>

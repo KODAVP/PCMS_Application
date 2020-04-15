@@ -1,0 +1,6 @@
+﻿SOURCE|ACTION|WKP_ID|WKP_EXT_ID|IND_ID|IND_EXT_ID|ACT_STATUS|WKP_NAME|WKP_TEL|WKP_FAX|ZIP|PROVINCE|CITY|DONG|STREET|FULL_ADDR|IND_SP|TITLE|IND_LASTNAME|IND_FIRSTNAME|IND_FULL_NAME|GENDER|EMAIL|MOBILE|CONSENT_STATUS|CONSENT_DATE|CONSENT_SOURCE|CONSENT_TYPE|CONSENT_VERSION
+PCMS|I|||PC50001|||천안시동남구보건소|||442-021||||수원백병원 5내과|경기 수원시 팔달구 팔달로1가|내과||||강경미||psyche0131@naver.com|010-2601-8689||3/17/2016|GRV||
+PCMS|I|||PC50002|||당진군순성면보건지소|||519-809||||화순노인전문병원|전남 화순군 화순읍 일심리|가정의학과||||강주오||nibckjo@hanmail.net|010-5715-5740||3/27/2016|MDS||
+PCMS|I|||PC50003|||경주굿모닝병원|051-293-7766||604-070||||713-5|부산 사하구 감천동|신경과||||강태홍||Kang2715@hanmail.net|010-2546-2818||4/29/2016|MyPfizer||
+PCMS|U|||PC50004||||043-730-2071||373-860||||신흥4길 17-1 이원보건지소|충북 옥천군 이원면|일반의||||고민석||kms09cnum@naver.com|010-9367-5739||2/11/2016|Hardcopy||PCF-160205
+PCMS|D|||PC50005||||043-730-2080||373-841|||||충북 옥천군 군서면 동평리 군서보건지소|가정의학과||||고병욱||by2002@hanmail.net|010-4946-7204||2/11/2016|Hardcopy||PCF-160205

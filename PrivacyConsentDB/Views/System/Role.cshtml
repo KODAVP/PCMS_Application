@@ -1,0 +1,222 @@
+﻿@using PrivacyConsentDB.Commons
+@model PrivacyConsentDB.Dto.AccessAuthoritiesDto
+@{
+    var paths = new SelectList(Model.AccessPaths, "ID", "NAME");
+    var roles = new SelectList(Model.AccessRoles, "ID", "NAME");
+    WebGrid webGrid = new WebGrid(source: Model.UserRole, canSort: false, rowsPerPage: 10);
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>사용자별 권한 관리 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div class="clearfix"></div>
+                <div class="text-right" style="position:fixed;top:80px;right:30px;">
+                    <a href="javascript:fnAddUserRole();" class="btn btn-sm btn-success">사용자 추가</a>
+                    <a href="javascript:fnAddRole();" class="btn btn-sm btn-primary">권한 변경</a>
+                </div>
+                <div class="clearfix" style="margin-bottom:1em;"></div>
+                @using (Html.BeginForm("Role", "System", FormMethod.Post, new { @Id = "WebGridForm" }))
+                {
+                    @*To display dropdownlist - Prakash*@
+                    <div class="form-group">
+                        @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-2 input-group-sm">
+                            @Html.DropDownList("ddlCompanies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control", id = "ddlCompanies" })
+                        </div>
+                    </div>
+                }
+
+                <table class="table table-bordered table-striped">
+                    <tr>
+                        <th style="width:1em;"><input type="checkbox" id="allusername" name="allusername" /></th>
+                        <th>사용자명</th>
+                        <th>권한</th>
+                        @*To Add company column to grid - Prakash*@
+                        <th>회사</th>
+                    </tr>
+                    @foreach (var item in Model.UserRole)
+                    {
+                        <tr>
+                            <td><input name="username" type="checkbox" value="@item.username" /></td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.username)
+                            </td>
+                            <td>
+                                @foreach (var role in roles)
+                                {
+                                    int idx = role.Value.AsInt();
+
+                                    if ((int)(item.roletype) == role.Value.AsInt())
+                                    {
+                                        <text>@role.Text</text>
+                                    }
+                                }
+                            </td>
+                            @*To Add company column to grid - Prakash*@
+                            <td>
+                                @Html.DisplayFor(modelItem => item.COMP_CODE)
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dlg_add_role" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"></h4>
+            </div>
+            <div class="modal-body">
+                <p class="message"></p>
+                <div class="form-group">
+                    @if (MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN))
+                    {
+                        @Html.DropDownList("roletypeadd", roles, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                    @if (!MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN) && MyRoleManager.hasRole(MyRoleManager.RoleType.DCEADMIN))
+                    {
+                        @Html.DropDownList("roletypeadd", roles, new { htmlAttributes = new { @class = "form-control" } })
+                    }
+                </div>
+                <p class="message" style="margin-top:1em;">회사.</p>
+                <div class="form-group">
+                    @*@Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+
+                </div>
+
+                <input type="hidden" id="at" name="at" value="Add" />
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:fnRoleProc();" class="btn btn-sm btn-primary">저장</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="dlg_add_userrole" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">사용자 및 권한 추가</h4>
+            </div>
+            <div class="modal-body">
+                <p class="message">추가 할 사용자의 NTID를 입력해주세요.</p>
+                <div class="form-group">
+                    <textarea id="txtusers" name="txtusers" class="form-control" rows="10" placeholder="ex: CHOIY28, KIMD53을 등록하는 경우, 한 줄에 한 NTID씩 작성"></textarea>
+                </div>
+                <p class="message" style="margin-top:1em;">권한을 선택해주세요.</p>
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                    @if (MyRoleManager.hasRole(MyRoleManager.RoleType.SYSTEMADMIN))
+                    {
+                        @Html.DropDownList("userroletypeadd", EnumHelper.GetSelectList(typeof(MyRoleManager.RoleType)), "", new { @class = "form-control" })
+                    }
+                    else
+                    {
+                        @Html.DropDownList("userroletypeadd", EnumHelper.GetSelectList(typeof(MyRoleManager.RoleTypeNotSA)), "", new { @class = "form-control" })
+                    }
+                </div>
+                <p class="message" style="margin-top:1em;">회사.</p>
+                <div class="form-group">
+                    @*@Html.Label("Company", htmlAttributes: new { @class = "control-label col-md-2" })*@
+                    @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+   
+                </div>
+                <input type="hidden" id="at" name="at" value="Add" />
+            </div>
+            <div class="modal-footer">
+                <a class="btn btn-sm btn-default" data-dismiss="modal">취소</a>
+                <a href="javascript:fnUserRoleProc();" class="btn btn-sm btn-primary">저장</a>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>
+    //filtering data based on  company selection - Prakash
+    $("body").on("change", "#ddlCompanies", function () {
+        $('#WebGridForm')[0].submit();
+    });
+
+    function fnUserRoleProc() {
+        if ($("#txtusers").val().trim().length < 1) return;
+        var users = $.unique($("#txtusers").val().trim().replace(/\n\n/gi, '\n').split("\n"));
+        var data = {
+            role: $("#userroletypeadd").val()
+            , users: users,
+            company: $("#Companies").val()
+        }
+        $.ajax({
+            type: "POST",
+            url: "/System/AddUserRole",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            if (res.result) {
+                location.reload();
+            }
+        });
+    }
+    function fnAddUserRole() {
+        $('#dlg_add_userrole').modal('show');
+    }
+    function fnRoleProc() {
+        var users = $("input[name='username']:checked").map(function () {
+            return this.value;
+        }).get();
+        var data = {
+            type: $('#at').val()
+            , role: $("#roletypeadd").val()
+            , users: users
+            , company: $('#Companies').val()
+
+        }
+        $.ajax({
+            type: "POST",
+            url: "/System/UpdateRole",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+        }).done(function (res) {
+            if (res.result) {
+                location.reload();
+            }
+        });
+
+    }
+    function fnAddRole() {
+        var arr = $("input[name='username']:checked").map(function () {
+            return this.value;
+        }).get();
+        if (arr.length < 1) {
+            alert("변경할 대상 사용자명 체크 후 권한 추가를 해주세요");
+            return;
+        }
+        $('#at').val("Add");
+        $('#dlg_add_role .modal-title').html('권한 변경');
+        $('#dlg_add_role .modal-body .message').html(arr.join(",") + '에 부여할 권한을 선택하세요.');
+        $('#dlg_add_role').modal('show');
+    }
+
+    $(document).ready(function () {
+        $('#allusername').on('click', function () {
+            $("input[name='username']").prop("checked", $("#allusername").prop("checked"));
+        });
+        $("input[name='username']").on('click', function () {
+            $('#allusername').prop("checked", $("input[name='username']").length == $("input[name='username']:checked").length);
+        });
+    });
+
+</script>

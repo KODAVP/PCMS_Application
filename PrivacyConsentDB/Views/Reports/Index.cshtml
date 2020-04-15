@@ -1,0 +1,395 @@
+﻿@using PrivacyConsentDB.Dto;
+@model PrivacyConsentDB.Dto.ReportDto
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var IND_SP_LIST = new SelectList(
+            new List<SelectListItem>
+            {
+            new SelectListItem { Text ="가정의학과", Value = "가정의학과"},
+            new SelectListItem { Text ="감염내과", Value = "감염내과"},
+            new SelectListItem { Text ="건강관리과", Value = "건강관리과"},
+            new SelectListItem { Text ="검사의학과", Value = "검사의학과"},
+            new SelectListItem { Text ="결핵과", Value = "결핵과"},
+            new SelectListItem { Text ="기타", Value = "기타"},
+            new SelectListItem { Text ="내과", Value = "내과"},
+            new SelectListItem { Text ="내분비내과", Value = "내분비내과"},
+            new SelectListItem { Text ="내분비외과", Value = "내분비외과"},
+            new SelectListItem { Text ="노년내과", Value = "노년내과"},
+            new SelectListItem { Text ="레지던트", Value = "레지던트"},
+            new SelectListItem { Text ="류마티스내과", Value = "류마티스내과"},
+            new SelectListItem { Text ="마취과", Value = "마취과"},
+            new SelectListItem { Text ="마취통증의학과", Value = "마취통증의학과"},
+            new SelectListItem { Text ="면역학", Value = "면역학"},
+            new SelectListItem { Text ="방사선과", Value = "방사선과"},
+            new SelectListItem { Text ="방사선종양학과", Value = "방사선종양학과"},
+            new SelectListItem { Text ="병리과", Value = "병리과"},
+            new SelectListItem { Text ="보건소", Value = "보건소"},
+            new SelectListItem { Text ="부인종양과", Value = "부인종양과"},
+            new SelectListItem { Text ="비뇨기과", Value = "비뇨기과"},
+            new SelectListItem { Text ="비뇨종양과", Value = "비뇨종양과"},
+            new SelectListItem { Text ="산부인과", Value = "산부인과"},
+            new SelectListItem { Text ="산업의학과", Value = "산업의학과"},
+            new SelectListItem { Text ="성형외과", Value = "성형외과"},
+            new SelectListItem { Text ="소아감염내과", Value = "소아감염내과"},
+            new SelectListItem { Text ="소아과", Value = "소아과"},
+            new SelectListItem { Text ="소아내분비", Value = "소아내분비"},
+            new SelectListItem { Text ="소아소화기", Value = "소아소화기"},
+            new SelectListItem { Text ="소아신경", Value = "소아신경"},
+            new SelectListItem { Text ="소아심장", Value = "소아심장"},
+            new SelectListItem { Text ="소아알레르기", Value = "소아알레르기"},
+            new SelectListItem { Text ="소아외과", Value = "소아외과"},
+            new SelectListItem { Text ="소아정신과", Value = "소아정신과"},
+            new SelectListItem { Text ="소아정형외과", Value = "소아정형외과"},
+            new SelectListItem { Text ="소아청소년과", Value = "소아청소년과"},
+            new SelectListItem { Text ="소아치과", Value = "소아치과"},
+            new SelectListItem { Text ="소아혈액종양클리닉", Value = "소아혈액종양클리닉"},
+            new SelectListItem { Text ="소아호흡기", Value = "소아호흡기"},
+            new SelectListItem { Text ="소화기내과", Value = "소화기내과"},
+            new SelectListItem { Text ="순환기내과", Value = "순환기내과"},
+            new SelectListItem { Text ="신경과", Value = "신경과"},
+            new SelectListItem { Text ="신경내과", Value = "신경내과"},
+            new SelectListItem { Text ="신경방사선과", Value = "신경방사선과"},
+            new SelectListItem { Text ="신경외과", Value = "신경외과"},
+            new SelectListItem { Text ="신경정신과", Value = "신경정신과"},
+            new SelectListItem { Text ="신장내과", Value = "신장내과"},
+            new SelectListItem { Text ="심장내과", Value = "심장내과"},
+            new SelectListItem { Text ="안과", Value = "안과"},
+            new SelectListItem { Text ="알레르기내과", Value = "알레르기내과"},
+            new SelectListItem { Text ="암센타", Value = "암센타"},
+            new SelectListItem { Text ="약사", Value = "약사"},
+            new SelectListItem { Text ="약제과", Value = "약제과"},
+            new SelectListItem { Text ="영상의학과", Value = "영상의학과"},
+            new SelectListItem { Text ="예방의학과", Value = "예방의학과"},
+            new SelectListItem { Text ="완화의료과", Value = "완화의료과"},
+            new SelectListItem { Text ="유전학", Value = "유전학"},
+            new SelectListItem { Text ="응급의학과", Value = "응급의학과"},
+            new SelectListItem { Text ="의공학과", Value = "의공학과"},
+            new SelectListItem { Text ="이비인후과", Value = "이비인후과"},
+            new SelectListItem { Text ="이식외과", Value = "이식외과"},
+            new SelectListItem { Text ="인턴", Value = "인턴"},
+            new SelectListItem { Text ="일반외과", Value = "일반외과"},
+            new SelectListItem { Text ="일반의", Value = "일반의"},
+            new SelectListItem { Text ="임상병리과", Value = "임상병리과"},
+            new SelectListItem { Text ="재활의학과", Value = "재활의학과"},
+            new SelectListItem { Text ="정신과", Value = "정신과"},
+            new SelectListItem { Text ="정형외과", Value = "정형외과"},
+            new SelectListItem { Text ="종양내과", Value = "종양내과"},
+            new SelectListItem { Text ="진단검사과", Value = "진단검사과"},
+            new SelectListItem { Text ="진단방사선과", Value = "진단방사선과"},
+            new SelectListItem { Text ="진단병리과", Value = "진단병리과"},
+            new SelectListItem { Text ="척추외과", Value = "척추외과"},
+            new SelectListItem { Text ="통증의학과", Value = "통증의학과"},
+            new SelectListItem { Text ="피부과", Value = "피부과"},
+            new SelectListItem { Text ="피부비뇨기과", Value = "피부비뇨기과"},
+            new SelectListItem { Text ="한방과", Value = "한방과"},
+            new SelectListItem { Text ="해부병리과", Value = "해부병리과"},
+            new SelectListItem { Text ="핵의학과", Value = "핵의학과"},
+            new SelectListItem { Text ="혈관외과", Value = "혈관외과"},
+            new SelectListItem { Text ="혈액종양내과", Value = "혈액종양내과"},
+            new SelectListItem { Text ="호흡기내과", Value = "호흡기내과"},
+            new SelectListItem { Text ="흉부외과", Value = "흉부외과"}
+            }, "Value", "Text");
+}
+<h2>사용자 리포트</h2>
+
+@using (Html.BeginForm())
+{
+    String consentbegindt = "", consentenddt = "", collectbegindt = "", collectenddt = "";
+
+    if (Model.consentbegindt.HasValue)
+    {
+        consentbegindt = Model.consentbegindt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.consentenddt.HasValue)
+    {
+        consentenddt = Model.consentenddt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.collectbegindt.HasValue)
+    {
+        collectbegindt = Model.collectbegindt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.collectenddt.HasValue)
+    {
+        collectenddt = Model.collectenddt.Value.ToString("yyyy-MM-dd");
+    }
+
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <div class="input-group-xs">
+                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">승인일자</label>
+                <div class="col-lg-4 col-md-5 col-sm-4 col-xs-8">
+                    <div class="input-group input-daterange">
+                        <span class="input-group-addon">from</span>
+                        @Html.EditorFor(model => collectbegindt, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">to</span>
+                        @Html.EditorFor(model => collectenddt, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">Nucleus Code</label>
+                <div class="col-lg-3 col-md-5 col-sm-4 col-xs-8">
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.distinct, "true", Model.distinct ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">중복제외</span>
+                    </label>
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.distinct, "false", Model.distinct == false ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">중복포함</span>
+                    </label>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12 text-right">
+                    <a href="javascript:searching()" class="btn btn-xs btn-primary">검색</a>
+                    <a href="javascript:init()" class="btn btn-xs btn-default">초기화</a>
+                    <a href="javascript:xlsDownload()" class="btn btn-xs btn-success">엑셀 다운로드</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@{
+    int cus = 0;
+    int cusTot = 0;
+    int nsCus = 0;
+}
+<h3>1. 진료과별 고객수</h3>
+<div style="width:33%;display:inline-block">
+<table class="table table-striped table-bordered" id="" style="">
+    <thead>
+        <tr>
+            <th style="width:50% !important">진료과</th>
+            <th>고객수</th>
+        </tr>
+    </thead>
+
+    @foreach (var item in Model.resultTotal)
+    {
+        if (IND_SP_LIST.Where(p => p.Text.Equals(item.SP)).Count() > 0)
+        {
+            <tr>
+                <th>@item.SP</th>
+                @{
+                    cus = item.count;
+                    cusTot += cus;
+
+                }
+                <td class="text-right">@cus.ToString("#,##0")</td>
+            </tr>
+                        }
+                        else
+                        {
+                            nsCus += item.count;
+                        }
+                    }
+    <tr>
+        <th>미분류</th>
+        <td class="text-right">@nsCus.ToString("#,##0")</td>
+    </tr>
+    <tr>
+        <td>합계</td>
+        <td class="text-right">@cusTot.ToString("#,##0")</td>
+    </tr>
+</table>
+</div>
+<div style="width:33%;display:inline-block">
+<table class="table table-striped table-bordered" id="">
+    <thead>
+        <tr>
+            <th style="width:50% !important">진료과</th>
+            <th>이메일 보유 고객수</th>
+        </tr>
+    </thead>
+    @{
+        nsCus = 0;
+        cusTot = 0;
+    }
+    @foreach (var item in Model.resultEmail)
+    {
+        if (IND_SP_LIST.Where(p => p.Text.Equals(item.SP)).Count() > 0)
+        {
+            <tr>
+                <th>@item.SP</th>
+                @{
+                    cus = item.count;
+                    cusTot += cus;
+                }
+                <td class="text-right">@cus.ToString("#,##0")</td>
+            </tr>
+                        }
+                        else
+                        {
+                            nsCus += item.count;
+                        }
+                    }
+    <tr>
+        <th>미분류</th>
+        <td class="text-right">@nsCus.ToString("#,##0")</td>
+    </tr>
+    <tr>
+        <td>합계</td>
+        <td class="text-right">@cusTot.ToString("#,##0")</td>
+    </tr>
+</table>
+</div>
+<div style="width:33%;display:inline-block">
+<table class="table table-striped table-bordered" id="">
+    <thead>
+        <tr>
+            <th style="width:50% !important">진료과</th>
+            <th>핸드폰 보유 고객수</th>
+        </tr>
+    </thead>
+    @{
+        nsCus = 0;
+        cusTot = 0;
+    }
+    @foreach (var item in Model.resultMobile)
+    {
+        if (IND_SP_LIST.Where(p => p.Text.Equals(item.SP)).Count() > 0)
+        {
+            <tr>
+                <th>@item.SP</th>
+                @{
+                    cus = item.count;
+                    cusTot += cus;
+
+                }
+                <td class="text-right">@cus.ToString("#,##0")</td>
+            </tr>
+                        }
+                        else
+                        {
+                            nsCus += item.count;
+                        }
+                    }
+    <tr>
+        <th>미분류</th>
+        <td class="text-right">@nsCus.ToString("#,##0")</td>
+    </tr>
+    <tr>
+        <td>합계</td>
+        <td class="text-right">@cusTot.ToString("#,##0")</td>
+    </tr>
+</table>
+</div>
+
+<h3>2. 채널별 유입 고객수</h3>
+<table class="table table-striped table-bordered paginated" id="tableChannel">
+    <thead>
+        <tr>
+            <th>월</th>
+            <th>MMS</th>
+            <th>GRV</th>
+            <th>서면동의서</th>
+            <th>PForceRX</th>
+            <th>총합계</th>
+        </tr>
+        @{
+            int mms, grv, doc, pfrx, mmsTot, grvTot, docTot, pfrxTot, totSum;
+            mms = grv = doc = pfrx = mmsTot = grvTot = docTot = pfrxTot = totSum = 0;
+
+            int nCnt = Model.rsTotal.Count();
+        }
+        @for (int i = 0, j = 0, k = 0, x = 0, y = 0; i < nCnt; i++)
+        {
+            var item = Model.rsTotal.ElementAt(i);
+            var it = Model.rsMMS.ElementAtOrDefault(j);
+            if (it == null || it.SP.Equals(item.SP) == false)
+            {
+                mms = 0;
+                j--;
+            }
+            else
+            {
+                mms = it.count;
+            }
+            mmsTot += mms;
+
+            it = Model.rsGRV.ElementAtOrDefault(k);
+            if (it == null || it.SP.Equals(item.SP) == false)
+            {
+                grv = 0;
+                k--;
+            }
+            else
+            {
+                grv = it.count;
+            }
+            grvTot += grv;
+
+            it = Model.rsDOC.ElementAtOrDefault(x);
+            if (it == null || it.SP.Equals(item.SP) == false)
+            {
+                doc = 0;
+                x--;
+            }
+            else
+            {
+                doc = it.count;
+            }
+            docTot += doc;
+
+            it = Model.rsPFRX.ElementAtOrDefault(y);
+            if (it == null || it.SP.Equals(item.SP) == false)
+            {
+                pfrx = 0;
+                y--;
+            }
+            else
+            {
+                pfrx = it.count;
+            }
+            pfrxTot += pfrx;
+
+            totSum += item.count;
+            j++; k++; x++; y++;
+            <tr>
+                <td>@item.SP</td>
+                <td class="text-right">@mms.ToString("#,##0")</td>
+                <td class="text-right">@grv.ToString("#,##0")</td>
+                <td class="text-right">@doc.ToString("#,##0")</td>
+                <td class="text-right">@pfrx.ToString("#,##0")</td>
+                <td class="text-right">@item.count.ToString("#,##0")</td>
+            </tr>
+        }
+        <tr>
+            <th>합계</th>
+            <td class="text-right">@mmsTot.ToString("#,##0")</td>
+            <td class="text-right">@grvTot.ToString("#,##0")</td>
+            <td class="text-right">@docTot.ToString("#,##0")</td>
+            <td class="text-right">@pfrxTot.ToString("#,##0")</td>
+            <td class="text-right">@totSum.ToString("#,##0")</td>
+        </tr>
+    </thead>
+</table>
+<i id="spinner" class="fa fa-spinner fa-spin" style="font-size:50px;display:none;left:50%;top:50%;position:absolute;"></i>
+<script>
+    $(document).ready(function () {
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        });
+    });
+    var inProgress = false;
+    function searching() {
+        if (inProgress) {
+            alert("현재 검색중입니다. 잠시만 기다려주세요");
+            return;
+        }
+        inProgress = true;
+        $("#spinner").show();
+
+        $("form").attr("action", "/Reports/Index");
+        $("form").submit();
+    }
+    function xlsDownload() {
+        $("form").attr("action", "/Reports/XlsDownload");
+        $("form").submit();
+    }
+    function init() {
+        $("#owner").val("");
+        $("#name").val("");
+        $("#depart").val("");
+        $("#wkpname").val("");
+        $(".input-daterange input").val("");
+    }
+</script>

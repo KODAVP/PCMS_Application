@@ -1,0 +1,211 @@
+﻿@using PrivacyConsentDB.Commons;
+@model PrivacyConsentDB.Dto.ReportDto
+@{
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>관리자 리포트</h2>
+
+@using (Html.BeginForm())
+{
+    String consentbegindt = "", consentenddt = "", collectbegindt = "", collectenddt = "";
+
+    if (Model.consentbegindt.HasValue)
+    {
+        consentbegindt = Model.consentbegindt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.consentenddt.HasValue)
+    {
+        consentenddt = Model.consentenddt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.collectbegindt.HasValue)
+    {
+        collectbegindt = Model.collectbegindt.Value.ToString("yyyy-MM-dd");
+    }
+    if (Model.collectenddt.HasValue)
+    {
+        collectenddt = Model.collectenddt.Value.ToString("yyyy-MM-dd");
+    }
+    <div class="form-horizontal">
+
+        <div class="form-group">
+            <div class="input-group-xs">
+
+                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">승인일자</label>
+                <div class="col-lg-4 col-md-5 col-sm-4 col-xs-8">
+                    <div class="input-group input-daterange">
+                        <span class="input-group-addon">from</span>
+                        @Html.EditorFor(model => collectbegindt, new { htmlAttributes = new { @class = "form-control" } })
+                        <span class="input-group-addon">to</span>
+                        @Html.EditorFor(model => collectenddt, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                </div>
+                <label class="control-label col-lg-1 col-md-1 col-sm-1 col-xs-4  ">Nucleus Code</label>
+                <div class="col-lg-3 col-md-5 col-sm-4 col-xs-8">
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.distinct, "true", Model.distinct ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">중복제외</span>
+                    </label>
+                    <label class="radio-custom radio-inline" data-initialize="radio">
+                        @Html.RadioButtonFor(model => model.distinct, "false", Model.distinct == false ? (object)new { @checked = "checked", @class = "form-control" } : new { htmlAttributes = new { @class = "form-control" } })<span class="radio-label">중복포함</span>
+                    </label>
+                </div>
+                @*<div class="form-group">
+                    @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    </div>
+                </div>*@
+                <div class="col-lg-3 col-md-5 col-sm-4 col-xs-8">
+                    @Html.Label("회사", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("Companies", ViewBag.CompaniesList as IEnumerable<SelectListItem>, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 text-right">
+                    <a href="javascript:searching()" class="btn btn-xs btn-primary">검색</a>
+                    <a href="javascript:init()" class="btn btn-xs btn-default">초기화</a>
+                    <a href="javascript:xlsDownload()" class="btn btn-xs btn-success">엑셀 다운로드</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<h3>1. 서면동의서 승인/반려 건수</h3>
+<table class="table table-striped table-bordered paginated">
+    <thead>
+        <tr>
+            <th>월</th>
+            <th>승인</th>
+            <th>반려</th>
+            <th>총합계</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int aprTot = 0, rejTot = 0, Tot = 0;
+            foreach (var item in Model.rsApproved)
+            {
+                int cnt = 0;
+                var objRejected = Model.rsRejected.Where(p => p.SP.Equals(item.SP)).FirstOrDefault();
+                if (objRejected != null) { cnt = objRejected.count; }
+                <tr>
+                    <th>@item.SP</th>
+                    <td class="text-right">@item.count.ToString("#,##0")</td>
+                    <td class="text-right">
+                        @cnt.ToString("#,##0")
+                    </td>
+                    <td class="text-right">
+                        @((item.count + cnt).ToString("#,##0"))
+                    </td>
+                </tr>
+                aprTot += item.count;
+                rejTot += cnt;
+                Tot += item.count + cnt;
+            }
+        }
+        <tr><td>합계</td>	<td class="text-right">@aprTot.ToString("#,##0")</td><td class="text-right">@rejTot.ToString("#,##0")</td><td class="text-right">@Tot.ToString("#,##0")</td> </tr>
+    </tbody>
+</table>
+
+<h3>2.Nucleus 코드 / Onekey Code Mapping 건수</h3>
+<table class="table table-striped table-bordered paginated">
+    <thead>
+        <tr>
+            <th>월</th>
+            <th>Nucleus 코드</th>
+            <th>One Key 코드</th>
+        </tr>
+        @{
+            int nTot = 0, oTot = 0;
+            foreach (var item in Model.rsN360)
+            {
+                int cnt = 0;
+                var obj = Model.rsOnekey.Where(p => p.SP.Equals(item.SP)).FirstOrDefault();
+                if (obj != null) { cnt = obj.count; }
+                <tr>
+                    <th class="text-right">@item.SP</th>
+                    <td class="text-right">@item.count.ToString("#,##0")</td>
+                    <td class="text-right">
+                        @cnt.ToString("#,##0")
+                    </td>
+                </tr>
+                nTot += item.count;
+                oTot += cnt;
+            }
+        }
+        <tr>
+            <td>합계</td>
+            <td class="text-right">@nTot.ToString("#,##0")</td>
+            <td class="text-right">@oTot.ToString("#,##0")</td>
+        </tr>
+    </thead>
+</table>
+
+<h3>3. 고객개인정보 레코드수(필터영향없음)</h3>
+<table class="table table-striped table-bordered paginated">
+    <tbody>
+        <tr>
+            <th>전체 PCMS 레코드</th>
+            <th>Nucleus 부여 레코드(중복포함)</th>
+            <th>Nucleus 부여 레코드(중복제외)</th>
+        </tr>
+        <tr>
+            <td class="text-right">@Model.pcms_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.n360_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.n360_distinct_count.ToString("#,##0")</td>
+        </tr>
+        <tr>
+            <th>전체 PCMS 레코드</th>
+            <th>OneKey 부여 레코드(중복포함)</th>
+            <th>Nucleus 부여 레코드(중복제외)</th>
+        </tr>
+        <tr>
+            <td class="text-right">@Model.pcms_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.onekey_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.onekey_distinct_count.ToString("#,##0")</td>
+        </tr>
+        <tr>
+            <th>전체 PCMS 레코드</th>
+            <th>활성화 레코드</th>
+            <th>비활성화 레코드</th>
+        </tr>
+        <tr>
+            <td class="text-right">@Model.pcms_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.active_count.ToString("#,##0")</td>
+            <td class="text-right">@Model.inactive_count.ToString("#,##0")</td>
+        </tr>
+    </tbody>
+</table>
+<i id="spinner" class="fa fa-spinner fa-spin" style="font-size:50px;display:none;left:50%;top:50%;position:absolute;"></i>
+<script>
+    $(document).ready(function () {
+        $('.input-daterange input').each(function () {
+            $(this).datepicker({ autoclose: true, language: "ko", format: "yyyy-mm-dd" });
+        });
+    });
+    var inProgress = false;
+    function searching() {
+        if (inProgress) {
+            alert("현재 검색중입니다. 잠시만 기다려주세요");
+            return;
+        }
+        inProgress = true;
+
+        $("#spinner").show();
+        $("form").attr("action", "/Reports/AdminReport");
+        $("form").submit();
+    }
+    function xlsDownload() {
+        $("form").attr("action", "/Reports/AdminXlsDownload");
+        $("form").submit();
+    }
+    function init() {
+        $("#owner").val("");
+        $("#name").val("");
+        $("#depart").val("");
+        $("#wkpname").val("");
+        $(".input-daterange input").val("");
+    }
+
+</script>

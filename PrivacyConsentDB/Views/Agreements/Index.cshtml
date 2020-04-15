@@ -1,0 +1,71 @@
+﻿@model IEnumerable<PrivacyConsentDB.Models.Agreement>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>동의서 관리 <small>동의서의 버전을 관리합니다..</small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+                <p>
+                    @Html.ActionLink("작성", "Create", null, new { @class = "btn btn-info btn-sm" })
+                </p>
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.createdate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.creater)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.modifieddate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.modifier)
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        var dtcreate = TimeZoneInfo.ConvertTime(item.createdate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+                        var dtmodi = TimeZoneInfo.ConvertTime(item.modifieddate, TimeZoneInfo.Utc, TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString();
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            <td>
+                                @dtcreate
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.creater)
+                            </td>
+                            <td>
+                                @dtmodi
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.modifier)
+                            </td>
+                            <td>
+                                @Html.ActionLink("수정", "Edit", new { id = item.ID } , new { @class = "btn btn-primary btn-sm" })
+                                @Html.ActionLink("상세", "Details", new { id = item.ID }, new { @class = "btn btn-info btn-sm" })
+                                @Html.ActionLink("삭제", "Delete", new { id = item.ID }, new { @class = "btn btn-default btn-sm" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

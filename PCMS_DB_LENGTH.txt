@@ -1,0 +1,95 @@
+ALTER TABLE Agreements ALTER COLUMN [title] [nvarchar](256) NULL;
+ALTER TABLE Agreements ALTER COLUMN [contents] [nvarchar](256) NULL;
+ALTER TABLE Agreements ALTER COLUMN [creater] [nvarchar](50) NULL;
+ALTER TABLE Agreements ALTER COLUMN [modifier] [nvarchar](50) NULL;
+
+
+ALTER TABLE Approvals ALTER COLUMN [message] [nvarchar](256) NULL;
+ALTER TABLE Approvals ALTER COLUMN [creater] [nvarchar](50) NULL;
+ALTER TABLE Approvals ALTER COLUMN [modifier] [nvarchar](50) NULL;
+
+ALTER TABLE Batches ALTER COLUMN [name] [nvarchar](50) NULL;
+ALTER TABLE Batches ALTER COLUMN [creater] [nvarchar](50) NULL;
+
+ALTER TABLE Channels ALTER COLUMN [name] [nvarchar](50) NULL;
+ALTER TABLE Channels ALTER COLUMN [host] [nvarchar](256) NULL;
+ALTER TABLE Channels ALTER COLUMN [account] [nvarchar](50) NULL;
+ALTER TABLE Channels ALTER COLUMN [pwd] [nvarchar](50) NULL;
+ALTER TABLE Channels ALTER COLUMN [path] [nvarchar](300) NULL;
+ALTER TABLE Channels ALTER COLUMN [exportpath] [nvarchar](300) NULL;
+
+ALTER TABLE Collections ALTER COLUMN [name] [nvarchar](256) NULL;
+ALTER TABLE Collections ALTER COLUMN [ftpname] [nvarchar](256) NULL;
+
+ALTER TABLE Consents ALTER COLUMN [CONSENT_SOURCE] [nvarchar](50) NULL;
+ALTER TABLE Consents ALTER COLUMN [CONSENT_TYPE] [nvarchar](50) NULL;
+ALTER TABLE Consents ALTER COLUMN [CONSENT_VERSION] [nvarchar](256) NULL;
+
+ALTER TABLE Pcmsids ALTER COLUMN [KEY] [nvarchar](30) NULL;
+
+ALTER TABLE PrivacyLogs ALTER COLUMN [changes] [nvarchar](1024) NULL;
+ALTER TABLE PrivacyLogs ALTER COLUMN [creater] [nvarchar](50) NULL;
+
+ALTER TABLE Settings ALTER COLUMN [name] [nvarchar](50) NULL;
+ALTER TABLE Settings ALTER COLUMN [value] [nvarchar](256) NULL;
+
+ALTER TABLE Userlogs ALTER COLUMN [username] [nvarchar](50) NULL;
+ALTER TABLE Userlogs ALTER COLUMN [useremail] [nvarchar](256) NULL;
+ALTER TABLE Userlogs ALTER COLUMN [ip] [nvarchar](50) NULL;
+ALTER TABLE Userlogs ALTER COLUMN [url] [nvarchar](256) NULL;
+ALTER TABLE Userlogs ALTER COLUMN [reqtype] [nvarchar](30) NULL;
+
+
+ALTER TABLE UserRoles ALTER COLUMN [username] [nvarchar](30) NULL;
+
+ALTER TABLE N360File ALTER COLUMN [SOURCE] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [ACTION] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [WKP_ID] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [WKP_EXT_ID] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_ID] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_EXT_ID] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [ACT_STATUS] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [WKP_NAME] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [WKP_TEL] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [WKP_FAX] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [ZIP] [nvarchar](10) NULL;
+ALTER TABLE N360File ALTER COLUMN [PROVINCE] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [CITY] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [DONG] [nvarchar](100) NULL;
+ALTER TABLE N360File ALTER COLUMN [STREET] [nvarchar](256) NULL;
+ALTER TABLE N360File ALTER COLUMN [FULL_ADDR] [nvarchar](256) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_SP] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [TITLE] [nvarchar](100) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_LASTNAME] [nvarchar](128) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_FIRSTNAME] [nvarchar](128) NULL;
+ALTER TABLE N360File ALTER COLUMN [IND_FULL_NAME] [nvarchar](256) NULL;
+ALTER TABLE N360File ALTER COLUMN [GENDER] [nvarchar](5) NULL;
+ALTER TABLE N360File ALTER COLUMN [EMAIL] [nvarchar](256) NULL;
+ALTER TABLE N360File ALTER COLUMN [MOBILE] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [CONSENT_STATUS] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [CONSENT_SOURCE] [nvarchar](256) NULL;
+ALTER TABLE N360File ALTER COLUMN [CONSENT_TYPE] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [CONSENT_VERSION] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [PCMSID] [nvarchar](50) NULL;
+ALTER TABLE N360File ALTER COLUMN [OneKey] [nvarchar](50) NULL;
+
+ALTER TABLE PforceRXFiles ALTER COLUMN [CONSENT_EMAIL] [nvarchar](256) NULL;
+ALTER TABLE PforceRXFiles ALTER COLUMN [CONSENT_MOBILE] [nvarchar](50) NULL;
+ALTER TABLE PforceRXFiles ALTER COLUMN [CONSENT_STATUS] [nvarchar](50) NULL;
+ALTER TABLE PforceRXFiles ALTER COLUMN [CONSENT_SOURCE] [nvarchar](256) NULL;
+ALTER TABLE PforceRXFiles ALTER COLUMN [COUNTRY_CD] [nvarchar](30) NULL;
+
+CREATE UNIQUE INDEX [idx_pcmsids_key] ON [dbo].[PcmsIds] ([KEY] ASC );
+
+CREATE INDEX idx_Settings_type ON Settings (type);
+
+CREATE INDEX idx_UserRoles_roletype ON UserRoles (roletype);
+
+CREATE INDEX idx_Channels_namebound ON Channels (name, bound);
+
+CREATE INDEX idx_Privacies_OWNER ON Privacies (OWNER);
+
+CREATE INDEX idx_Privacies_pcmsid ON Privacies (pcmsid);
+
+commit;
+

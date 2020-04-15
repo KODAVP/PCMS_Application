@@ -1,0 +1,60 @@
+﻿@model PrivacyConsentDB.Models.SettingsViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>시스템 설정 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    @foreach (var item in Model.PBGSettings)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value)
+                            </td>
+                            <td>
+                                @Html.ActionLink("수정", "Edit", new { id = item.ID }, new { @class = "btn btn-info btn-sm" })
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-6 col-xs-6">
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>시스템 설정 <small></small></h2>
+                <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <table class="table table-bordered">
+                    @foreach (var item in Model.UpjohnSettings)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.value)
+                            </td>
+                            <td>
+                                @Html.ActionLink("수정", "Edit", new { id = item.ID }, new { @class = "btn btn-info btn-sm" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
